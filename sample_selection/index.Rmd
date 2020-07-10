@@ -6,6 +6,9 @@ output:
 
 ```{r}
 library(SummarizedExperiment)
+library(jaffelab)
+library(sessioninfo)
+library(dplyr)
 ```
 
 
@@ -78,31 +81,72 @@ manifest <- read.delim("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/prepro
 head(manifest)
 #change to dcl02, same relative path after
 manifest<- data.frame(lapply(manifest, function(x) {gsub("dcl01", "dcl02", x)}))
+head(manifest)
 ```
 
-## Check Phenotype data of swap samples
-All 3 individuals the samples are from are F, 45+, Cauc, and Bipolar
+## 
 ```{r}
 pd <- colData(rse_gene)[,c("SAMPLE_ID","RNum","BrNum","BrainRegion","Sex","AgeDeath","Race","PrimaryDx","RIN")]
 head(pd)
-subset(pd, SAMPLE_ID %in% swap_ID)
 ```
 
 ## Select samples
-want 40 samples in the final data set, after 2 samples from the complex swap aer dropped
-balance across Dx, Region, Sex, similar mean in Age
+### Get swap samples PD
+All 3 individuals the samples are from are F, 45+, Cauc, and Bipolar
 ```{r}
 pd_swap <- merge(swap_df, pd)
+(pd_swap <- as_tibble(pd_swap))
+```
 
+### Select other (no-swap) samples 
+want 40 samples in the final data set, after 2 samples from the complex swap are dropped
+balance across Dx, Region, Sex, similar mean in Age
+```{r}
 #all other samples
 pd_other <- subset(pd, !SAMPLE_ID %in% swap_ID)
 dim(pd_other)
 #check for all adult samples
 summary(pd_other$AgeDeath)
-  #  Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  # 17.37   35.34   47.09   47.18   56.05   86.76 
+#  Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 17.37   35.34   47.09   47.18   56.05   86.76 
+subset(pd_other, PrimaryDx == "Bipolar" & Sex == "F" & BrainRegion == "Amygdala")
 
+# set seed for reproducibility
+set.seed(456)
+
+#randomy select 5 cases from each group
+pd_other40 <- pd_other %>% as_tibble() %>% 
+    filter(PrimaryDx != "Other") %>%
+    mutate(SwapCase = "no_swap") %>%
+    group_by(BrainRegion,Sex, PrimaryDx) %>%
+    sample_n(5) %>%
+    ungroup()
+
+pd_other40 %>% group_by(PrimaryDx) %>% 
+    summarise(mean(AgeDeath),median(AgeDeath))
 ```
 
+### replace four no_swap samples with the simple_swap cases, merge all tables together
+```{r}
+pd_swap %>% filter(SwapCase == "swap_simple") %>% count(Sex, PrimaryDx, BrainRegion)
+#   Sex   PrimaryDx BrainRegion     n
+#   <fct> <fct>     <fct>       <int>
+# 1 F     Bipolar   Amygdala        2
+# 2 F     Bipolar   sACC            2
 
+# need to Drop 2 F, Bipolar samples from each region
+pd_drop <- pd_other40 %>% 
+    filter(PrimaryDx == "Bipolar", Sex == "F") %>%
+    group_by(BrainRegion) %>%
+    sample_n(2)
+
+#merge tables    
+(pd_example <- pd_other40 %>%
+    anti_join(pd_drop) %>%
+    rbind(pd_swap))
+
+pd_example %>% filter(SwapCase != "swap_complex") %>%
+    group_by(PrimaryDx) %>%
+    summarise(mean(AgeDeath),median(AgeDeath))
+```
 
