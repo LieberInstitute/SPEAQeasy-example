@@ -4,6 +4,11 @@ output:
     theme: spacelab
 ---
 
+```{r}
+library(SummarizedExperiment)
+```
+
+
 ## Swap samples identified in Brain Swap project
 5: Br2260: 9373406026_R01C01
 $`Lims Phenotype Info`
@@ -56,20 +61,48 @@ $`RNA data`
 
 ## List swap samples
 ```{r}
-swap_rnum <- c("R14077_HCTYLBBXX","R14296_H7JLCBBXX")
+swap_ID <- c("R14077_HCTYLBBXX","R14296_H7JLCBBXX","R14071_HF3JYBBXX","R14290_H7L3FBBXX","R13997_H7JHNBBXX","R14222_H7JHNBBXX")
+swap_case <- c(rep("swap_simple",4),rep("swap_complex", 2))
+swap_df <- data.frame(swap_ID, swap_case)
+colnames(swap_df) <- c("SAMPLE_ID", "SwapCase")
+swap_df
 ```
-
-
 
 ## Load Data
+fastq files found in /dcl02/lieber/ajaffe/Nina/Zandi/data
 ```{r}
 ## zandi/hyde bipolar
-load("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/data/zandiHypde_bipolar_rseGene_n511.rda")
+load("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/data/zandiHypde_bipolar_rseGene_n511.rda", verbose = TRUE)
 
 manifest <- read.delim("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/preprocessed_data/.samples_unmerged.manifest", header = FALSE)
+head(manifest)
+#change to dcl02, same relative path after
+manifest<- data.frame(lapply(manifest, function(x) {gsub("dcl01", "dcl02", x)}))
 ```
 
-change to dcl02, same relative path after
-/dcl02/lieber/ajaffe/Nina/Zandi/data
+## Check Phenotype data of swap samples
+All 3 individuals the samples are from are F, 45+, Cauc, and Bipolar
+```{r}
+pd <- colData(rse_gene)[,c("SAMPLE_ID","RNum","BrNum","BrainRegion","Sex","AgeDeath","Race","PrimaryDx","RIN")]
+head(pd)
+subset(pd, SAMPLE_ID %in% swap_ID)
+```
+
+## Select samples
+want 40 samples in the final data set, after 2 samples from the complex swap aer dropped
+balance across Dx, Region, Sex, similar mean in Age
+```{r}
+pd_swap <- merge(swap_df, pd)
+
+#all other samples
+pd_other <- subset(pd, !SAMPLE_ID %in% swap_ID)
+dim(pd_other)
+#check for all adult samples
+summary(pd_other$AgeDeath)
+  #  Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  # 17.37   35.34   47.09   47.18   56.05   86.76 
+
+```
+
 
 
