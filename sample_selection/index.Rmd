@@ -9,6 +9,7 @@ library(SummarizedExperiment)
 library(jaffelab)
 library(sessioninfo)
 library(dplyr)
+library(reshape2)
 ```
 
 
@@ -76,16 +77,6 @@ fastq files found in /dcl02/lieber/ajaffe/Nina/Zandi/data
 ```{r}
 ## zandi/hyde bipolar
 load("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/data/zandiHypde_bipolar_rseGene_n511.rda", verbose = TRUE)
-
-manifest <- read.delim("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/preprocessed_data/.samples_unmerged.manifest", header = FALSE)
-head(manifest)
-#change to dcl02, same relative path after
-manifest<- data.frame(lapply(manifest, function(x) {gsub("dcl01", "dcl02", x)}))
-head(manifest)
-```
-
-## 
-```{r}
 pd <- colData(rse_gene)[,c("SAMPLE_ID","RNum","BrNum","BrainRegion","Sex","AgeDeath","Race","PrimaryDx","RIN")]
 head(pd)
 ```
@@ -150,3 +141,21 @@ pd_example %>% filter(SwapCase != "swap_complex") %>%
     summarise(mean(AgeDeath),median(AgeDeath))
 ```
 
+## Match Up With file manifest
+```{r}
+manifest <- read.delim("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/preprocessed_data/.samples_unmerged.manifest", header = FALSE)
+head(manifest)
+#change to dcl02, same relative path after
+manifest<- data.frame(lapply(manifest, function(x) {gsub("dcl01", "dcl02", x)}))
+head(manifest)
+
+manifest2 <- manifest[,c("V1","V3","V5")] %>%
+    melt(id.vars = "V5") %>% 
+    rename(SAMPLE_ID = V5) %>%
+    group_by(SAMPLE_ID) %>%
+    summarise(FASTQpath = list(value))
+
+pd_example <- pd_example %>% left_join(manifest2, by = "SAMPLE_ID") %>% as.data.frame()
+head(pd_example)
+save(pd_example, file = "pd_example.Rdata")
+```
