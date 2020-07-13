@@ -159,3 +159,32 @@ pd_example <- pd_example %>% left_join(manifest2, by = "SAMPLE_ID") %>% as.data.
 head(pd_example)
 save(pd_example, file = "pd_example.Rdata")
 ```
+
+## Write a subsetted manifest in the format accepted by SPEAQeasy
+```{r}
+#  These will be columns in the subsetted manifest
+R1 = list()
+R2 = list()
+ids = list()
+
+#  Loop through each id in the pd_example table
+counter = 1
+for (i in 1:length(pd_example$FASTQpath)) {
+    num_files = length(pd_example$FASTQpath[[i]])
+    stopifnot((num_files %% 2) == 0) # data is paired
+    
+    #  Ultimately produce one row for each pair of files of a given id
+    for (j in 1:(num_files / 2)) {
+        R1[[counter]] = pd_example$FASTQpath[[i]][j]
+        R2[[counter]] = pd_example$FASTQpath[[i]][j + num_files / 2]
+        ids[[counter]] = pd_example$SAMPLE_ID[[i]]
+        
+        counter = counter + 1
+    }
+}
+
+#  Format as a vector of strings, which we will write to the 'sample_selection'
+#  folder in the repository
+out_manifest = paste(unlist(R1), 0, unlist(R2), 0, unlist(ids), sep='\t')
+writeLines(out_manifest, 'samples.manifest')
+```
