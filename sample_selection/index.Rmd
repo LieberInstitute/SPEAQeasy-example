@@ -146,8 +146,9 @@ pd_example %>% filter(SwapCase != "swap_complex") %>%
 manifest <- read.delim("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/preprocessed_data/.samples_unmerged.manifest", header = FALSE)
 head(manifest)
 #change some samples to dcl02, same relative path after
-manifest <- data.frame(lapply(manifest, function(x) sub('/dcl01/ajaffe/', '/dcl02/ajaffe/', x)))
+manifest <- data.frame(lapply(manifest, function(x) sub('/dcl01/lieber/', '/dcl02/lieber/', x)))
 head(manifest)
+all(file.exists(manifest[,1]))
 
 manifest2 <- manifest[,c("V1","V3","V5")] %>%
     melt(id.vars = "V5") %>% 
