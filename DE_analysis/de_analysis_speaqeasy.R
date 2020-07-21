@@ -8,6 +8,7 @@ library(RColorBrewer)
 
 dir.create("pdfs")
 dir.create("tables")
+dir.create("rdas")
 
 ### load data
 load("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/data/zandiHypde_bipolar_rseGene_n511.rda")
