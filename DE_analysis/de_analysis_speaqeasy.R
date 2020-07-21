@@ -127,7 +127,7 @@ write.csv(sigGeneDupl, file = "tables/de_stats_fdr10_sorted.csv")
 ###################
 
 exprs = vGene$E[rownames(sigGeneDupl),]
-exprsClean = cleaningY(exprs, mod, 2)
+#exprsClean = cleaningY(exprs, mod, 2)
 
 
 ### make boxplots
@@ -151,7 +151,6 @@ dev.off()
 
 #### RPKM #####
 e = geneExprs[rownames(sigGeneDupl),]
-ec = cleaningY(e, mod, P=2)
 
 pdf("pdfs/DE_boxplots_byGenome_log2RPKM.pdf",w=10)
 par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
@@ -215,3 +214,18 @@ write.csv(goDf, file = "tables/geneSet_output.csv", row.names=FALSE)
 options(width=130)
 goDf[goDf$p.adjust < 0.05, c(1:5,7)]
 
+################################################
+#make heatmap of differentially expressed genes#
+################################################
+library("pheatmap")
+
+exprs_heatmap = vGene$E[rownames(sigGene),]
+
+df <- as.data.frame(colData(rse_gene)[,c("PrimaryDx")])
+rownames(df) <- colnames(exprs_heatmap)
+colnames(df)<-"diagnosis"
+
+pdf(file="pdfs/de_heatmap.pdf")
+pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
+         cluster_cols=TRUE, annotation_col=df)
+dev.off()
