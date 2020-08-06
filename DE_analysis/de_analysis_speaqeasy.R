@@ -11,15 +11,30 @@ dir.create("tables")
 dir.create("rdas")
 
 ### load data
-load("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/data/zandiHypde_bipolar_rseGene_n511.rda")
+#load("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/data/zandiHypde_bipolar_rseGene_n511.rda")
+load('/dcl01/lieber/ajaffe/lab/SPEAQeasy-example/pipeline_outputs/count_objects/rse_gene_Jlab_experiment_n42.Rdata')
 load('/dcl01/lieber/ajaffe/lab/SPEAQeasy-example/sample_selection/pd_example.Rdata')
 rm(getRPKM)
+
+## reorder phenotype data by sample order present in 'rse_gene'
+pd_example = pd_example[match(rse_gene$SAMPLE_ID, pd_example$SAMPLE_ID),]
+
 ## keep subset of sample
 Index = pd_example$SAMPLE_ID
 rse_gene = rse_gene[,colData(rse_gene)$SAMPLE_ID %in% Index]
 
+## add important colData to 'rse_gene'
+rse_gene$BrainRegion = pd_example$BrainRegion
+rse_gene$Race = pd_example$Race
+rse_gene$PrimaryDx = pd_example$PrimaryDx
+rse_gene$Sex = pd_example$Sex
+rse_gene$AgeDeath = pd_example$AgeDeath
+
 ## cell PCs
-cellPca = prcomp(as.data.frame(colData(rse_gene)[,49:58]))
+col_names = c('trimmed', 'numReads', 'numMapped', 'numUnmapped', 
+              'overallMapRate', 'concordMapRate', 'totalMapped', 'mitoMapped',
+              'mitoRate', 'totalAssignedGene')
+cellPca = prcomp(as.data.frame(colData(rse_gene)[,col_names]))
 rse_gene$cellPC = cellPca$x[,1]
 getPcaVars(cellPca)[1] # 91.8
 round(cellPca$rot[,1],3)
@@ -33,6 +48,7 @@ rse_gene = rse_gene[rowMeans(getRPKM(rse_gene,"Length")) > 0.2,]
 
 ##############
 ## metrics ###
+
 
 ## check if ratios of cell changed by batch
 pdf(file = "pdfs/Region_Race_cellcheck.pdf")
