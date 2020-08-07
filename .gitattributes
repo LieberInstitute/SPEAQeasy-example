@@ -1,3 +1,6 @@
+pipeline_outputs/count_objects/rawCounts_Jlab_experiment_n42.rda filter=lfs diff=lfs merge=lfs -text
+pipeline_outputs/count_objects/rse_jx_Jlab_experiment_n42.Rdata filter=lfs diff=lfs merge=lfs -text
+pipeline_outputs/count_objects/rpkmCounts_Jlab_experiment_n42.rda filter=lfs diff=lfs merge=lfs -text
 pipeline_outputs/count_objects/*.rda filter=lfs diff=lfs merge=lfs -text
 pipeline_outputs/count_objects/*.RData filter=lfs diff=lfs merge=lfs -text
 pipeline_outputs/count_objects/*.Rdata filter=lfs diff=lfs merge=lfs -text
