@@ -1,1 +1,11 @@
-pipeline_outputs/*/*
+pipeline_outputs/counts/*
+pipeline_outputs/coverage/*
+pipeline_outputs/execution_reports/*
+pipeline_outputs/expressed_regions/*
+pipeline_outputs/fastQC/*
+pipeline_outputs/HISAT2_out/*
+pipeline_outputs/infer_strandness/*
+pipeline_outputs/kallisto_tx/*
+pipeline_outputs/preprocessing/*
+pipeline_outputs/trimming/*
+pipeline_outputs/variant_calls/*
