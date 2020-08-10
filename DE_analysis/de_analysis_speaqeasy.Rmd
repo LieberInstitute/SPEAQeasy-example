@@ -1,34 +1,97 @@
-###
+---
+title: 'SPEAQeasy Differential Expression Analysis'
+date: 'July 10, 2020'
+output:
+  BiocStyle::html_document:
+    toc: true
+  pdf_document:
+    toc: true
+    number_sections: true
+---
+
+```{r 'setup', echo = FALSE, warning = FALSE, message = FALSE}
+timestart <- Sys.time()
+
+## Bib setup
+library('knitcitations')
+
+## Load knitcitations with a clean bibliography
+cleanbib()
+cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
+
+## Write bibliography information
+bibs <- c(
+    SummarizedExperiment = citation('SummarizedExperiment'),
+    recount = citation('recount'),
+    edgeR = citation('edgeR'),
+    limma = citation('limma'),
+    jaffelab = citation('jaffelab'),
+    RColorBrewer = citation('RColorBrewer'),
+    clusterProfiler = citation('clusterProfiler'),
+    org.Hs.eg.db = citation('org.Hs.eg.db'),
+    pheatmap = citation('pheatmap'),R = citation(),
+    voom = RefManageR::BibEntry('article', key = 'voom', author = 'CW Law and Y Chen and W Shi and GK Smyth', year = '2014', title = 'Voom: precision weights unlock linear model analysis tools for RNA-seq read counts', journal = 'Genome Biology', volume = '15', pages = 'R29')
+)
+
+write.bibtex(bibs, file = 'de_analysis.bib')
+bib <- read.bibtex('de_analysis.bib')
+
+## Assign short names
+names(bib) <- names(bibs)
+```
+
+# Analysis
+
+The following analysis explores a `RangedSummarizedExperiment` object from the SPEAQeasy pipeline. Note that we will use a modified version of the object, which resolved sample identity issues which were present in the raw output from SPEAQeasy. Though SPEAQeasy produces objects for several feature types (genes, exons, exon-exon junctions), we will demonstrate an example analysis for just genes. We will first add phenotype data we have for the samples to the `RangedSummarizedExperiment`, and then perform differential expression across some typical variables of interest (e.g. sex, age, race). This guide also shows how to perform principal component analysis (PCA) and visualize findings with plots.
+
+## Load required libraries
+
+```{r loadpackages, message = FALSE, warning = FALSE}
 library(SummarizedExperiment)
 library(recount)
 library(edgeR)
 library(limma)
 library(jaffelab)
 library(RColorBrewer)
+```
 
+## Load data and prepare directories to place outputs in
+
+For those who ran SPEAQeasy from the example FASTQ data set, the `RangedSummarizedExperiment` will have a different path, as specified with the `--output` flag. Set the working directory according to where the `SPEAQeasy-example` repository is cloned.
+
+```{r loaddata}
+# Set this path appropriately for your particular set-up
+setwd('/dcl01/lieber/ajaffe/lab/SPEAQeasy-example/')
+
+# Load the RSE gene object, and phenotype data for the samples
+load('pipeline_outputs/count_objects/rse_gene_Jlab_experiment_n42.Rdata')
+load('sample_selection/pd_example.Rdata')
+
+# SPEAQeasy includes a custom 'getRPKM' function with the RSE objects, but this
+# will not be used for the upcoming analysis
+rm(getRPKM)
+
+# Create directories to organize outputs from this analysis
 dir.create("pdfs")
 dir.create("tables")
 dir.create("rdas")
+```
 
-### load data
-#load("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/data/zandiHypde_bipolar_rseGene_n511.rda")
-load('/dcl01/lieber/ajaffe/lab/SPEAQeasy-example/pipeline_outputs/count_objects/rse_gene_Jlab_experiment_n42.Rdata')
-load('/dcl01/lieber/ajaffe/lab/SPEAQeasy-example/sample_selection/pd_example.Rdata')
-rm(getRPKM)
+## Attach phenotype data to the RSE object
 
-## reorder phenotype data by sample order present in 'rse_gene'
+Adding phenotype data to the RSE object enables us to perform differential expression across variables of interest. We add this information to the `colData` of the RSE object.
+
+```{r attachpheno}
+# reorder phenotype data by the sample order present in the 'rse_gene' object
 pd_example = pd_example[match(rse_gene$SAMPLE_ID, pd_example$SAMPLE_ID),]
 
-## keep subset of sample
-Index = pd_example$SAMPLE_ID
-rse_gene = rse_gene[,colData(rse_gene)$SAMPLE_ID %in% Index]
-
-## add important colData to 'rse_gene'
+# add important colData to 'rse_gene'
 rse_gene$BrainRegion = pd_example$BrainRegion
 rse_gene$Race = pd_example$Race
 rse_gene$PrimaryDx = pd_example$PrimaryDx
 rse_gene$Sex = pd_example$Sex
 rse_gene$AgeDeath = pd_example$AgeDeath
+```
 
 ## cell PCs
 col_names = c('trimmed', 'numReads', 'numMapped', 'numUnmapped', 
