@@ -53,6 +53,9 @@ library(edgeR)
 library(limma)
 library(jaffelab)
 library(RColorBrewer)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(pheatmap)
 ```
 
 ## Load data and prepare directories to place outputs in
@@ -251,8 +254,7 @@ dev.off()
 #################### no rat astrocyte differences
 
 ### gene ontology
-library(clusterProfiler)
-library(org.Hs.eg.db)
+
 
 ## get significant genes by sign
 sigGene = outGeneDupl[outGeneDupl$P.Value < 0.005,]
@@ -297,7 +299,6 @@ goDf[goDf$p.adjust < 0.05, c(1:5,7)]
 ################################################
 #make heatmap of differentially expressed genes#
 ################################################
-library("pheatmap")
 
 exprs_heatmap = vGene$E[rownames(sigGene),]
 
