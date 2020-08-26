@@ -1,0 +1,233 @@
+---
+title: "Speaqeasy_example"
+author: "Josh Stolz"
+date: "8/7/2020"
+output: html_document
+---
+
+
+```{r 'setup', echo = FALSE, warning = FALSE, message = FALSE}
+timestart <- Sys.time()
+
+## Bib setup
+library('knitcitations')
+
+## Load knitcitations with a clean bibliography
+cleanbib()
+cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
+
+## Write bibliography information
+bibs <- c(
+    SummarizedExperiment = citation('SummarizedExperiment'),
+    jaffelab = citation('jaffelab'),
+    pheatmap = citation('pheatmap'),R = citation(),
+    tidyr = citation("tidyr"),
+    here = citation('here'),
+    VariantAnnotation = citation("VariantAnnotation"),
+    dbSNP151 = citation("SNPlocs.Hsapiens.dbSNP151.GRCh38"))
+write.bibtex(bibs, file = 'swap_analysis.bib')
+bib <- read.bibtex('swap_analysis.bib')
+
+## Assign short names
+names(bib) <- names(bibs)
+```
+
+```{r options, include=FALSE}
+options(width=300)
+```
+
+
+```{r libraries, include=TRUE}
+library(pheatmap)
+library(tidyr)
+library(jaffelab)
+library(here)
+library(VariantAnnotation)
+library(SNPlocs.Hsapiens.dbSNP151.GRCh38)
+library(SummarizedExperiment)
+```
+
+
+In order to resolve the swaps to our best ability we need four data sets. Here we have load snpGeno_example which is from our topmed imputed genotype data, a phenotype data sheet (pd_example), a vcf file of the relevant speaqeasy output (Speaqeasy), and our current genotype sample sheet (brain_sentrix). This file is wrote in the directory listed below.
+
+```{r load_data, echo=TRUE}
+here()
+load(here("sample_selection","snpsGeno_example.RData"))
+load(here("sample_selection","pd_example.Rdata"))
+Speaqeasy<-readVcf(here("pipeline_outputs","merged_variants","mergedVariants.vcf.gz"),genome="hg38")
+brain_sentrix<- read.csv("/dcl01/lieber/RNAseq/Datasets/BrainGenotyping_2018/SampleFiles/brain_sentrix.csv")
+
+```
+We can see that the genotype is represented in the form of 0s,1s, and 2s. The rare 2s are a result of multiallelic snps and we will drop those. 0 represent the reference allele with ones representing the alternate. We can see the distribution below.
+```{r explore_speaqeasy_speaqeasy, echo=TRUE}
+Geno_speaqeasy<-geno(Speaqeasy)$GT
+table(Geno_speaqeasy)
+```
+
+Given this we convert we convert the Genotype data from Speaqeasy to numeric data. The "./." were values that could not accurately be determined and are replaced with NA.
+```{r data_prep_speaqeasy, echo=TRUE}
+colnames_speaqeasy<- as.data.frame(colnames(Geno_speaqeasy))
+colnames(colnames_speaqeasy)<-c("a")
+samples<-separate(colnames_speaqeasy,a,into = c("a","b","c"),sep = "_")
+samples<-paste0(samples$a,"_",samples$b)
+samples<-as.data.frame(samples)
+colnames(Geno_speaqeasy)<-samples$samples
+Geno_speaqeasy[Geno_speaqeasy == "./."] = NA
+Geno_speaqeasy[Geno_speaqeasy == "0/0"] = 0
+Geno_speaqeasy[Geno_speaqeasy == "0/1"] = 1
+Geno_speaqeasy[Geno_speaqeasy == "1/1"] = 2
+class(Geno_speaqeasy) = "numeric"
+corner(Geno_speaqeasy)
+```
+We then make a correlation matrix to find the possible mismatches between samples.
+```{r cor_speaqeasy, echo=TRUE}
+speaqeasy_Cor = cor(Geno_speaqeasy,use="pairwise.comp")
+corner(speaqeasy_Cor)
+```
+
+Here in the heatmap below we can see that several points do not correlate with themselves in a semetrical matrix. This could be mismatches, but it also could be a result of a brain being sequenced twice. We will dig more into this later on.
+```{r check_correlations_speaqeasy, echo=FALSE}
+pheatmap(speaqeasy_Cor, cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=FALSE, show_colnames=FALSE)
+```
+
+
+
+We repeat the process for the genotype data from topmed. First creating our numeric data for the genotypes.
+```{r data_prep_genotypes, echo=FALSE}
+names<-rownames(snpsGeno_example)
+snpsGeno_example<-unnest(snpsGeno_example,cols=colnames(snpsGeno_example))
+snpsGeno_example<-as.matrix(snpsGeno_example)
+table(snpsGeno_example)
+snpsGeno_example[snpsGeno_example == ".|."] = NA
+snpsGeno_example[snpsGeno_example == "0|0"] = 0
+snpsGeno_example[snpsGeno_example == "1|0"] = 1
+snpsGeno_example[snpsGeno_example == "0|1"] = 1
+snpsGeno_example[snpsGeno_example == "1|1"] = 2
+class(snpsGeno_example) = "numeric"
+rownames(snpsGeno_example)<- names
+correlation_genotype<-cor(snpsGeno_example,use="pairwise.comp")
+corner(correlation_genotype)
+```
+
+In this case the data only appears to have samples that match themselves. However there is the potential for a second kind of error where a brain has two samples, however the do not match each other. 
+```{r check_correlations_genotypes, echo=FALSE}
+pheatmap(correlation_genotype, cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=FALSE, show_colnames=FALSE)
+```
+
+In order to dig into this further we will collapse the correlation matrices into a data table shown below
+```{r make_table_genotypes, echo=TRUE}
+corLong = data.frame(cor = signif(as.numeric(correlation_genotype),3))
+corLong$rowSample = rep(colnames(snpsGeno_example), times = ncol(snpsGeno_example))
+corLong$colSample = rep(colnames(snpsGeno_example), each = ncol(snpsGeno_example))
+corLong = corLong[!is.na(corLong$cor),]
+head(corLong)
+```
+
+```{r check_for_swaps_correlations_genotypes, echo=TRUE}
+corLong2 = data.frame(cor = signif(as.numeric(speaqeasy_Cor),3))
+corLong2$rowSample = rep(colnames(Geno_speaqeasy), times = ncol(Geno_speaqeasy))
+corLong2$colSample = rep(colnames(Geno_speaqeasy), each = ncol(Geno_speaqeasy))
+corLong2 = corLong2[!is.na(corLong2$cor),]
+head(corLong2)
+```
+
+```{r format_genotype_data_sets, echo=FALSE}
+brain_sentrix_present <- subset(brain_sentrix, ID %in% colnames(snpsGeno_example))
+brain_sentrix_match_row <- match(corLong$rowSample, brain_sentrix_present$ID)
+brain_sentrix_match_col <- match(corLong$colSample, brain_sentrix_present$ID)
+corLong$rowBrain <- brain_sentrix_present$BrNum[brain_sentrix_match_row]
+corLong$colBrain <- brain_sentrix_present$BrNum[brain_sentrix_match_col]
+corLong$rowBatch <- brain_sentrix_present$Batch[brain_sentrix_match_row]
+corLong$colBatch <- brain_sentrix_present$Batch[brain_sentrix_match_col]
+speaqeasy_match_row <- match(corLong2$rowSample, pd_example$SAMPLE_ID)
+speaqeasy_match_col <- match(corLong2$colSample, pd_example$SAMPLE_ID)
+corLong2$rowBrain <- pd_example$BrNum[speaqeasy_match_row]
+corLong2$colBrain <- pd_example$BrNum[speaqeasy_match_col]
+```
+
+We can check these tables for columns where different brains are strongly correlated and where the same brain fails to match itself. Below is the output of those analysis for the topmed genotypes.
+```{r check_swaps_genotype_data_sets, echo=FALSE}
+corLong[corLong$rowBrain==corLong$colBrain & corLong$cor<.8,]
+
+corLong[!corLong$rowBrain==corLong$colBrain & corLong$cor>.8,]
+```
+
+And we do this again for the speaqeasy data.
+```{r check_swaps_speaqeasy_data_sets, echo=FALSE}
+corLong2[corLong2$rowBrain==corLong2$colBrain & corLong2$cor<.8,]
+#Mismatches
+corLong2[!corLong2$rowBrain==corLong2$colBrain & corLong2$cor>.8,]
+```
+We will next compare the correlation between the speaqeasy samples and the topmed samples. In order to do this we need to subset the genotypes for only SNPs that are common between the two. We can see that we have 656 snps common between the 42 samples.
+```{r subset_genotype_data_sets, echo=FALSE}
+bed<-as.data.frame(rownames(Speaqeasy))
+colnames(bed)<-"a"
+bed<-separate(bed,a,sep="_", into = c("a","b"))
+bed<-bed$a
+bed<-as.data.frame(bed)
+genome<-SNPlocs.Hsapiens.dbSNP151.GRCh38
+colnames(bed)<-"snp_table"
+my_snps <- snpsById(genome,names)
+my_snps<-as.data.frame(my_snps)
+snp_table<-paste0("chr",my_snps$seqnames,":",my_snps$pos)
+snp_table<-as.data.frame(snp_table)
+snp_table$rsid<-my_snps$RefSNP_id
+snps_speaqeasy<-merge(snp_table,bed)
+test<-snps_speaqeasy[duplicated(snps_speaqeasy$snp_table),]
+test<-snps_speaqeasy[!snps_speaqeasy$snp_table %in% test$snp_table,]
+Geno_speaqeasy_subset<-Geno_speaqeasy[bed$snp_table %in% test$snp_table,]
+snpsGeno_subset<-snpsGeno_example[names %in% test$rsid,]
+dim(Geno_speaqeasy_subset)
+dim(Geno_speaqeasy_subset)
+```
+
+As we did before we create a correlation matrix this time between the two data sets. 
+```{r make_correlation_genotype_speaqeasy, echo=FALSE}
+correlation_genotype_speaq<-cor(snpsGeno_subset,Geno_speaqeasy_subset,use="pairwise.comp")
+```
+
+
+```{r make_corlong3_table, echo=FALSE}
+corLong3 = data.frame(cor = signif(as.numeric(correlation_genotype_speaq),3))
+corLong3$rowSample = rep(colnames(snpsGeno_example), times = ncol(snpsGeno_example))
+corLong3$colSample = rep(colnames(Geno_speaqeasy), each = ncol(Geno_speaqeasy))
+```
+
+Check to correlation between Speaqeasy and Genotype for mismatches and swaps.
+```{r check_mismatches, echo=FALSE}
+speaqeasy_match_col <- match(corLong3$colSample, pd_example$SAMPLE_ID)
+corLong3$colBrain <- pd_example$BrNum[speaqeasy_match_col]
+brain_sentrix_match_row <- match(corLong3$rowSample, brain_sentrix_present$ID)
+corLong3$rowBrain <- brain_sentrix_present$BrNum[brain_sentrix_match_row]
+#Fails to match 
+corLong3[corLong3$rowBrain==corLong3$colBrain & corLong3$cor<.8,]
+#Mismatches
+corLong3[!corLong3$rowBrain==corLong3$colBrain & corLong3$cor>.8,]
+```
+
+We can see from this from this analysis there are a few swaps present between RNA and DNA samples here. We can categorize them as simple and complex sample swaps. Because the two Br2275 do not match each other and also match nothing else we will be forced to consider this a complex swap and drop the sample. In the case of Br2473 it is a simple swap with Br2260 in both cases. This can be ammended by swapping with in the phenotype data sheet manually. Now we have our accurate data outputs and will need to fix our ranged summarized experiment object for our Speaqeasy data.
+
+```{r swap_pd_sheet, echo=TRUE}
+load("/dcl01/lieber/ajaffe/lab/SPEAQeasy-example/pipeline_outputs/count_objects/rse_gene_Jlab_experiment_n42.Rdata")
+
+## drop sample from rse with speaqeasy data
+ids<-pd_example$SAMPLE_ID[pd_example$BrNum =="Br2275"]
+rse_gene<-rse_gene[,!rse_gene$SAMPLE_ID ==ids[1]]
+rse_gene<- rse_gene[,!rse_gene$SAMPLE_ID ==ids[2]]
+
+# reseolve swaps and drops in pd_example
+pd_example<-pd_example[!pd_example$SAMPLE_ID ==ids[1],]
+pd_example<-pd_example[!pd_example$SAMPLE_ID ==ids[2],]
+ids2<-pd_example$SAMPLE_ID[pd_example$BrNum =="Br2260"]
+ids3<-pd_example$SAMPLE_ID[pd_example$BrNum =="Br2473"]
+pd_example$SAMPLE_ID[pd_example$Sample_ID == ids2]<- "Br2473"
+pd_example$SAMPLE_ID[pd_example$Sample_ID == ids3]<- "Br2260"
+
+#add correct BrNum to colData for rse_gene
+colData(rse_gene)$BrNum <- pd_example$BrNum[match(rse_gene$SAMPLE_ID,pd_example$SAMPLE_ID)]
+save(rse_gene, file = "rse_speaqeasy.RData")
+```
+
+
