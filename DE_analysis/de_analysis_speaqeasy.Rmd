@@ -82,7 +82,7 @@ col_names = c('trimmed', 'numReads', 'numMapped', 'numUnmapped',
               'overallMapRate', 'concordMapRate', 'totalMapped', 'mitoMapped',
               'mitoRate', 'totalAssignedGene')
 cellPca = prcomp(as.data.frame(colData(rse_gene)[,col_names]))
-rse_gene$cellPC = cellPca$x[,1]
+rse_gene$PC = cellPca$x[,1]
 getPcaVars(cellPca)[1] # 87.3
 round(cellPca$rot[,1],3)
 # fetal quiescent and adult neuron increase
@@ -152,7 +152,7 @@ dge = DGEList(counts = assays(rse_gene)$counts,
 dge = calcNormFactors(dge)
 
 ## mean-variance
-mod = model.matrix(~PrimaryDx + cellPC + AgeDeath + BrainRegion,
+mod = model.matrix(~PrimaryDx + PC + BrainRegion,
 	data=colData(rse_gene))
 pdf(file = "DE_analysis/pdfs/vGene.pdf")
 vGene = voom(dge,mod,plot=TRUE)
