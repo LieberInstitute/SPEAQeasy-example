@@ -42,7 +42,7 @@ names(bib) <- names(bibs)
 
 # Analysis
 
-The following analysis explores a `RangedSummarizedExperiment` object from the SPEAQeasy pipeline. Note that we will use a modified version of the object, which resolved sample identity issues which were present in the raw output from SPEAQeasy. Though SPEAQeasy produces objects for several feature types (genes, exons, exon-exon junctions), we will demonstrate an example analysis for just genes. We will first add phenotype data we have for the samples to the `RangedSummarizedExperiment`, and then perform differential expression across some typical variables of interest (e.g. sex, age, race). This guide also shows how to perform principal component analysis (PCA) and visualize findings with plots.
+The following analysis explores a `RangedSummarizedExperiment` object from the SPEAQeasy pipeline. Note that we will use a modified version of the object, which resolved sample identity issues which were present in the raw output from SPEAQeasy. This object also includes phenotype data added after resolving identity issues. Though SPEAQeasy produces objects for several feature types (genes, exons, exon-exon junctions), we will demonstrate an example analysis for just genes. We will perform differential expression across some typical variables of interest (e.g. sex, age, race) and show how to perform principal component analysis (PCA) and visualize findings with plots.
 
 ## Load required libraries
 
@@ -66,35 +66,16 @@ For those who ran SPEAQeasy from the example FASTQ data set, the `RangedSummariz
 # Set this path appropriately for your particular set-up
 setwd('/dcl01/lieber/ajaffe/lab/SPEAQeasy-example/')
 
-# Load the RSE gene object, and phenotype data for the samples
-load('pipeline_outputs/count_objects/rse_gene_Jlab_experiment_n42.Rdata')
-load('sample_selection/pd_example.Rdata')
-
-# SPEAQeasy includes a custom 'getRPKM' function with the RSE objects, but this
-# will not be used for the upcoming analysis
-rm(getRPKM)
+# Load the RSE gene object
+load('rse_speaqeasy.RData')
 
 # Create directories to organize outputs from this analysis
-dir.create("pdfs")
-dir.create("tables")
-dir.create("rdas")
+dir.create("DE_analysis/pdfs")
+dir.create("DE_analysis/tables")
+dir.create("DE_analysis/rdas")
 ```
 
-## Attach phenotype data to the RSE object
 
-Adding phenotype data to the RSE object enables us to perform differential expression across variables of interest. We add this information to the `colData` of the RSE object.
-
-```{r attachpheno}
-# reorder phenotype data by the sample order present in the 'rse_gene' object
-pd_example = pd_example[match(rse_gene$SAMPLE_ID, pd_example$SAMPLE_ID),]
-
-# add important colData to 'rse_gene'
-rse_gene$BrainRegion = pd_example$BrainRegion
-rse_gene$Race = pd_example$Race
-rse_gene$PrimaryDx = pd_example$PrimaryDx
-rse_gene$Sex = pd_example$Sex
-rse_gene$AgeDeath = pd_example$AgeDeath
-```
 
 ## cell PCs
 col_names = c('trimmed', 'numReads', 'numMapped', 'numUnmapped', 
@@ -102,7 +83,7 @@ col_names = c('trimmed', 'numReads', 'numMapped', 'numUnmapped',
               'mitoRate', 'totalAssignedGene')
 cellPca = prcomp(as.data.frame(colData(rse_gene)[,col_names]))
 rse_gene$cellPC = cellPca$x[,1]
-getPcaVars(cellPca)[1] # 91.8
+getPcaVars(cellPca)[1] # 87.3
 round(cellPca$rot[,1],3)
 # fetal quiescent and adult neuron increase
 
@@ -117,7 +98,7 @@ rse_gene = rse_gene[rowMeans(getRPKM(rse_gene,"Length")) > 0.2,]
 
 
 ## check if ratios of cell changed by batch
-pdf(file = "pdfs/Region_Race_cellcheck.pdf")
+pdf(file = "DE_analysis/pdfs/Region_Race_cellcheck.pdf")
 boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion,xlab="")
 boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion,xlab="")
 boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion,xlab="")
@@ -134,7 +115,7 @@ pca_vars_lab = paste0("PC", seq(along=pca_vars), ": ",
 
 
 ##########
-pdf("pdfs/PCA_plotsExprs.pdf",w=9)
+pdf("DE_analysis/pdfs/PCA_plotsExprs.pdf",w=9)
 par(mar=c(8,6,2,2),cex.axis=1.8,cex.lab=1.8)
 palette(brewer.pal(4,"Dark2"))
 
@@ -173,13 +154,13 @@ dge = calcNormFactors(dge)
 ## mean-variance
 mod = model.matrix(~PrimaryDx + cellPC + AgeDeath + BrainRegion,
 	data=colData(rse_gene))
-pdf(file = "pdfs/vGene.pdf")
+pdf(file = "DE_analysis/pdfs/vGene.pdf")
 vGene = voom(dge,mod,plot=TRUE)
 dev.off()
 
 gene_dupCorr = duplicateCorrelation(vGene$E, mod,
 	block=colData(rse_gene)$SAMPLE_ID)
-save(gene_dupCorr, file = "rdas/gene_dupCorr_neurons.rda")
+save(gene_dupCorr, file = "DE_analysis/rdas/gene_dupCorr_neurons.rda")
 
 fitGeneDupl = lmFit(vGene,
 	correlation=gene_dupCorr$consensus.correlation,
@@ -189,7 +170,7 @@ ebGeneDupl = eBayes(fitGeneDupl)
 outGeneDupl = topTable(ebGeneDupl,coef=2,
 	p.value = 1,number=nrow(rse_gene),sort="none")
 
-pdf(file = "pdfs/hist_pval.pdf")
+pdf(file = "DE_analysis/pdfs/hist_pval.pdf")
 hist(outGeneDupl$P.Value)
 dev.off()
 table(outGeneDupl$adj.P.Val < 0.05)
@@ -202,8 +183,8 @@ sigGeneDupl[,c("Symbol","logFC", "P.Value","AveExpr")]
 sigGeneDupl[sigGeneDupl$logFC > 0,c("Symbol","logFC", "P.Value")]
 sigGeneDupl[sigGeneDupl$logFC <  0,c("Symbol","logFC", "P.Value")]
 
-write.csv(outGeneDupl, file = "tables/de_stats_allExprs.csv")
-write.csv(sigGeneDupl, file = "tables/de_stats_fdr10_sorted.csv")
+write.csv(outGeneDupl, file = "DE_analysis/tables/de_stats_allExprs.csv")
+write.csv(sigGeneDupl, file = "DE_analysis/tables/de_stats_fdr10_sorted.csv")
 
 ###################
 ## check plots ####
@@ -217,7 +198,7 @@ exprs = vGene$E[rownames(sigGeneDupl),]
 # cleanGeneExprs = cleaningY(geneExprs, mod[,!is.na(eBGene$p.value[1,])], P=3)
 
 
-pdf("pdfs/DE_boxplots_byDiagnosis.pdf",w=10)
+pdf("DE_analysis/pdfs/DE_boxplots_byDiagnosis.pdf",w=10)
 par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
 palette(brewer.pal(4,"Dark2"))
 for(i in 1:nrow(sigGeneDupl)) {
@@ -235,7 +216,7 @@ dev.off()
 #### RPKM #####
 e = geneExprs[rownames(sigGeneDupl),]
 
-pdf("pdfs/DE_boxplots_byGenome_log2RPKM.pdf",w=10)
+pdf("DE_analysis/pdfs/DE_boxplots_byGenome_log2RPKM.pdf",w=10)
 par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
 palette(brewer.pal(4,"Dark2"))
 for(i in 1:nrow(sigGeneDupl)) {
@@ -283,15 +264,14 @@ kegg_Adj <- compareCluster(sigGeneList, fun = "enrichKEGG",
 	universe = geneUniverse,  pAdjustMethod = "BH",
 	pvalueCutoff  = 1, qvalueCutoff  = 1)
 
-dir.create("rdas")
 save(goBP_Adj, goCC_Adj, goMF_Adj, kegg_Adj,
-	file = "rdas/gene_set_objects_p005.rda")
+	file = "DE_analysis/rdas/gene_set_objects_p005.rda")
 
 goList = list(BP = goBP_Adj, MF = goMF_Adj, CC = goCC_Adj, KEGG = kegg_Adj)
 goDf = dplyr::bind_rows(lapply(goList, as.data.frame), .id = "Ontology")
 goDf = goDf[order(goDf$pvalue),]
 
-write.csv(goDf, file = "tables/geneSet_output.csv", row.names=FALSE)
+write.csv(goDf, file = "DE_analysis/tables/geneSet_output.csv", row.names=FALSE)
 
 options(width=130)
 goDf[goDf$p.adjust < 0.05, c(1:5,7)]
@@ -306,7 +286,7 @@ df <- as.data.frame(colData(rse_gene)[,c("PrimaryDx")])
 rownames(df) <- colnames(exprs_heatmap)
 colnames(df)<-"diagnosis"
 
-pdf(file="pdfs/de_heatmap.pdf")
+pdf(file="DE_analysis/pdfs/de_heatmap.pdf")
 pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
          cluster_cols=TRUE, annotation_col=df)
 dev.off()

@@ -217,7 +217,7 @@ ids<-pd_example$SAMPLE_ID[pd_example$BrNum =="Br2275"]
 rse_gene<-rse_gene[,!rse_gene$SAMPLE_ID ==ids[1]]
 rse_gene<- rse_gene[,!rse_gene$SAMPLE_ID ==ids[2]]
 
-# reseolve swaps and drops in pd_example
+# resolve swaps and drops in pd_example
 pd_example<-pd_example[!pd_example$SAMPLE_ID ==ids[1],]
 pd_example<-pd_example[!pd_example$SAMPLE_ID ==ids[2],]
 ids2<-pd_example$SAMPLE_ID[pd_example$BrNum =="Br2260"]
@@ -225,8 +225,19 @@ ids3<-pd_example$SAMPLE_ID[pd_example$BrNum =="Br2473"]
 pd_example$SAMPLE_ID[pd_example$Sample_ID == ids2]<- "Br2473"
 pd_example$SAMPLE_ID[pd_example$Sample_ID == ids3]<- "Br2260"
 
+# reorder phenotype data by the sample order present in the 'rse_gene' object
+pd_example = pd_example[match(rse_gene$SAMPLE_ID, pd_example$SAMPLE_ID),]
+
+# add important colData to 'rse_gene'
+rse_gene$BrainRegion = pd_example$BrainRegion
+rse_gene$Race = pd_example$Race
+rse_gene$PrimaryDx = pd_example$PrimaryDx
+rse_gene$Sex = pd_example$Sex
+rse_gene$AgeDeath = pd_example$AgeDeath
+
 #add correct BrNum to colData for rse_gene
-colData(rse_gene)$BrNum <- pd_example$BrNum[match(rse_gene$SAMPLE_ID,pd_example$SAMPLE_ID)]
+colData(rse_gene)$BrNum <- pd_example$BrNum
+
 save(rse_gene, file = "rse_speaqeasy.RData")
 ```
 
