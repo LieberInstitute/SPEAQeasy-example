@@ -1,14 +1,17 @@
 ---
+title: SPEAQeasy Example Analysis
 output:
   html_document:
     theme: spacelab
 ---
 
+# Analysis
+
 A guided example showing how processed results from the RNAseq pipeline [SPEAQeasy](https://github.com/LieberInstitute/SPEAQeasy) can be used in differential expression analyses and visualization. We also show how existing genotype information for a set of samples can be combined with SPEAQeasy results to resolve any identity issues, as can emerge during sequencing.
 
-* [Downloading the example data](TODO: link markdown file walking through this process)
-* [Run SPEAQeasy on your setup](TODO: link brief markdown file- also mention just using our outputs)
-* [Resolve identity issues and attach phenotype data](TODO: Rmd file for this)
+* [Downloading the example data](pull_data/prepare_data.Rmd)
+* [Run SPEAQeasy on your setup](run_speaqeasy.Rmd)
+* [Resolve identity issues and attach phenotype data](swap_speaqeasy.Rmd)
 * [Perform differential expression and visualize results](DE_analysis/de_analysis_speaqeasy.Rmd)
 
 # References
@@ -24,16 +27,24 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 
 ## Write bibliography information
 bibs <- c(
-    SummarizedExperiment = citation('SummarizedExperiment'),
-    recount = citation('recount'),
-    edgeR = citation('edgeR'),
-    limma = citation('limma'),
-    jaffelab = citation('jaffelab'),
-    RColorBrewer = citation('RColorBrewer'),
+    R = citation(),
+    biocStyle = citation('BiocStyle'),
     clusterProfiler = citation('clusterProfiler'),
+    dbSNP151 = citation('SNPlocs.Hsapiens.dbSNP151.GRCh38'),
+    edgeR = citation('edgeR')[1],
+    getopt = citation('getopt'),
+    here = citation('here'),
+    jaffelab = citation('jaffelab'),
+    knitcitations = citation('knitcitations'),
+    limma = citation('limma'),
     org.Hs.eg.db = citation('org.Hs.eg.db'),
     pheatmap = citation('pheatmap'),
-    R = citation(),
+    RColorBrewer = citation('RColorBrewer'),
+    recount = citation('recount')[1],
+    rmarkdown = citation('rmarkdown')[1],
+    SummarizedExperiment = citation('SummarizedExperiment'),
+    tidyr = citation('tidyr'),
+    VariantAnnotation = citation('VariantAnnotation'),
     voom = RefManageR::BibEntry('article', key = 'voom', author = 'CW Law and Y Chen and W Shi and GK Smyth', year = '2014', title = 'Voom: precision weights unlock linear model analysis tools for RNA-seq read counts', journal = 'Genome Biology', volume = '15', pages = 'R29')
 )
 
@@ -47,16 +58,24 @@ names(bib) <- names(bibs)
 The analysis was possible thanks to R and many of its packages:
 
 * R `r citep(bib[['R']])`
-* `r citep(bib[['SummarizedExperiment']])`
-* `r citep(bib[['recount']])`
-* `r citep(bib[['edgeR']])`
-* `r citep(bib[['limma']])`
-* `r citep(bib[['jaffelab']])`
-* `r citep(bib[['RColorBrewer']])`
-* `r citep(bib[['clusterProfiler']])`
-* `r citep(bib[['org.Hs.eg.db']])`
-* `r citep(bib[['pheatmap']])`
-* `r citep(bib[['voom']])`
+* `r Biocpkg('BiocStyle')` `r citep(bib[['biocStyle']])`
+* `r Biocpkg('clusterProfiler')` `r citep(bib[['clusterProfiler']])`
+* `r Biocpkg('dbSNP151')` `r citep(bib[['dbSNP151']])`
+* `r Biocpkg('edgeR')` `r citep(bib[['edgeR']])`
+* `r CRANpkg('getopt')` `r citep(bib[['getopt']])`
+* `r CRANpkg('here')` `r citep(bib[['here']])`
+* `r Biocpkg('limma')` `r citep(bib[['limma']])`
+* `r CRANpkg('jaffelab')` `r citep(bib[['jaffelab']])`
+* `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`
+* `r Biocpkg('org.Hs.eg.db')` `r citep(bib[['org.Hs.eg.db']])`
+* `r CRANpkg('pheatmap')` `r citep(bib[['pheatmap']])`
+* `r CRANpkg('RColorBrewer')` `r citep(bib[['RColorBrewer']])`
+* `r Biocpkg('recount')` `r citep(bib[['recount']])`
+* `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])`
+* `r Biocpkg('SummarizedExperiment')` `r citep(bib[['SummarizedExperiment']])`
+* `r CRANpkg('tidyr')` `r citep(bib[['tidyr']])`
+* `r Biocpkg('VariantAnnotation')` `r citep(bib[['VariantAnnotation']])`
+* `r Biocpkg('voom')` `r citep(bib[['voom']])`
 
 [Bibliography file](index.bib)
 
