@@ -1,0 +1,25 @@
+name: "SPEAQeasy example"
+output_dir: "docs"
+navbar:
+  title: "SPEAQeasy example"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Downloading the example data"
+      href: pull_data/prepare_data.html
+    - text: "Run SPEAQeasy on your setup]"
+      href: run_speaqeasy.html
+    - text: "Resolve identity issues and attach phenotype data"
+      href: swap_speaqeasy.html
+    - text: "Perform differential expression and visualize results"
+      href: DE_analysis/de_analysis_speaqeasy.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/lcolladotor/twitter-stats
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    number_sections: yes
+    toc: yes
+    toc_float: yes
