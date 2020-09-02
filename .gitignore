@@ -10,3 +10,7 @@ pipeline_outputs/preprocessing/*
 pipeline_outputs/trimming/*
 pipeline_outputs/variant_calls/*
 .Rproj.user
+site_libs
+*.html
+*.pdf
+*.bib
