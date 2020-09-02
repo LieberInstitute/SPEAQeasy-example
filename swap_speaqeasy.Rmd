@@ -1,5 +1,5 @@
 ---
-title: "Speaqeasy_example"
+title: "SPEAQeasy_example"
 author: "Josh Stolz"
 date: "8/7/2020"
 output: html_document
@@ -32,28 +32,22 @@ bib <- read.bibtex('swap_analysis.bib')
 names(bib) <- names(bibs)
 ```
 
-```{r options, include=FALSE}
-options(width=300)
-```
-
-
 ```{r libraries, include=TRUE}
-library(pheatmap)
-library(tidyr)
-library(jaffelab)
-library(here)
-library(VariantAnnotation)
-library(SNPlocs.Hsapiens.dbSNP151.GRCh38)
-library(SummarizedExperiment)
+library("pheatmap")
+library("tidyr")
+library("jaffelab")
+library("here")
+library("VariantAnnotation")
+library("SNPlocs.Hsapiens.dbSNP151.GRCh38")
+library("SummarizedExperiment")
 ```
 
 
 In order to resolve the swaps to our best ability we need four data sets. Here we have load snpGeno_example which is from our topmed imputed genotype data, a phenotype data sheet (pd_example), a vcf file of the relevant speaqeasy output (Speaqeasy), and our current genotype sample sheet (brain_sentrix). This file is wrote in the directory listed below.
 
 ```{r load_data, echo=TRUE}
-here()
-load(here("sample_selection","snpsGeno_example.RData"))
-load(here("sample_selection","pd_example.Rdata"))
+load(here("sample_selection","snpsGeno_example.RData"), verbose = TRUE)
+load(here("sample_selection","pd_example.Rdata"), verbose = TRUE)
 Speaqeasy<-readVcf(here("pipeline_outputs","merged_variants","mergedVariants.vcf.gz"),genome="hg38")
 brain_sentrix<- read.csv("/dcl01/lieber/RNAseq/Datasets/BrainGenotyping_2018/SampleFiles/brain_sentrix.csv")
 

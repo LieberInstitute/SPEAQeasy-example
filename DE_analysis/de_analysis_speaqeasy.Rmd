@@ -30,7 +30,8 @@ bibs <- c(
     clusterProfiler = citation('clusterProfiler'),
     org.Hs.eg.db = citation('org.Hs.eg.db'),
     pheatmap = citation('pheatmap'),R = citation(),
-    voom = RefManageR::BibEntry('article', key = 'voom', author = 'CW Law and Y Chen and W Shi and GK Smyth', year = '2014', title = 'Voom: precision weights unlock linear model analysis tools for RNA-seq read counts', journal = 'Genome Biology', volume = '15', pages = 'R29')
+    voom = RefManageR::BibEntry('article', key = 'voom', author = 'CW Law and Y Chen and W Shi and GK Smyth', year = '2014', title = 'Voom: precision weights unlock linear model analysis tools for RNA-seq read counts', journal = 'Genome Biology', volume = '15', pages = 'R29'),
+    here = citation("here")
 )
 
 write.bibtex(bibs, file = 'de_analysis.bib')
@@ -47,15 +48,16 @@ The following analysis explores a `RangedSummarizedExperiment` object from the S
 ## Load required libraries
 
 ```{r loadpackages, message = FALSE, warning = FALSE}
-library(SummarizedExperiment)
-library(recount)
-library(edgeR)
-library(limma)
-library(jaffelab)
-library(RColorBrewer)
-library(clusterProfiler)
-library(org.Hs.eg.db)
-library(pheatmap)
+library("SummarizedExperiment")
+library("recount")
+library("edgeR")
+library("limma")
+library("jaffelab") # GitHub: LieberInstitute/jaffelab
+library("RColorBrewer")
+library("clusterProfiler")
+library("org.Hs.eg.db")
+library("pheatmap")
+library("here")
 ```
 
 ## Load data and prepare directories to place outputs in
@@ -63,16 +65,13 @@ library(pheatmap)
 For those who ran SPEAQeasy from the example FASTQ data set, the `RangedSummarizedExperiment` will have a different path, as specified with the `--output` flag. Set the working directory according to where the `SPEAQeasy-example` repository is cloned.
 
 ```{r loaddata}
-# Set this path appropriately for your particular set-up
-setwd('/dcl01/lieber/ajaffe/lab/SPEAQeasy-example/')
-
 # Load the RSE gene object
-load('rse_speaqeasy.RData')
+load(here("rse_speaqeasy.RData"), verbose = TRUE)
 
 # Create directories to organize outputs from this analysis
-dir.create("DE_analysis/pdfs")
-dir.create("DE_analysis/tables")
-dir.create("DE_analysis/rdas")
+dir.create("pdfs", showWarnings = FALSE)
+dir.create("tables", showWarnings = FALSE)
+dir.create("rdas", showWarnings = FALSE)
 ```
 
 

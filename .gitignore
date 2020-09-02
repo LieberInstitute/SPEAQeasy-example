@@ -9,3 +9,4 @@ pipeline_outputs/kallisto_tx/*
 pipeline_outputs/preprocessing/*
 pipeline_outputs/trimming/*
 pipeline_outputs/variant_calls/*
+.Rproj.user

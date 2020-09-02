@@ -13,7 +13,7 @@ output:
 
 First, make sure the main repository is cloned to your system, as it contains code and data which will be used in the upcoming analysis.
 
-```{bash}
+```{bash "clone repo", eval = FALSE}
 git clone git@github.com:LieberInstitute/SPEAQeasy-example.git
 ```
 
@@ -25,7 +25,7 @@ You are encouraged to optionally reproduce our SPEAQeasy results before moving o
 
 We provide a bash script, which utilizes [synapse](https://www.synapse.org/) to download the publicly available FASTQ files. Run this script and specify a directory where you wish to place the FASTQ files:
 
-```{bash}
+```{bash "pull data", eval = FALSE}
 bash pull_data/pull_fastq_data.sh [/destination_dir]
 ```
 
