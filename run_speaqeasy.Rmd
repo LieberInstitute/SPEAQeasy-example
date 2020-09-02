@@ -13,9 +13,9 @@ output:
 
 Please note that running SPEAQeasy is an optional step, and the following guide exists to allow one to reproduce our full RNA-seq analysis workflow. Those interested only in utilizing SPEAQeasy outputs in downstream analysis may use the outputs we provide and skip this section.
 
-To set up SPEAQeasy, clone its [repository](https://github.com/LieberInstitute/SPEAQeasy), choose a method for installing dependencies, and identify which "main" script is appropriate for your setup. A "quick start" guide for these steps is [here](NEED A LINK TO DOCS).
+To set up SPEAQeasy, clone its [repository](https://github.com/LieberInstitute/SPEAQeasy), choose a method for installing dependencies, and identify which "main" script is appropriate for your setup. A "quick start" guide for these steps is [here](http://research.libd.org/SPEAQeasy/quick-start.html).
 
-```{bash}
+```{bash, eval=FALSE}
 # Clone SPEAQeasy
 git clone git@github.com:LieberInstitute/SPEAQeasy.git
 
@@ -33,7 +33,7 @@ bash install_software.sh "local"
 
 For the purposes of the below example, we will consider a user who wishes to run SPEAQeasy on a computing cluster using SLURM, and managing dependencies with docker. However, the process is nearly identical regardless of the choice of "main" script. Below we examine the original content of `run_pipeline_slurm.sh`, our "main" script, which we will modify as appropriate for the particular example data set.
 
-```{bash}
+```{bash, eval=FALSE}
 $ORIG_DIR/Software/nextflow main.nf \
     --sample "single" \
     --reference "hg19" \
@@ -49,7 +49,7 @@ We note that the example data are paired-end human samples, which we plan to ali
 
 Next, we will direct SPEAQeasy to the input files of interest and choose a directory in which to place outputs. In the [downloading the example data](NEED LINK HERE) section, you should've selected a directory in which to place FASTQ files and the associated `samples.manifest` file. This same directory should be passed to the `--input` flag, which will replace the `--small_test` option. Finally, choose any desired output directory for SPEAQeasy files, to pass to the `--output` flag. Combining these changes, the resulting `nextflow` command in your main script should look like:
 
-```{bash}
+```{bash, eval=FALSE}
 $ORIG_DIR/Software/nextflow main.nf \
     --sample "paired" \
     --reference "hg38" \
@@ -66,7 +66,7 @@ $ORIG_DIR/Software/nextflow main.nf \
 
 Full execution of SPEAQeasy can take several hours or up to a few days, and it is in general not recommended to run the "main" script interactively if possible. Those with access to a cluster managed by a resource manager like Sun Grid Engine (SGE) or Simple Linux Utility for Resource Management (SLURM) should submit the main script as a job.
 
-```{bash}
+```{bash, eval=FALSE}
 # SLURM users may use the following
 sbatch run_pipeline_slurm.sh
 
