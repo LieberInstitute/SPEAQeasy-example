@@ -49,7 +49,7 @@ In order to resolve the swaps to our best ability we need four data sets. Here w
 load(here("sample_selection","snpsGeno_example.RData"), verbose = TRUE)
 load(here("sample_selection","pd_example.Rdata"), verbose = TRUE)
 Speaqeasy<-readVcf(here("pipeline_outputs","merged_variants","mergedVariants.vcf.gz"),genome="hg38")
-brain_sentrix<- read.csv("/dcl01/lieber/RNAseq/Datasets/BrainGenotyping_2018/SampleFiles/brain_sentrix.csv")
+brain_sentrix<- read.csv(here("brain_sentrix.csv"))
 
 ```
 We can see that the genotype is represented in the form of 0s,1s, and 2s. The rare 2s are a result of multiallelic snps and we will drop those. 0 represent the reference allele with ones representing the alternate. We can see the distribution below.
