@@ -138,6 +138,7 @@ jobs:
       - name: Install R package installers
         run: |
           install.packages('remotes')
+          install.packages('tinytex')
           message(paste('****', Sys.time(), 'installing BiocManager ****'))
           remotes::install_cran("BiocManager")
         shell: Rscript {0}
@@ -182,6 +183,7 @@ jobs:
           ## For building the website & getting the R session info
           ## Edit as necessary with other packages in the future
           BiocManager::install(c("rmarkdown", "sessioninfo", "BiocStyle", "clusterProfiler", "edgeR", "getopt", "here", "LieberInstitute/jaffelab", "knitcitations", "limma", "org.Hs.eg.db", "pheatmap", "RColorBrewer", "recount", "SummarizedExperiment", "tidyr", "VariantAnnotation"))
+          tinytex::install_tinytex()
         shell: Rscript {0}
 
       - name: Session info
