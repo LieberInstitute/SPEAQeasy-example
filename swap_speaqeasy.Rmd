@@ -49,7 +49,6 @@ load(here("sample_selection","snpsGeno_example.RData"), verbose = TRUE)
 load(here("sample_selection","pd_example.Rdata"), verbose = TRUE)
 Speaqeasy<-readVcf(here("pipeline_outputs","merged_variants","mergedVariants.vcf.gz"),genome="hg38")
 brain_sentrix<- read.csv(here("brain_sentrix_speaqeasy.csv"))
-
 ```
 We can see that the genotype is represented in the form of 0s,1s, and 2s. The rare 2s are a result of multiallelic snps and we will drop those. 0 represent the reference allele with ones representing the alternate. We can see the distribution below.
 ```{r explore_speaqeasy_speaqeasy, echo=TRUE}
@@ -89,17 +88,16 @@ pheatmap(speaqeasy_Cor, cluster_rows=FALSE, show_rownames=FALSE,
 We repeat the process for the genotype data from topmed. First creating our numeric data for the genotypes.
 ```{r data_prep_genotypes, echo=FALSE}
 names<-rownames(snpsGeno_example)
-snpsGeno_example<-unnest(snpsGeno_example,cols=colnames(snpsGeno_example))
-snpsGeno_example<-as.matrix(snpsGeno_example)
-table(snpsGeno_example)
-snpsGeno_example[snpsGeno_example == ".|."] = NA
-snpsGeno_example[snpsGeno_example == "0|0"] = 0
-snpsGeno_example[snpsGeno_example == "1|0"] = 1
-snpsGeno_example[snpsGeno_example == "0|1"] = 1
-snpsGeno_example[snpsGeno_example == "1|1"] = 2
-class(snpsGeno_example) = "numeric"
-rownames(snpsGeno_example)<- names
-correlation_genotype<-cor(snpsGeno_example,use="pairwise.comp")
+Geno_example<- geno(snpsGeno_example)$GT
+table(Geno_example)
+Geno_example[Geno_example == ".|."] = NA
+Geno_example[Geno_example == "0|0"] = 0
+Geno_example[Geno_example == "1|0"] = 1
+Geno_example[Geno_example == "0|1"] = 1
+Geno_example[Geno_example == "1|1"] = 2
+class(Geno_example) = "numeric"
+rownames(Geno_example)<- names
+correlation_genotype<-cor(Geno_example,use="pairwise.comp")
 corner(correlation_genotype)
 ```
 
@@ -155,25 +153,10 @@ corLong2[!corLong2$rowBrain==corLong2$colBrain & corLong2$cor>.8,]
 ```
 We will next compare the correlation between the speaqeasy samples and the topmed samples. In order to do this we need to subset the genotypes for only SNPs that are common between the two. We can see that we have 656 snps common between the 42 samples.
 ```{r subset_genotype_data_sets, echo=FALSE}
-bed<-as.data.frame(rownames(Speaqeasy))
-colnames(bed)<-"a"
-bed<-separate(bed,a,sep="_", into = c("a","b"))
-bed<-bed$a
-bed<-as.data.frame(bed)
-genome<-SNPlocs.Hsapiens.dbSNP151.GRCh38
-colnames(bed)<-"snp_table"
-my_snps <- snpsById(genome,names)
-my_snps<-as.data.frame(my_snps)
-snp_table<-paste0("chr",my_snps$seqnames,":",my_snps$pos)
-snp_table<-as.data.frame(snp_table)
-snp_table$rsid<-my_snps$RefSNP_id
-snps_speaqeasy<-merge(snp_table,bed)
-test<-snps_speaqeasy[duplicated(snps_speaqeasy$snp_table),]
-test<-snps_speaqeasy[!snps_speaqeasy$snp_table %in% test$snp_table,]
-Geno_speaqeasy_subset<-Geno_speaqeasy[bed$snp_table %in% test$snp_table,]
-snpsGeno_subset<-snpsGeno_example[names %in% test$rsid,]
+Geno_speaqeasy_subset<-Geno_speaqeasy[rownames(Geno_speaqeasy) %in% rownames(Geno_example),]
+snpsGeno_subset<-Geno_example[rownames(Geno_example) %in% rownames(Geno_speaqeasy_subset),]
 dim(Geno_speaqeasy_subset)
-dim(Geno_speaqeasy_subset)
+dim(snpsGeno_subset)
 ```
 
 As we did before we create a correlation matrix this time between the two data sets. 
