@@ -30,7 +30,6 @@ bibs <- c(
     R = citation(),
     biocStyle = citation('BiocStyle'),
     clusterProfiler = citation('clusterProfiler'),
-    dbSNP151 = citation('SNPlocs.Hsapiens.dbSNP151.GRCh38'),
     edgeR = citation('edgeR')[1],
     getopt = citation('getopt'),
     here = citation('here'),
@@ -60,7 +59,6 @@ The analysis was possible thanks to R and many of its packages:
 * R `r citep(bib[['R']])`
 * `r Biocpkg('BiocStyle')` `r citep(bib[['biocStyle']])`
 * `r Biocpkg('clusterProfiler')` `r citep(bib[['clusterProfiler']])`
-* `r Biocpkg('dbSNP151')` `r citep(bib[['dbSNP151']])`
 * `r Biocpkg('edgeR')` `r citep(bib[['edgeR']])`
 * `r CRANpkg('getopt')` `r citep(bib[['getopt']])`
 * `r CRANpkg('here')` `r citep(bib[['here']])`

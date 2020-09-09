@@ -23,8 +23,8 @@ bibs <- c(
     pheatmap = citation('pheatmap'),R = citation(),
     tidyr = citation("tidyr"),
     here = citation('here'),
-    VariantAnnotation = citation("VariantAnnotation"),
-    dbSNP151 = citation("SNPlocs.Hsapiens.dbSNP151.GRCh38"))
+    VariantAnnotation = citation("VariantAnnotation")
+)
 write.bibtex(bibs, file = 'swap_analysis.bib')
 bib <- read.bibtex('swap_analysis.bib')
 
@@ -38,7 +38,6 @@ library("tidyr")
 library("jaffelab")
 library("here")
 library("VariantAnnotation")
-library("SNPlocs.Hsapiens.dbSNP151.GRCh38")
 library("SummarizedExperiment")
 ```
 
