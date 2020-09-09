@@ -182,6 +182,11 @@ jobs:
           ## For building the website & getting the R session info
           ## Edit as necessary with other packages in the future
           BiocManager::install(c("rmarkdown", "sessioninfo", "BiocStyle", "clusterProfiler", "SNPlocs.Hsapiens.dbSNP151.GRCh38", "edgeR", "getopt", "here", "LieberInstitute/jaffelab", "knitcitations", "limma", "org.Hs.eg.db", "pheatmap", "RColorBrewer", "recount", "SummarizedExperiment", "tidyr", "VariantAnnotation"))
+
+          ## Might need this since it's a source package. Related to a bug in
+          ## install.packages() that we discussed in the bioc-devel list earlier
+          ## in 2020
+          BiocManager::install("SNPlocs.Hsapiens.dbSNP151.GRCh38")
         shell: Rscript {0}
 
       - name: Session info
