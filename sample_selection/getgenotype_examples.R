@@ -13,12 +13,12 @@ brain_sentrix<- read.csv("/dcl01/lieber/RNAseq/Datasets/BrainGenotyping_2018/Sam
 
 #ad sentrix_id to pd table
 pd_example<-merge(pd_example,brain_sentrix)
-snpsGeno = geno(genotyped)$GT
-snpsGeno<-as.data.frame(snpsGeno)
+
 
 #subset for samples that match those brains
-snpsGeno_example<-snpsGeno[,colnames(snpsGeno) %in% pd_example$ID]
-
+snpsGeno_example<-genotyped[,colnames(genotyped) %in% pd_example$ID]
+dt<-rowRanges(snpsGeno_example)
+rownames(snpsGeno_example)<-paste0(as.character(seqnames(dt)),":",as.character(start(dt)),"_",as.character(dt$REF),"/",as.character(unlist(dt$ALT)))
 save(snpsGeno_example,file="snpsGeno_example.RData")
 
 
