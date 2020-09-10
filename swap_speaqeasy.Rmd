@@ -185,7 +185,7 @@ corLong3[!corLong3$rowBrain==corLong3$colBrain & corLong3$cor>.8,]
 
 We can see from this from this analysis there are a few swaps present between RNA and DNA samples here. We can categorize them as simple and complex sample swaps. Because the two Br2275 do not match each other and also match nothing else we will be forced to consider this a complex swap and drop the sample. In the case of Br2473 it is a simple swap with Br2260 in both cases. This can be ammended by swapping with in the phenotype data sheet manually. Now we have our accurate data outputs and will need to fix our ranged summarized experiment object for our Speaqeasy data.
 
-```{r swap_pd_sheet, echo=TRUE}
+```{r swap_pd_sheet, eval=FALSE}
 load(here('pipeline_outputs', 'count_objects', 'rse_gene_Jlab_experiment_n42.Rdata'))
 
 ## drop sample from rse with speaqeasy data
