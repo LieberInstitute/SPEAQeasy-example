@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Josh Stolz" />
+
+
+<title>SPEAQeasy_example</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SPEAQeasy example</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="pull_data/prepare_data.html">Downloading the example data</a>
+</li>
+<li>
+  <a href="run_speaqeasy.html">Run SPEAQeasy on your setup]</a>
+</li>
+<li>
+  <a href="swap_speaqeasy.html">Resolve identity issues and attach phenotype data</a>
+</li>
+<li>
+  <a href="DE_analysis/de_analysis_speaqeasy.html">Perform differential expression and visualize results</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/lcolladotor/twitter-stats">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">SPEAQeasy_example</h1>
+<h4 class="author">Josh Stolz</h4>
+<h4 class="date">8/7/2020</h4>
+
+</div>
+
+
+<pre class="r"><code>library(&quot;pheatmap&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;jaffelab&quot;)</code></pre>
+<pre><code>## Loading required package: rafalib</code></pre>
+<pre class="r"><code>library(&quot;here&quot;)</code></pre>
+<pre><code>## here() starts at /__w/SPEAQeasy-example/SPEAQeasy-example</code></pre>
+<pre class="r"><code>library(&quot;VariantAnnotation&quot;)</code></pre>
+<pre><code>## Loading required package: BiocGenerics</code></pre>
+<pre><code>## Loading required package: parallel</code></pre>
+<pre><code>## 
+## Attaching package: &#39;BiocGenerics&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:parallel&#39;:
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+##     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+##     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+##     union, unique, unsplit, which.max, which.min</code></pre>
+<pre><code>## Loading required package: GenomeInfoDb</code></pre>
+<pre><code>## Loading required package: S4Vectors</code></pre>
+<pre><code>## Loading required package: stats4</code></pre>
+<pre><code>## 
+## Attaching package: &#39;S4Vectors&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     expand</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     expand.grid</code></pre>
+<pre><code>## Loading required package: IRanges</code></pre>
+<pre><code>## Loading required package: GenomicRanges</code></pre>
+<pre><code>## Loading required package: SummarizedExperiment</code></pre>
+<pre><code>## Loading required package: Biobase</code></pre>
+<pre><code>## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     &#39;browseVignettes()&#39;. To cite Bioconductor, see
+##     &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre><code>## Loading required package: DelayedArray</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:S4Vectors&#39;:
+## 
+##     expand</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loading required package: matrixStats</code></pre>
+<pre><code>## 
+## Attaching package: &#39;matrixStats&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:Biobase&#39;:
+## 
+##     anyMissing, rowMedians</code></pre>
+<pre><code>## 
+## Attaching package: &#39;DelayedArray&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:matrixStats&#39;:
+## 
+##     colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     aperm, apply, rowsum</code></pre>
+<pre><code>## Loading required package: Rsamtools</code></pre>
+<pre><code>## Loading required package: Biostrings</code></pre>
+<pre><code>## Loading required package: XVector</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Biostrings&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     strsplit</code></pre>
+<pre><code>## 
+## Attaching package: &#39;VariantAnnotation&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     tabulate</code></pre>
+<pre class="r"><code>library(&quot;SummarizedExperiment&quot;)</code></pre>
+<p>In order to resolve the swaps to our best ability we need four data sets. Here we have load snpGeno_example which is from our topmed imputed genotype data, a phenotype data sheet (pd_example), a vcf file of the relevant speaqeasy output (Speaqeasy), and our current genotype sample sheet (brain_sentrix). This file is wrote in the directory listed below.</p>
+<pre class="r"><code>load(here(&quot;sample_selection&quot;,&quot;snpsGeno_example.RData&quot;), verbose = TRUE)</code></pre>
+<pre><code>## Loading objects:
+##   snpsGeno_example</code></pre>
+<pre class="r"><code>load(here(&quot;sample_selection&quot;,&quot;pd_example.Rdata&quot;), verbose = TRUE)</code></pre>
+<pre><code>## Loading objects:
+##   pd_example</code></pre>
+<pre class="r"><code>Speaqeasy&lt;-readVcf(here(&quot;pipeline_outputs&quot;,&quot;merged_variants&quot;,&quot;mergedVariants.vcf.gz&quot;),genome=&quot;hg38&quot;)
+brain_sentrix&lt;- read.csv(here(&quot;brain_sentrix_speaqeasy.csv&quot;))</code></pre>
+<p>We can see that the genotype is represented in the form of 0s,1s, and 2s. The rare 2s are a result of multiallelic snps and we will drop those. 0 represent the reference allele with ones representing the alternate. We can see the distribution below.</p>
+<pre class="r"><code>Geno_speaqeasy&lt;-geno(Speaqeasy)$GT
+table(Geno_speaqeasy)</code></pre>
+<pre><code>## Geno_speaqeasy
+##   ./.   0/1   0/2   1/1   2/2 
+## 14096  7803     4  6018     9</code></pre>
+<p>Given this we convert we convert the Genotype data from Speaqeasy to numeric data. The “./.” were values that could not accurately be determined and are replaced with NA.</p>
+<pre class="r"><code>colnames_speaqeasy&lt;- as.data.frame(colnames(Geno_speaqeasy))
+colnames(colnames_speaqeasy)&lt;-c(&quot;a&quot;)
+samples&lt;-separate(colnames_speaqeasy,a,into = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;),sep = &quot;_&quot;)</code></pre>
+<pre><code>## Warning: Expected 3 pieces. Additional pieces discarded in 42 rows [1, 2, 3, 4,
+## 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
+<pre class="r"><code>samples&lt;-paste0(samples$a,&quot;_&quot;,samples$b)
+samples&lt;-as.data.frame(samples)
+colnames(Geno_speaqeasy)&lt;-samples$samples
+Geno_speaqeasy[Geno_speaqeasy == &quot;./.&quot;] = NA
+Geno_speaqeasy[Geno_speaqeasy == &quot;0/0&quot;] = 0
+Geno_speaqeasy[Geno_speaqeasy == &quot;0/1&quot;] = 1
+Geno_speaqeasy[Geno_speaqeasy == &quot;1/1&quot;] = 2
+class(Geno_speaqeasy) = &quot;numeric&quot;</code></pre>
+<pre><code>## Warning in class(Geno_speaqeasy) = &quot;numeric&quot;: NAs introduced by coercion</code></pre>
+<pre class="r"><code>corner(Geno_speaqeasy)</code></pre>
+<pre><code>##                   R14030_H7K5NBBXX R14184_H7K5NBBXX R13904_H7K5NBBXX
+## chr1:4712657_G/A                 2                1                2
+## chr1:7853370_G/A                NA               NA               NA
+## chr1:9263851_G/A                NA               NA                1
+## chr1:13475857_T/C               NA               NA               NA
+## chr1:15289643_G/A               NA               NA               NA
+## chr1:15341780_G/A               NA               NA               NA
+##                   R14296_H7JLCBBXX R14247_HF3JYBBXX R15093_HFY2MBBXX
+## chr1:4712657_G/A                 1                1                2
+## chr1:7853370_G/A                NA               NA               NA
+## chr1:9263851_G/A                 1                1               NA
+## chr1:13475857_T/C               NA               NA               NA
+## chr1:15289643_G/A               NA               NA               NA
+## chr1:15341780_G/A               NA               NA                1</code></pre>
+<p>We then make a correlation matrix to find the possible mismatches between samples.</p>
+<pre class="r"><code>speaqeasy_Cor = cor(Geno_speaqeasy,use=&quot;pairwise.comp&quot;)
+corner(speaqeasy_Cor)</code></pre>
+<pre><code>##                  R14030_H7K5NBBXX R14184_H7K5NBBXX R13904_H7K5NBBXX
+## R14030_H7K5NBBXX       1.00000000       0.13507812       0.01657484
+## R14184_H7K5NBBXX       0.13507812       1.00000000       0.09347004
+## R13904_H7K5NBBXX       0.01657484       0.09347004       1.00000000
+## R14296_H7JLCBBXX       0.03106472       0.18748043       0.04958385
+## R14247_HF3JYBBXX       0.03384912       0.07080491       0.28798955
+## R15093_HFY2MBBXX       0.18938568       0.04720309       0.25477682
+##                  R14296_H7JLCBBXX R14247_HF3JYBBXX R15093_HFY2MBBXX
+## R14030_H7K5NBBXX       0.03106472       0.03384912       0.18938568
+## R14184_H7K5NBBXX       0.18748043       0.07080491       0.04720309
+## R13904_H7K5NBBXX       0.04958385       0.28798955       0.25477682
+## R14296_H7JLCBBXX       1.00000000       0.16653808       0.27251010
+## R14247_HF3JYBBXX       0.16653808       1.00000000       0.14097339
+## R15093_HFY2MBBXX       0.27251010       0.14097339       1.00000000</code></pre>
+<p>Here in the heatmap below we can see that several points do not correlate with themselves in a semetrical matrix. This could be mismatches, but it also could be a result of a brain being sequenced twice. We will dig more into this later on. <img src="swap_speaqeasy_files/figure-html/check_correlations_speaqeasy-1.png" width="672" /></p>
+<p>We repeat the process for the genotype data from topmed. First creating our numeric data for the genotypes.</p>
+<pre><code>## Geno_example
+##  0|0  0|1  1|0  1|1 
+## 9656 6956 7185 7535</code></pre>
+<pre><code>##                   4463344375_R01C01 4463344375_R01C02 4572348848_R01C02
+## 4463344375_R01C01        1.00000000        0.21736687        0.17615291
+## 4463344375_R01C02        0.21736687        1.00000000        0.13803954
+## 4572348848_R01C02        0.17615291        0.13803954        1.00000000
+## 4572348855_R01C02        0.16590842        0.14670605        0.10600440
+## 5535549043_R01C01        0.05367081        0.07697879        0.09356496
+## 5535506145_R01C01        0.21189898        0.18114194        0.17829111
+##                   4572348855_R01C02 5535549043_R01C01 5535506145_R01C01
+## 4463344375_R01C01        0.16590842        0.05367081        0.21189898
+## 4463344375_R01C02        0.14670605        0.07697879        0.18114194
+## 4572348848_R01C02        0.10600440        0.09356496        0.17829111
+## 4572348855_R01C02        1.00000000        0.04874508        0.08186958
+## 5535549043_R01C01        0.04874508        1.00000000        0.05331113
+## 5535506145_R01C01        0.08186958        0.05331113        1.00000000</code></pre>
+<p>In this case the data only appears to have samples that match themselves. However there is the potential for a second kind of error where a brain has two samples, however the do not match each other. <img src="swap_speaqeasy_files/figure-html/check_correlations_genotypes-1.png" width="672" /></p>
+<p>In order to dig into this further we will collapse the correlation matrices into a data table shown below</p>
+<pre class="r"><code>corLong = data.frame(cor = signif(as.numeric(correlation_genotype),3))
+corLong$rowSample = rep(colnames(snpsGeno_example), times = ncol(snpsGeno_example))
+corLong$colSample = rep(colnames(snpsGeno_example), each = ncol(snpsGeno_example))
+corLong = corLong[!is.na(corLong$cor),]
+head(corLong)</code></pre>
+<pre><code>##      cor         rowSample         colSample
+## 1 1.0000 4463344375_R01C01 4463344375_R01C01
+## 2 0.2170 4463344375_R01C02 4463344375_R01C01
+## 3 0.1760 4572348848_R01C02 4463344375_R01C01
+## 4 0.1660 4572348855_R01C02 4463344375_R01C01
+## 5 0.0537 5535549043_R01C01 4463344375_R01C01
+## 6 0.2120 5535506145_R01C01 4463344375_R01C01</code></pre>
+<pre class="r"><code>corLong2 = data.frame(cor = signif(as.numeric(speaqeasy_Cor),3))
+corLong2$rowSample = rep(colnames(Geno_speaqeasy), times = ncol(Geno_speaqeasy))
+corLong2$colSample = rep(colnames(Geno_speaqeasy), each = ncol(Geno_speaqeasy))
+corLong2 = corLong2[!is.na(corLong2$cor),]
+head(corLong2)</code></pre>
+<pre><code>##      cor        rowSample        colSample
+## 1 1.0000 R14030_H7K5NBBXX R14030_H7K5NBBXX
+## 2 0.1350 R14184_H7K5NBBXX R14030_H7K5NBBXX
+## 3 0.0166 R13904_H7K5NBBXX R14030_H7K5NBBXX
+## 4 0.0311 R14296_H7JLCBBXX R14030_H7K5NBBXX
+## 5 0.0338 R14247_HF3JYBBXX R14030_H7K5NBBXX
+## 6 0.1890 R15093_HFY2MBBXX R14030_H7K5NBBXX</code></pre>
+<p>We can check these tables for columns where different brains are strongly correlated and where the same brain fails to match itself. Below is the output of those analysis for the topmed genotypes.</p>
+<pre><code>##         cor           rowSample           colSample rowBrain colBrain
+## 180  0.0825   6017049081_R01C02   5535549043_R01C01   Br1652   Br1652
+## 196  0.0501 201398400130_R04C01   5535549043_R01C01   Br1652   Br1652
+## 467  0.0825   5535549043_R01C01   6017049081_R01C02   Br1652   Br1652
+## 490  0.1440 201398400130_R04C01   6017049081_R01C02   Br1652   Br1652
+## 1139 0.0501   5535549043_R01C01 201398400130_R04C01   Br1652   Br1652
+## 1146 0.1440   6017049081_R01C02 201398400130_R04C01   Br1652   Br1652
+## 1212 0.0379   9373406026_R02C01 201398400130_R06C01   Br2275   Br2275
+## 1499 0.0379 201398400130_R06C01   9373406026_R02C01   Br2275   Br2275
+##        rowBatch   colBatch
+## 180          1M         1M
+## 196  2-5-8-v1-3         1M
+## 467          1M         1M
+## 490  2-5-8-v1-3         1M
+## 1139         1M 2-5-8-v1-3
+## 1146         1M 2-5-8-v1-3
+## 1212         5M 2-5-8-v1-3
+## 1499 2-5-8-v1-3         5M</code></pre>
+<pre><code>## [1] cor       rowSample colSample rowBrain  colBrain  rowBatch  colBatch 
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<p>And we do this again for the speaqeasy data.</p>
+<pre><code>## [1] cor       rowSample colSample rowBrain  colBrain 
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<pre><code>## [1] cor       rowSample colSample rowBrain  colBrain 
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<p>We will next compare the correlation between the speaqeasy samples and the topmed samples. In order to do this we need to subset the genotypes for only SNPs that are common between the two. We can see that we have 656 snps common between the 42 samples.</p>
+<pre><code>## [1] 662  42</code></pre>
+<pre><code>## [1] 662  42</code></pre>
+<p>As we did before we create a correlation matrix this time between the two data sets.</p>
+<p>Check to correlation between Speaqeasy and Genotype for mismatches and swaps.</p>
+<pre><code>##           cor         rowSample        colSample colBrain rowBrain
+## 165   0.00962 9373408026_R01C01 R14296_H7JLCBBXX   Br2473   Br2473
+## 425   0.11600 5535549043_R01C01 R14129_HCTYLBBXX   Br1652   Br1652
+## 432   0.11800 6017049081_R01C02 R14129_HCTYLBBXX   Br1652   Br1652
+## 498  -0.04270 9373406026_R02C01 R14222_H7JHNBBXX   Br2275   Br2275
+## 582  -0.03790 9373406026_R02C01 R13997_H7JHNBBXX   Br2275   Br2275
+## 669   0.08540 9373408026_R01C01 R14077_HCTYLBBXX   Br2473   Br2473
+## 917   0.04020 9373406026_R01C01 R14290_H7L3FBBXX   Br2260   Br2260
+## 1463  0.05050 9373406026_R01C01 R14071_HF3JYBBXX   Br2260   Br2260
+## 1697  0.76500 3998646040_R06C01 R14017_HF5JNBBXX   Br5190   Br5190</code></pre>
+<pre><code>##        cor         rowSample        colSample colBrain rowBrain
+## 161  0.865 9373406026_R01C01 R14296_H7JLCBBXX   Br2473   Br2260
+## 665  0.815 9373406026_R01C01 R14077_HCTYLBBXX   Br2473   Br2260
+## 921  0.866 9373408026_R01C01 R14290_H7L3FBBXX   Br2260   Br2473
+## 1467 0.915 9373408026_R01C01 R14071_HF3JYBBXX   Br2260   Br2473</code></pre>
+<p>We can see from this from this analysis there are a few swaps present between RNA and DNA samples here. We can categorize them as simple and complex sample swaps. Because the two Br2275 do not match each other and also match nothing else we will be forced to consider this a complex swap and drop the sample. In the case of Br2473 it is a simple swap with Br2260 in both cases. This can be ammended by swapping with in the phenotype data sheet manually. Now we have our accurate data outputs and will need to fix our ranged summarized experiment object for our Speaqeasy data.</p>
+<pre class="r"><code>load(here(&#39;pipeline_outputs&#39;, &#39;count_objects&#39;, &#39;rse_gene_Jlab_experiment_n42.Rdata&#39;))
+
+## drop sample from rse with speaqeasy data
+ids&lt;-pd_example$SAMPLE_ID[pd_example$BrNum ==&quot;Br2275&quot;]
+rse_gene&lt;-rse_gene[,!rse_gene$SAMPLE_ID ==ids[1]]
+rse_gene&lt;- rse_gene[,!rse_gene$SAMPLE_ID ==ids[2]]
+
+# resolve swaps and drops in pd_example
+pd_example&lt;-pd_example[!pd_example$SAMPLE_ID ==ids[1],]
+pd_example&lt;-pd_example[!pd_example$SAMPLE_ID ==ids[2],]
+ids2&lt;-pd_example$SAMPLE_ID[pd_example$BrNum ==&quot;Br2260&quot;]
+ids3&lt;-pd_example$SAMPLE_ID[pd_example$BrNum ==&quot;Br2473&quot;]
+pd_example$SAMPLE_ID[pd_example$Sample_ID == ids2]&lt;- &quot;Br2473&quot;
+pd_example$SAMPLE_ID[pd_example$Sample_ID == ids3]&lt;- &quot;Br2260&quot;
+
+# reorder phenotype data by the sample order present in the &#39;rse_gene&#39; object
+pd_example = pd_example[match(rse_gene$SAMPLE_ID, pd_example$SAMPLE_ID),]
+
+# add important colData to &#39;rse_gene&#39;
+rse_gene$BrainRegion = pd_example$BrainRegion
+rse_gene$Race = pd_example$Race
+rse_gene$PrimaryDx = pd_example$PrimaryDx
+rse_gene$Sex = pd_example$Sex
+rse_gene$AgeDeath = pd_example$AgeDeath
+
+#add correct BrNum to colData for rse_gene
+colData(rse_gene)$BrNum &lt;- pd_example$BrNum
+
+save(rse_gene, file = &quot;rse_speaqeasy.RData&quot;)</code></pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

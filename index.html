@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>SPEAQeasy Example Analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 52px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h2 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h3 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h4 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h5 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h6 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SPEAQeasy example</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="pull_data/prepare_data.html">Downloading the example data</a>
+</li>
+<li>
+  <a href="run_speaqeasy.html">Run SPEAQeasy on your setup]</a>
+</li>
+<li>
+  <a href="swap_speaqeasy.html">Resolve identity issues and attach phenotype data</a>
+</li>
+<li>
+  <a href="DE_analysis/de_analysis_speaqeasy.html">Perform differential expression and visualize results</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/lcolladotor/twitter-stats">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">SPEAQeasy Example Analysis</h1>
+
+</div>
+
+
+<div id="analysis" class="section level1">
+<h1><span class="header-section-number">1</span> Analysis</h1>
+<p>A guided example showing how processed results from the RNAseq pipeline <a href="https://github.com/LieberInstitute/SPEAQeasy">SPEAQeasy</a> can be used in differential expression analyses and visualization. We also show how existing genotype information for a set of samples can be combined with SPEAQeasy results to resolve any identity issues, as can emerge during sequencing.</p>
+<ul>
+<li><a href="pull_data/prepare_data.Rmd">Downloading the example data</a></li>
+<li><a href="run_speaqeasy.Rmd">Run SPEAQeasy on your setup</a></li>
+<li><a href="swap_speaqeasy.Rmd">Resolve identity issues and attach phenotype data</a></li>
+<li><a href="DE_analysis/de_analysis_speaqeasy.Rmd">Perform differential expression and visualize results</a></li>
+</ul>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">2</span> References</h1>
+<p>The analysis was possible thanks to R and many of its packages:</p>
+<ul>
+<li>R <a id='cite-R'></a>(<a href='https://www.R-project.org/'>R Core Team, 2020</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/BiocStyle">BiocStyle</a></em> <a id='cite-biocStyle'></a>(<a href='https://github.com/rstudio/rmarkdown'>Allaire, Xie, McPherson, Luraschi, et al., 2020</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/clusterProfiler">clusterProfiler</a></em> <a id='cite-clusterProfiler'></a>(<a href='https://github.com/cboettig/knitcitations'>Boettiger, 2019</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/edgeR">edgeR</a></em> <a id='cite-edgeR'></a>(<a href='#bib-edgeR'>Carlson, 2020</a>)</li>
+<li><em><a href="https://CRAN.R-project.org/package=getopt">getopt</a></em> <a id='cite-getopt'></a>(<a href='http://www.nature.com/nbt/journal/v35/n4/full/nbt.3838.html'>Collado-Torres, Nellore, Kammers, Ellis, et al., 2017</a>)</li>
+<li><em><a href="https://CRAN.R-project.org/package=here">here</a></em> <a id='cite-here'></a>(<a href='https://github.com/LieberInstitute/jaffelab'>Collado-Torres, Jaffe, and Burke, 2019</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/limma">limma</a></em> <a id='cite-limma'></a>(<a href='#bib-limma'>Müller, 2017</a>)</li>
+<li><em><a href="https://CRAN.R-project.org/package=jaffelab">jaffelab</a></em> <a id='cite-jaffelab'></a>(<a href='https://github.com/trevorld/r-getopt'>Davis and Day, 2019</a>)</li>
+<li><em><a href="https://CRAN.R-project.org/package=knitcitations">knitcitations</a></em> <a id='cite-knitcitations'></a>(<a href='#bib-knitcitations'>Kolde, 2019</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/org.Hs.eg.db">org.Hs.eg.db</a></em> <a id='cite-orgHsegdb'></a>(<a href='#bib-orgHsegdb'>Morgan, Obenchain, Hester, and Pagès, 2020</a>)</li>
+<li><em><a href="https://CRAN.R-project.org/package=pheatmap">pheatmap</a></em> <a id='cite-pheatmap'></a>(<a href='#bib-pheatmap'>Neuwirth, 2014</a>)</li>
+<li><em><a href="https://CRAN.R-project.org/package=RColorBrewer">RColorBrewer</a></em> <a id='cite-RColorBrewer'></a>(<a href='https://doi.org/10.1093/bioinformatics/btu168'>Obenchain, Lawrence, Carey, Gogarten, et al., 2014</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/recount">recount</a></em> <a id='cite-recount'></a>(<a href='https://github.com/Bioconductor/BiocStyle'>Oleś, Morgan, and Huber, 2020</a>)</li>
+<li><em><a href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em> <a id='cite-rmarkdown'></a>(<a href='https://doi.org/10.1093/nar/gkv007'>Ritchie, Phipson, Wu, Hu, et al., 2015</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/SummarizedExperiment">SummarizedExperiment</a></em> <a id='cite-SummarizedExperiment'></a>(<a href='https://doi.org/10.1093/bioinformatics/btp616'>Robinson, McCarthy, and Smyth, 2010</a>)</li>
+<li><em><a href="https://CRAN.R-project.org/package=tidyr">tidyr</a></em> <a id='cite-tidyr'></a>(<a href='#bib-tidyr'>Law, Chen, Shi, and Smyth, 2014</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/VariantAnnotation">VariantAnnotation</a></em> <a id='cite-VariantAnnotation'></a>(<a href='#bib-VariantAnnotation'>Wickham, 2020</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/voom">voom</a></em> <a id='cite-voom'></a>(<a href='https://doi.org/10.1089/omi.2011.0118'>Yu, Wang, Han, and He, 2012</a>)</li>
+</ul>
+<p><a href="index.bib">Bibliography file</a></p>
+<p>[1] J. Allaire, Y. Xie, J. McPherson, J. Luraschi, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package version 2.3. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
+<p>[2] C. Boettiger. <em>knitcitations: Citations for ‘Knitr’ Markdown Files</em>. R package version 1.0.10. 2019. &lt;URL: <a href="https://github.com/cboettig/knitcitations" class="uri">https://github.com/cboettig/knitcitations</a>&gt;.</p>
+<p>[3] M. Carlson. <em>org.Hs.eg.db: Genome wide annotation for Human</em>. R package version 3.11.4. 2020.</p>
+<p>[4] L. Collado-Torres, A. E. Jaffe, and E. E. Burke. <em>jaffelab: Commonly used functions by the Jaffe lab</em>. R package version 0.99.30. 2019. &lt;URL: <a href="https://github.com/LieberInstitute/jaffelab" class="uri">https://github.com/LieberInstitute/jaffelab</a>&gt;.</p>
+<p>[5] L. Collado-Torres, A. Nellore, K. Kammers, S. E. Ellis, et al. “Reproducible RNA-seq analysis using recount2”. In: <em>Nature Biotechnology</em> (2017). DOI: 10.1038/nbt.3838. &lt;URL: <a href="http://www.nature.com/nbt/journal/v35/n4/full/nbt.3838.html" class="uri">http://www.nature.com/nbt/journal/v35/n4/full/nbt.3838.html</a>&gt;.</p>
+<p>[6] T. L. Davis and A. Day. <em>getopt: C-Like ‘getopt’ Behavior</em>. R package version 1.20.3. 2019. &lt;URL: <a href="https://github.com/trevorld/r-getopt" class="uri">https://github.com/trevorld/r-getopt</a>&gt;.</p>
+<p>[7] R. Kolde. <em>pheatmap: Pretty Heatmaps</em>. R package version 1.0.12. 2019.</p>
+<p>[8] C. Law, Y. Chen, W. Shi, and G. Smyth. “Voom: precision weights unlock linear model analysis tools for RNA-seq read counts”. In: <em>Genome Biology</em> 15 (2014), p. R29.</p>
+<p>[9] M. Morgan, V. Obenchain, J. Hester, and H. Pagès. <em>SummarizedExperiment: SummarizedExperiment container</em>. R package version 1.19.6. 2020.</p>
+<p>[10] K. Müller. <em>here: A Simpler Way to Find Your Files</em>. <a href="https://github.com/krlmlr/here" class="uri">https://github.com/krlmlr/here</a>, <a href="http://krlmlr.github.io/here" class="uri">http://krlmlr.github.io/here</a>. 2017.</p>
+<p>[11] E. Neuwirth. <em>RColorBrewer: ColorBrewer Palettes</em>. R package version 1.1-2. 2014.</p>
+<p>[12] V. Obenchain, M. Lawrence, V. Carey, S. Gogarten, et al. “VariantAnnotation: a Bioconductor package for exploration and annotation of genetic variants”. In: <em>Bioinformatics</em> 30.14 (2014), pp. 2076-2078. DOI: 10.1093/bioinformatics/btu168.</p>
+<p>[13] A. Oleś, M. Morgan, and W. Huber. <em>BiocStyle: Standard styles for vignettes and other Bioconductor documents</em>. R package version 2.17.0. 2020. &lt;URL: <a href="https://github.com/Bioconductor/BiocStyle" class="uri">https://github.com/Bioconductor/BiocStyle</a>&gt;.</p>
+<p>[14] R Core Team. <em>R: A Language and Environment for Statistical Computing</em>. R Foundation for Statistical Computing. Vienna, Austria, 2020. &lt;URL: <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>&gt;.</p>
+<p>[15] M. E. Ritchie, B. Phipson, D. Wu, Y. Hu, et al. “limma powers differential expression analyses for RNA-sequencing and microarray studies”. In: <em>Nucleic Acids Research</em> 43.7 (2015), p. e47. DOI: 10.1093/nar/gkv007.</p>
+<p>[16] M. D. Robinson, D. J. McCarthy, and G. K. Smyth. “edgeR: a Bioconductor package for differential expression analysis of digital gene expression data”. In: <em>Bioinformatics</em> 26.1 (2010), pp. 139-140. DOI: 10.1093/bioinformatics/btp616.</p>
+<p>[17] H. Wickham. <em>tidyr: Tidy Messy Data</em>. <a href="https://tidyr.tidyverse.org" class="uri">https://tidyr.tidyverse.org</a>, <a href="https://github.com/tidyverse/tidyr" class="uri">https://github.com/tidyverse/tidyr</a>. 2020.</p>
+<p>[18] G. Yu, L. Wang, Y. Han, and Q. He. “clusterProfiler: an R package for comparing biological themes among gene clusters”. In: <em>OMICS: A Journal of Integrative Biology</em> 16.5 (2012), pp. 284-287. DOI: 10.1089/omi.2011.0118.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

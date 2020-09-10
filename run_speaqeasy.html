@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2020-07-11" />
+
+<title>Setting up and Running SPEAQeasy</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/usr/local/lib/R/host-site-library/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+<script>
+function toggle_visibility(id1) {
+  var e = document.getElementById(id1);
+  e.style.display = ((e.style.display!="none") ? "none" : "block");
+}
+</script>
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SPEAQeasy example</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="pull_data/prepare_data.html">Downloading the example data</a>
+</li>
+<li>
+  <a href="run_speaqeasy.html">Run SPEAQeasy on your setup]</a>
+</li>
+<li>
+  <a href="swap_speaqeasy.html">Resolve identity issues and attach phenotype data</a>
+</li>
+<li>
+  <a href="DE_analysis/de_analysis_speaqeasy.html">Perform differential expression and visualize results</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/lcolladotor/twitter-stats">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Setting up and Running SPEAQeasy</h1>
+<h4 class="date">July 11, 2020</h4>
+
+</div>
+
+<h1>Contents</h1>
+<div id="TOC">
+<ul>
+<li><a href="#setting-up-speaqeasy"><span class="toc-section-number">1</span> Setting up SPEAQeasy</a></li>
+<li><a href="#modify-the-main-script"><span class="toc-section-number">2</span> Modify the main script</a></li>
+<li><a href="#run-the-pipeline"><span class="toc-section-number">3</span> Run the pipeline</a></li>
+</ul>
+</div>
+
+<div id="setting-up-speaqeasy" class="section level1">
+<h1><span class="header-section-number">1</span> Setting up SPEAQeasy</h1>
+<p>Please note that running SPEAQeasy is an optional step, and the following guide exists to allow one to reproduce our full RNA-seq analysis workflow. Those interested only in utilizing SPEAQeasy outputs in downstream analysis may use the outputs we provide and skip this section.</p>
+<p>To set up SPEAQeasy, clone its <a href="https://github.com/LieberInstitute/SPEAQeasy">repository</a>, choose a method for installing dependencies, and identify which “main” script is appropriate for your setup. A “quick start” guide for these steps is <a href="http://research.libd.org/SPEAQeasy/quick-start.html">here</a>.</p>
+<pre class="bash"><code># Clone SPEAQeasy
+git clone git@github.com:LieberInstitute/SPEAQeasy.git
+
+# Enter the repository
+cd SPEAQeasy
+
+# Install dependencies: note that this exact command is appropriate only
+# for those who cannot use or desire not to use docker to manage software
+# dependencies! Replace &#39;local&#39; with &#39;docker&#39; if you plan to use docker. See
+# the SPEAQeasy documentation linked above for more details.
+bash install_software.sh &quot;local&quot;</code></pre>
+</div>
+<div id="modify-the-main-script" class="section level1">
+<h1><span class="header-section-number">2</span> Modify the main script</h1>
+<p>For the purposes of the below example, we will consider a user who wishes to run SPEAQeasy on a computing cluster using SLURM, and managing dependencies with docker. However, the process is nearly identical regardless of the choice of “main” script. Below we examine the original content of <code>run_pipeline_slurm.sh</code>, our “main” script, which we will modify as appropriate for the particular example data set.</p>
+<pre class="bash"><code>$ORIG_DIR/Software/nextflow main.nf \
+    --sample &quot;single&quot; \
+    --reference &quot;hg19&quot; \
+    --strand &quot;unstranded&quot; \
+    --small_test \
+    --annotation &quot;$ORIG_DIR/Annotation&quot; \
+    -with-report execution_reports/pipeline_report.html \
+    -with-dag execution_DAGs/pipeline_DAG.html \
+    -profile slurm</code></pre>
+<p>We note that the example data are paired-end human samples, which we plan to align to the “hg38” reference genome. Reads were sequenced such that FASTQ files are “reverse”-stranded. Thus, we will change the <code>--sample</code> flag to have the value “paired”, the <code>--reference</code> flag to be “hg38”, and the <code>--strand</code> flag to be “reverse”.</p>
+<p>Next, we will direct SPEAQeasy to the input files of interest and choose a directory in which to place outputs. In the <a href="NEED%20LINK%20HERE">downloading the example data</a> section, you should’ve selected a directory in which to place FASTQ files and the associated <code>samples.manifest</code> file. This same directory should be passed to the <code>--input</code> flag, which will replace the <code>--small_test</code> option. Finally, choose any desired output directory for SPEAQeasy files, to pass to the <code>--output</code> flag. Combining these changes, the resulting <code>nextflow</code> command in your main script should look like:</p>
+<pre class="bash"><code>$ORIG_DIR/Software/nextflow main.nf \
+    --sample &quot;paired&quot; \
+    --reference &quot;hg38&quot; \
+    --strand &quot;reverse&quot; \
+    --input &quot;/some/dir/containing/samples.manifest/file&quot; \
+    --output &quot;/some/dir/for/outputs&quot; \
+    --annotation &quot;$ORIG_DIR/Annotation&quot; \
+    -with-report execution_reports/pipeline_report.html \
+    -with-dag execution_DAGs/pipeline_DAG.html \
+    -profile docker_slurm # in this example, docker is used</code></pre>
+</div>
+<div id="run-the-pipeline" class="section level1">
+<h1><span class="header-section-number">3</span> Run the pipeline</h1>
+<p>Full execution of SPEAQeasy can take several hours or up to a few days, and it is in general not recommended to run the “main” script interactively if possible. Those with access to a cluster managed by a resource manager like Sun Grid Engine (SGE) or Simple Linux Utility for Resource Management (SLURM) should submit the main script as a job.</p>
+<pre class="bash"><code># SLURM users may use the following
+sbatch run_pipeline_slurm.sh
+
+# SGE users may use
+qsub run_pipeline_sge.sh
+
+# Those using the JHPCE cluster may use
+qsub run_pipeline_jhpce.sh
+
+# Those running SPEAQeasy locally must run interactively
+bash run_pipeline_local.sh</code></pre>
+<p>When SPEAQeasy completes, one may find the <code>RangedSummarizedExperiment</code> objects and other primary outputs in the <code>count_objects</code> directory relative to the output folder specified. The genotype data as a single VCF file can be found under <code>merged_variants</code>. Together these outputs will be used to resolve identity issues in the samples, then perform differential expression and visualization of results.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+        "@media screen and (max-width: 991px)": {
+            ".MathJax_Display": {
+               "text-align": "center",
+               padding: "0 0 0 0"
+            }
+         }
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

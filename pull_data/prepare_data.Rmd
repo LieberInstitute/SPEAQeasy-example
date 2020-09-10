@@ -1,0 +1,32 @@
+---
+title: 'Download SPEAQeasy Example'
+date: 'July 8, 2020'
+output:
+  BiocStyle::html_document:
+    toc: true
+  pdf_document:
+    toc: true
+    number_sections: true
+---
+
+# Clone this repository
+
+First, make sure the main repository is cloned to your system, as it contains code and data which will be used in the upcoming analysis.
+
+```{bash "clone repo", eval = FALSE}
+git clone git@github.com:LieberInstitute/SPEAQeasy-example.git
+```
+
+This repository contains genotype and phenotype data for the example set of 42 human samples, as well as the associated main outputs from the [SPEAQeasy](https://github.com/LieberInstitute/SPEAQeasy) pipeline. For the purposes of this example, the main outputs include a single VCF file of genotype calls for all samples, and `RangedSummarizedExperiment` objects containing gene, exon, and exon-exon junction counts.
+
+# Pull example FASTQ data for use in SPEAQeasy
+
+You are encouraged to optionally reproduce our SPEAQeasy results before moving on to the identity resolution and differential expression steps. Those interested in running SPEAQeasy on the raw FASTQ files must download these files. Note that this is an optional step, as we provide the relevant SPEAQeasy outputs for those interested simply in how to use these outputs in subsequent analyses.
+
+We provide a bash script, which utilizes [synapse](https://www.synapse.org/) to download the publicly available FASTQ files. Run this script and specify a directory where you wish to place the FASTQ files:
+
+```{bash "pull data", eval = FALSE}
+bash pull_data/pull_fastq_data.sh [/destination_dir]
+```
+
+This script also writes a `samples.manifest` file to the same directory. This text file is used by SPEAQeasy to find the input FASTQ files and associate them with a unique ID.
