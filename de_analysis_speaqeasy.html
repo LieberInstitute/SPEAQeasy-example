@@ -320,23 +320,25 @@ function toggle_visibility(id1) {
 <li><a href="#analysis"><span class="toc-section-number">1</span> Analysis</a><ul>
 <li><a href="#load-required-libraries"><span class="toc-section-number">1.1</span> Load required libraries</a></li>
 <li><a href="#load-data-and-prepare-directories-to-place-outputs-in"><span class="toc-section-number">1.2</span> Load data and prepare directories to place outputs in</a></li>
-<li><a href="#cell-pcs"><span class="toc-section-number">1.3</span> cell PCs</a></li>
-<li><a href="#filter-for-expressed"><span class="toc-section-number">1.4</span> filter for expressed</a></li>
-<li><a href="#metrics"><span class="toc-section-number">1.5</span> metrics</a></li>
-<li><a href="#check-if-ratios-of-cell-changed-by-batch"><span class="toc-section-number">1.6</span> check if ratios of cell changed by batch</a></li>
-<li><a href="#pc1-vs-pc2"><span class="toc-section-number">1.7</span> pc1 vs pc2</a></li>
-<li><a href="#by-line"><span class="toc-section-number">1.8</span> by line</a></li>
-<li><a href="#by-experiment"><span class="toc-section-number">1.9</span> by experiment</a></li>
-<li><a href="#modeling"><span class="toc-section-number">1.10</span> modeling</a></li>
-<li><a href="#mean-variance"><span class="toc-section-number">1.11</span> mean-variance</a></li>
-<li><a href="#check-plots"><span class="toc-section-number">1.12</span> check plots</a><ul>
-<li><a href="#make-boxplots"><span class="toc-section-number">1.12.1</span> make boxplots</a></li>
+<li><a href="#statistics-pcs"><span class="toc-section-number">1.3</span> statistics PCs</a></li>
+<li><a href="#here-we-are-using-principal-component-analysis-to-control-for-the-listed-variables-impact-on-expression.-this-will-be-later-added-into-our-linear-model"><span class="toc-section-number">1.4</span> Here we are using principal component analysis to control for the listed variables impact on expression. This will be later added into our linear model</a></li>
+<li><a href="#filter-for-expressed"><span class="toc-section-number">1.5</span> filter for expressed</a></li>
+<li><a href="#metrics"><span class="toc-section-number">1.6</span> metrics</a></li>
+<li><a href="#check-if-certain-statistics-changed-by-race-or-region"><span class="toc-section-number">1.7</span> check if certain statistics changed by race or region</a></li>
+<li><a href="#pc1-vs-pc2"><span class="toc-section-number">1.8</span> pc1 vs pc2</a></li>
+<li><a href="#by-line"><span class="toc-section-number">1.9</span> by line</a></li>
+<li><a href="#by-experiment"><span class="toc-section-number">1.10</span> by experiment</a></li>
+<li><a href="#modeling"><span class="toc-section-number">1.11</span> modeling</a></li>
+<li><a href="#mean-variance"><span class="toc-section-number">1.12</span> mean-variance</a></li>
+<li><a href="#fit-linear-model"><span class="toc-section-number">1.13</span> fit linear model</a></li>
+<li><a href="#here-we-perform-an-empirical-bayesian-calculation-to-obtain-our-significant-genes"><span class="toc-section-number">1.14</span> here we perform an empirical bayesian calculation to obtain our significant genes</a></li>
+<li><a href="#check-plots"><span class="toc-section-number">1.15</span> check plots</a><ul>
+<li><a href="#make-boxplots"><span class="toc-section-number">1.15.1</span> make boxplots</a></li>
+<li><a href="#gene-ontology"><span class="toc-section-number">1.15.2</span> gene ontology</a></li>
+<li><a href="#clusterprofiler-is-a-geneontology-package-we-will-use-to-see-if-our-genes-are-specifically-differentially-expressed-in-certain-pathways."><span class="toc-section-number">1.15.3</span> clusterprofiler is a geneontology package we will use to see if our genes are specifically differentially expressed in certain pathways.</a></li>
 </ul></li>
-</ul></li>
-<li><a href="#cleangeneexprs-cleaningygeneexprs-modis.naebgenep.value1-p3"><span class="toc-section-number">2</span> cleanGeneExprs = cleaningY(geneExprs, mod[,!is.na(eBGene$p.value[1,])], P=3)</a><ul>
-<li><a href="#gene-ontology"><span class="toc-section-number">2.0.1</span> gene ontology</a></li>
-<li><a href="#get-significant-genes-by-sign"><span class="toc-section-number">2.1</span> get significant genes by sign</a></li>
-<li><a href="#do-go-and-kegg"><span class="toc-section-number">2.2</span> do GO and KEGG</a></li>
+<li><a href="#get-significant-genes-by-sign"><span class="toc-section-number">1.16</span> get significant genes by sign</a></li>
+<li><a href="#do-go-and-kegg"><span class="toc-section-number">1.17</span> do GO and KEGG</a></li>
 </ul></li>
 </ul>
 </div>
@@ -359,7 +361,7 @@ library(&quot;here&quot;)</code></pre>
 </div>
 <div id="load-data-and-prepare-directories-to-place-outputs-in" class="section level2">
 <h2><span class="header-section-number">1.2</span> Load data and prepare directories to place outputs in</h2>
-<p>For those who ran SPEAQeasy from the example FASTQ data set, the <code>RangedSummarizedExperiment</code> will have a different path, as specified with the <code>--output</code> flag. Set the working directory according to where the <code>SPEAQeasy-example</code> repository is cloned.</p>
+<p>For those who ran SPEAQeasy from the example FASTQ data set, the <code>RangedSummarizedExperiment</code> will have a different path, as specified with the <code>--output</code> flag.</p>
 <pre class="r"><code># Load the RSE gene object
 load(here(&quot;rse_speaqeasy.RData&quot;), verbose = TRUE)</code></pre>
 <pre><code>## Loading objects:
@@ -369,29 +371,33 @@ dir.create(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;), showWarnings = FALSE
 dir.create(here(&quot;DE_analysis&quot;, &quot;tables&quot;), showWarnings = FALSE)
 dir.create(here(&quot;DE_analysis&quot;, &quot;rdas&quot;), showWarnings = FALSE)</code></pre>
 </div>
-<div id="cell-pcs" class="section level2">
-<h2><span class="header-section-number">1.3</span> cell PCs</h2>
+<div id="statistics-pcs" class="section level2">
+<h2><span class="header-section-number">1.3</span> statistics PCs</h2>
+</div>
+<div id="here-we-are-using-principal-component-analysis-to-control-for-the-listed-variables-impact-on-expression.-this-will-be-later-added-into-our-linear-model" class="section level2">
+<h2><span class="header-section-number">1.4</span> Here we are using principal component analysis to control for the listed variables impact on expression. This will be later added into our linear model</h2>
 <p>col_names = c(‘trimmed’, ‘numReads’, ‘numMapped’, ‘numUnmapped’,
 ‘overallMapRate’, ‘concordMapRate’, ‘totalMapped’, ‘mitoMapped’,
 ‘mitoRate’, ‘totalAssignedGene’)
-cellPca = prcomp(as.data.frame(colData(rse_gene)[,col_names]))
-rse_gene<span class="math inline">\(PC = cellPca\)</span>x[,1]
-getPcaVars(cellPca)[1] # 87.3
-round(cellPca$rot[,1],3)
-# fetal quiescent and adult neuron increase</p>
+statsPca = prcomp(as.data.frame(colData(rse_gene)[,col_names]))
+rse_gene<span class="math inline">\(PC = statsPca\)</span>x[,1]
+getPcaVars(statsPca)[1] # 87.3</p>
 </div>
 <div id="filter-for-expressed" class="section level2">
-<h2><span class="header-section-number">1.4</span> filter for expressed</h2>
+<h2><span class="header-section-number">1.5</span> filter for expressed</h2>
 <p>rse_gene = rse_gene[rowMeans(getRPKM(rse_gene,“Length”)) &gt; 0.2,]</p>
 <div id="section" class="section level14">
-<p class="heading"><span class="header-section-number">1.4.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
+<p class="heading"><span class="header-section-number">1.5.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
 </div>
 </div>
 <div id="metrics" class="section level2">
-<h2><span class="header-section-number">1.5</span> metrics</h2>
+<h2><span class="header-section-number">1.6</span> metrics</h2>
+<div id="section-1" class="section level14">
+<p class="heading"><span class="header-section-number">1.6.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
 </div>
-<div id="check-if-ratios-of-cell-changed-by-batch" class="section level2">
-<h2><span class="header-section-number">1.6</span> check if ratios of cell changed by batch</h2>
+</div>
+<div id="check-if-certain-statistics-changed-by-race-or-region" class="section level2">
+<h2><span class="header-section-number">1.7</span> check if certain statistics changed by race or region</h2>
 <p>pdf(file = here(“DE_analysis”, “pdfs”, “Region_Race_cellcheck.pdf”))
 boxplot(rse_gene<span class="math inline">\(rRNA_rate ~ rse_gene\)</span>BrainRegion,xlab="“)
 boxplot(rse_gene<span class="math inline">\(mitoRate ~ rse_gene\)</span>BrainRegion,xlab=”“)
@@ -399,15 +405,15 @@ boxplot(rse_gene<span class="math inline">\(gene_Assigned ~ rse_gene\)</span>Bra
 boxplot(rse_gene<span class="math inline">\(mitoRate ~ rse_gene\)</span>Race,las=3,xlab=”“)
 boxplot(rse_gene<span class="math inline">\(gene_Assigned ~ rse_gene\)</span>Race,las=3,xlab=”")
 dev.off()</p>
-<div id="explore-human" class="section level4">
-<h4><span class="header-section-number">1.6.0.1</span> explore human</h4>
+<div id="explore-gene-expression" class="section level4">
+<h4><span class="header-section-number">1.7.0.1</span> explore gene expression</h4>
 <p>geneExprs = log2(getRPKM(rse_gene,“Length”)+1)
 pca = prcomp(t(geneExprs))
 pca_vars = getPcaVars(pca)
 pca_vars_lab = paste0(“PC”, seq(along=pca_vars), “:”,
 pca_vars, “% Var Expl”)</p>
-<div id="section-1" class="section level10">
-<p class="heading"><span class="header-section-number">1.6.0.1.0.0.0.0.0.1</span> </p>
+<div id="section-2" class="section level10">
+<p class="heading"><span class="header-section-number">1.7.0.1.0.0.0.0.0.1</span> </p>
 <p>pdf(here(“DE_analysis”, “pdfs”, “PCA_plotsExprs.pdf”), w=9)
 par(mar=c(8,6,2,2),cex.axis=1.8,cex.lab=1.8)
 palette(brewer.pal(4,“Dark2”))</p>
@@ -415,13 +421,13 @@ palette(brewer.pal(4,“Dark2”))</p>
 </div>
 </div>
 <div id="pc1-vs-pc2" class="section level2">
-<h2><span class="header-section-number">1.7</span> pc1 vs pc2</h2>
+<h2><span class="header-section-number">1.8</span> pc1 vs pc2</h2>
 <p>plot(pca<span class="math inline">\(x, pch=21, bg=factor(rse_gene\)</span>PrimaryDx),cex=1.2,
 xlab = pca_vars_lab[1], ylab = pca_vars_lab[2])
 legend(“bottomleft”, levels(rse_gene$PrimaryDx), col=1:2, pch=15,cex=2)</p>
 </div>
 <div id="by-line" class="section level2">
-<h2><span class="header-section-number">1.8</span> by line</h2>
+<h2><span class="header-section-number">1.9</span> by line</h2>
 <p>for(i in 1:10) {
 boxplot(pca<span class="math inline">\(x[,i] ~ rse_gene\)</span>Sex,
 ylab=pca_vars_lab[i], las = 3,xlab=“Sex”,outline=FALSE)
@@ -430,7 +436,7 @@ pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
 }</p>
 </div>
 <div id="by-experiment" class="section level2">
-<h2><span class="header-section-number">1.9</span> by experiment</h2>
+<h2><span class="header-section-number">1.10</span> by experiment</h2>
 <p>for(i in 1:10) {
 boxplot(pca<span class="math inline">\(x[,i] ~ rse_gene\)</span>Race,
 ylab=pca_vars_lab[i], las = 3,xlab=“Race”,outline=FALSE)
@@ -438,30 +444,37 @@ points( pca<span class="math inline">\(x[,i] ~ jitter(as.numeric(factor(rse_gene
 pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
 }
 dev.off()</p>
-<div id="section-2" class="section level20">
-<p class="heading"><span class="header-section-number">1.9.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
+<div id="section-3" class="section level20">
+<p class="heading"><span class="header-section-number">1.10.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
 </div>
 </div>
 <div id="modeling" class="section level2">
-<h2><span class="header-section-number">1.10</span> modeling</h2>
-<div id="section-3" class="section level20">
-<p class="heading"><span class="header-section-number">1.10.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
+<h2><span class="header-section-number">1.11</span> modeling</h2>
+<div id="section-4" class="section level20">
+<p class="heading"><span class="header-section-number">1.11.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
 <p>dge = DGEList(counts = assays(rse_gene)$counts,
 genes = rowData(rse_gene))
 dge = calcNormFactors(dge)</p>
 </div>
 </div>
 <div id="mean-variance" class="section level2">
-<h2><span class="header-section-number">1.11</span> mean-variance</h2>
+<h2><span class="header-section-number">1.12</span> mean-variance</h2>
 <p>mod = model.matrix(~PrimaryDx + PC + BrainRegion,
 data=colData(rse_gene))
 pdf(file = “DE_analysis/pdfs/vGene.pdf”)
 vGene = voom(dge,mod,plot=TRUE)
 dev.off()</p>
-<p>gene_dupCorr = duplicateCorrelation(vGene<span class="math inline">\(E, mod,  block=colData(rse_gene)\)</span>SAMPLE_ID)
+<p>##Get duplicate correlation
+gene_dupCorr = duplicateCorrelation(vGene<span class="math inline">\(E, mod,  block=colData(rse_gene)\)</span>SAMPLE_ID)
 save(gene_dupCorr, file = “DE_analysis/rdas/gene_dupCorr_neurons.rda”)</p>
+</div>
+<div id="fit-linear-model" class="section level2">
+<h2><span class="header-section-number">1.13</span> fit linear model</h2>
 <p>fitGeneDupl = lmFit(vGene,
 correlation=gene_dupCorr<span class="math inline">\(consensus.correlation,  block=colData(rse_gene)\)</span>SAMPLEID)</p>
+</div>
+<div id="here-we-perform-an-empirical-bayesian-calculation-to-obtain-our-significant-genes" class="section level2">
+<h2><span class="header-section-number">1.14</span> here we perform an empirical bayesian calculation to obtain our significant genes</h2>
 <p>ebGeneDupl = eBayes(fitGeneDupl)
 outGeneDupl = topTable(ebGeneDupl,coef=2,
 p.value = 1,number=nrow(rse_gene),sort=“none”)</p>
@@ -475,24 +488,18 @@ sigGeneDupl[sigGeneDupl$logFC &gt; 0,c(“Symbol”,“logFC”, “P.Value”)]
 sigGeneDupl[sigGeneDupl$logFC &lt; 0,c(“Symbol”,“logFC”, “P.Value”)]</p>
 <p>write.csv(outGeneDupl, file = here(“DE_analysis”, “tables”, “de_stats_allExprs.csv”))
 write.csv(sigGeneDupl, file = here(“DE_analysis”, “tables”, “de_stats_fdr10_sorted.csv”))</p>
-<div id="section-4" class="section level19">
-<p class="heading"><span class="header-section-number">1.11.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
+<div id="section-5" class="section level19">
+<p class="heading"><span class="header-section-number">1.14.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
 </div>
 </div>
 <div id="check-plots" class="section level2">
-<h2><span class="header-section-number">1.12</span> check plots</h2>
-<div id="section-5" class="section level19">
-<p class="heading"><span class="header-section-number">1.12.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
-<p>exprs = vGene$E[rownames(sigGeneDupl),]
-#exprsClean = cleaningY(exprs, mod, 2)</p>
+<h2><span class="header-section-number">1.15</span> check plots</h2>
+<div id="section-6" class="section level19">
+<p class="heading"><span class="header-section-number">1.15.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
+<p>exprs = vGene$E[rownames(sigGeneDupl),]</p>
 </div>
 <div id="make-boxplots" class="section level3">
-<h3><span class="header-section-number">1.12.1</span> make boxplots</h3>
-</div>
-</div>
-</div>
-<div id="cleangeneexprs-cleaningygeneexprs-modis.naebgenep.value1-p3" class="section level1">
-<h1><span class="header-section-number">2</span> cleanGeneExprs = cleaningY(geneExprs, mod[,!is.na(eBGene$p.value[1,])], P=3)</h1>
+<h3><span class="header-section-number">1.15.1</span> make boxplots</h3>
 <p>pdf(here(“DE_analysis”, “pdfs”, “DE_boxplots_byDiagnosis.pdf”, w=10))
 par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
 palette(brewer.pal(4,“Dark2”))
@@ -503,8 +510,6 @@ pch = 21, bg= rse_gene<span class="math inline">\(PrimaryDx,cex=1.3)  ll = ifels
 legend(ll, paste0(“p=”, signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
 }
 dev.off()</p>
-<div id="rpkm" class="section level4">
-<h4><span class="header-section-number">2.0.0.1</span> RPKM</h4>
 <p>e = geneExprs[rownames(sigGeneDupl),]</p>
 <p>pdf(here(“DE_analysis”, “pdfs”, “DE_boxplots_byGenome_log2RPKM.pdf”, w=10))
 par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
@@ -516,15 +521,16 @@ pch = 21, bg= rse_gene<span class="math inline">\(PrimaryDx,cex=1.3)  ll = ifels
 legend(ll, paste0(“p=”, signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
 }
 dev.off()</p>
-<div id="no-rat-astrocyte-differences" class="section level20">
-<p class="heading"><span class="header-section-number">2.0.0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> no rat astrocyte differences</p>
-</div>
 </div>
 <div id="gene-ontology" class="section level3">
-<h3><span class="header-section-number">2.0.1</span> gene ontology</h3>
+<h3><span class="header-section-number">1.15.2</span> gene ontology</h3>
+</div>
+<div id="clusterprofiler-is-a-geneontology-package-we-will-use-to-see-if-our-genes-are-specifically-differentially-expressed-in-certain-pathways." class="section level3">
+<h3><span class="header-section-number">1.15.3</span> clusterprofiler is a geneontology package we will use to see if our genes are specifically differentially expressed in certain pathways.</h3>
+</div>
 </div>
 <div id="get-significant-genes-by-sign" class="section level2">
-<h2><span class="header-section-number">2.1</span> get significant genes by sign</h2>
+<h2><span class="header-section-number">1.16</span> get significant genes by sign</h2>
 <p>sigGene = outGeneDupl[outGeneDupl$P.Value &lt; 0.005,]
 sigGeneList = split(as.character(sigGene<span class="math inline">\(EntrezID), sign(sigGene\)</span>logFC))
 sigGeneList = lapply(sigGeneList, function(x) x[!is.na(x)])
@@ -532,7 +538,7 @@ geneUniverse = as.character(outGeneDupl$EntrezID)
 geneUniverse = geneUniverse[!is.na(geneUniverse)]</p>
 </div>
 <div id="do-go-and-kegg" class="section level2">
-<h2><span class="header-section-number">2.2</span> do GO and KEGG</h2>
+<h2><span class="header-section-number">1.17</span> do GO and KEGG</h2>
 <p>goBP_Adj &lt;- compareCluster(sigGeneList, fun = “enrichGO”,
 universe = geneUniverse, OrgDb = org.Hs.eg.db,
 ont = “BP”, pAdjustMethod = “BH”, pvalueCutoff = 1,
@@ -556,8 +562,8 @@ goDf = goDf[order(goDf$pvalue),]</p>
 <p>write.csv(goDf, file = here(“DE_analysis”, “tables”, “geneSet_output.csv”), row.names=FALSE)</p>
 <p>options(width=130)
 goDf[goDf$p.adjust &lt; 0.05, c(1:5,7)]</p>
-<div id="section-6" class="section level48">
-<p class="heading"><span class="header-section-number">2.2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
+<div id="section-7" class="section level48">
+<p class="heading"><span class="header-section-number">1.17.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
 <p>#make heatmap of differentially expressed genes#
 ################################################</p>
 <p>exprs_heatmap = vGene$E[rownames(sigGene),]</p>
