@@ -46,7 +46,7 @@ $ORIG_DIR/Software/nextflow main.nf \
 
 We note that the example data are paired-end human samples, which we plan to align to the "hg38" reference genome. Reads were sequenced such that FASTQ files are "reverse"-stranded. Thus, we will change the `--sample` flag to have the value "paired", the `--reference` flag to be "hg38", and the `--strand` flag to be "reverse".
 
-Next, we will direct SPEAQeasy to the input files of interest and choose a directory in which to place outputs. In the [downloading the example data](NEED LINK HERE) section, you should've selected a directory in which to place FASTQ files and the associated `samples.manifest` file. This same directory should be passed to the `--input` flag, which will replace the `--small_test` option. Finally, choose any desired output directory for SPEAQeasy files, to pass to the `--output` flag. Combining these changes, the resulting `nextflow` command in your main script should look like:
+Next, we will direct SPEAQeasy to the input files of interest and choose a directory in which to place outputs. In the [downloading the example data](prepare_data.html) section, you should've selected a directory in which to place FASTQ files and the associated `samples.manifest` file. This same directory should be passed to the `--input` flag, which will replace the `--small_test` option. Finally, choose any desired output directory for SPEAQeasy files, to pass to the `--output` flag. Combining these changes, the resulting `nextflow` command in your main script should look like:
 
 ```{bash "run nextflow using docker", eval=FALSE}
 $ORIG_DIR/Software/nextflow main.nf \
