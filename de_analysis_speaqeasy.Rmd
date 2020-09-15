@@ -62,7 +62,7 @@ library("here")
 
 ## Load data and prepare directories to place outputs in
 
-For those who ran SPEAQeasy from the example FASTQ data set, the `RangedSummarizedExperiment` will have a different path, as specified with the `--output` flag. Set the working directory according to where the `SPEAQeasy-example` repository is cloned.
+For those who ran SPEAQeasy from the example FASTQ data set, the `RangedSummarizedExperiment` will have a different path, as specified with the `--output` flag.
 
 ```{r loaddata}
 # Load the RSE gene object
@@ -76,15 +76,15 @@ dir.create(here("DE_analysis", "rdas"), showWarnings = FALSE)
 
 
 
-## cell PCs
+## statistics PCs
+## Here we are using principal component analysis to control for the listed variables impact on expression. This will be later added into our linear model
 col_names = c('trimmed', 'numReads', 'numMapped', 'numUnmapped', 
               'overallMapRate', 'concordMapRate', 'totalMapped', 'mitoMapped',
               'mitoRate', 'totalAssignedGene')
-cellPca = prcomp(as.data.frame(colData(rse_gene)[,col_names]))
-rse_gene$PC = cellPca$x[,1]
-getPcaVars(cellPca)[1] # 87.3
-round(cellPca$rot[,1],3)
-# fetal quiescent and adult neuron increase
+statsPca = prcomp(as.data.frame(colData(rse_gene)[,col_names]))
+rse_gene$PC = statsPca$x[,1]
+getPcaVars(statsPca)[1] # 87.3
+
 
 
 
@@ -94,9 +94,9 @@ rse_gene = rse_gene[rowMeans(getRPKM(rse_gene,"Length")) > 0.2,]
 
 ##############
 ## metrics ###
+##############
 
-
-## check if ratios of cell changed by batch
+## check if certain statistics changed by race or region
 pdf(file = here("DE_analysis", "pdfs", "Region_Race_cellcheck.pdf"))
 boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion,xlab="")
 boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion,xlab="")
@@ -105,7 +105,7 @@ boxplot(rse_gene$mitoRate ~ rse_gene$Race,las=3,xlab="")
 boxplot(rse_gene$gene_Assigned ~ rse_gene$Race,las=3,xlab="")
 dev.off()
 
-#### explore human
+#### explore gene expression
 geneExprs = log2(getRPKM(rse_gene,"Length")+1)
 pca = prcomp(t(geneExprs))
 pca_vars = getPcaVars(pca)
@@ -157,14 +157,18 @@ pdf(file = "DE_analysis/pdfs/vGene.pdf")
 vGene = voom(dge,mod,plot=TRUE)
 dev.off()
 
+##Get duplicate correlation
 gene_dupCorr = duplicateCorrelation(vGene$E, mod,
 	block=colData(rse_gene)$SAMPLE_ID)
 save(gene_dupCorr, file = "DE_analysis/rdas/gene_dupCorr_neurons.rda")
 
+
+## fit linear model
 fitGeneDupl = lmFit(vGene,
 	correlation=gene_dupCorr$consensus.correlation,
 	block=colData(rse_gene)$SAMPLEID)
 
+## here we perform an empirical bayesian calculation to obtain our significant genes
 ebGeneDupl = eBayes(fitGeneDupl)
 outGeneDupl = topTable(ebGeneDupl,coef=2,
 	p.value = 1,number=nrow(rse_gene),sort="none")
@@ -190,11 +194,11 @@ write.csv(sigGeneDupl, file = here("DE_analysis", "tables", "de_stats_fdr10_sort
 ###################
 
 exprs = vGene$E[rownames(sigGeneDupl),]
-#exprsClean = cleaningY(exprs, mod, 2)
+
 
 
 ### make boxplots
-# cleanGeneExprs = cleaningY(geneExprs, mod[,!is.na(eBGene$p.value[1,])], P=3)
+
 
 
 pdf(here("DE_analysis", "pdfs", "DE_boxplots_byDiagnosis.pdf", w=10))
@@ -212,7 +216,7 @@ for(i in 1:nrow(sigGeneDupl)) {
 }
 dev.off()
 
-#### RPKM #####
+
 e = geneExprs[rownames(sigGeneDupl),]
 
 pdf(here("DE_analysis", "pdfs", "DE_boxplots_byGenome_log2RPKM.pdf", w=10))
@@ -231,10 +235,10 @@ for(i in 1:nrow(sigGeneDupl)) {
 dev.off()
 
 
-#################### no rat astrocyte differences
+
 
 ### gene ontology
-
+### clusterprofiler is a geneontology package we will use to see if our genes are specifically differentially expressed in certain pathways.
 
 ## get significant genes by sign
 sigGene = outGeneDupl[outGeneDupl$P.Value < 0.005,]
