@@ -349,10 +349,9 @@ bash install_software.sh &quot;local&quot;</code></pre>
     --small_test \
     --annotation &quot;$ORIG_DIR/Annotation&quot; \
     -with-report execution_reports/pipeline_report.html \
-    -with-dag execution_DAGs/pipeline_DAG.html \
     -profile slurm</code></pre>
 <p>We note that the example data are paired-end human samples, which we plan to align to the “hg38” reference genome. Reads were sequenced such that FASTQ files are “reverse”-stranded. Thus, we will change the <code>--sample</code> flag to have the value “paired”, the <code>--reference</code> flag to be “hg38”, and the <code>--strand</code> flag to be “reverse”.</p>
-<p>Next, we will direct SPEAQeasy to the input files of interest and choose a directory in which to place outputs. In the <a href="NEED%20LINK%20HERE">downloading the example data</a> section, you should’ve selected a directory in which to place FASTQ files and the associated <code>samples.manifest</code> file. This same directory should be passed to the <code>--input</code> flag, which will replace the <code>--small_test</code> option. Finally, choose any desired output directory for SPEAQeasy files, to pass to the <code>--output</code> flag. Combining these changes, the resulting <code>nextflow</code> command in your main script should look like:</p>
+<p>Next, we will direct SPEAQeasy to the input files of interest and choose a directory in which to place outputs. In the <a href="prepare_data.html">downloading the example data</a> section, you should’ve selected a directory in which to place FASTQ files and the associated <code>samples.manifest</code> file. This same directory should be passed to the <code>--input</code> flag, which will replace the <code>--small_test</code> option. Finally, choose any desired output directory for SPEAQeasy files, to pass to the <code>--output</code> flag. Combining these changes, the resulting <code>nextflow</code> command in your main script should look like:</p>
 <pre class="bash"><code>$ORIG_DIR/Software/nextflow main.nf \
     --sample &quot;paired&quot; \
     --reference &quot;hg38&quot; \
@@ -361,7 +360,6 @@ bash install_software.sh &quot;local&quot;</code></pre>
     --output &quot;/some/dir/for/outputs&quot; \
     --annotation &quot;$ORIG_DIR/Annotation&quot; \
     -with-report execution_reports/pipeline_report.html \
-    -with-dag execution_DAGs/pipeline_DAG.html \
     -profile docker_slurm # in this example, docker is used</code></pre>
 </div>
 <div id="run-the-pipeline" class="section level1">
