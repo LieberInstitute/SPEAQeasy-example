@@ -9,10 +9,10 @@ output:
 
 A guided example showing how processed results from the RNAseq pipeline [SPEAQeasy](https://github.com/LieberInstitute/SPEAQeasy) can be used in differential expression analyses and visualization. We also show how existing genotype information for a set of samples can be combined with SPEAQeasy results to resolve any identity issues, as can emerge during sequencing.
 
-* [Download Example Data](prepare_data.Rmd)
-* [Run SPEAQeasy](run_speaqeasy.Rmd)
-* [Resolve Sample Identities](swap_speaqeasy.Rmd)
-* [Differential Expression](de_analysis_speaqeasy.Rmd)
+* [Downloading the example data](prepare_data.Rmd)
+* [Run SPEAQeasy on your setup](run_speaqeasy.Rmd)
+* [Resolve identity issues and attach phenotype data](swap_speaqeasy.Rmd)
+* [Perform differential expression and visualize results](de_analysis_speaqeasy.Rmd)
 
 # References
 
