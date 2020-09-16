@@ -197,7 +197,7 @@ write.csv(sigGeneDupl, file = here("DE_analysis", "tables", "de_stats_fdr10_sort
 exprs = vGene$E[rownames(sigGeneDupl),]
 
 # Make boxplots
-pdf(here("DE_analysis", "pdfs", "DE_boxplots_byDiagnosis.pdf", w=10))
+pdf(here("DE_analysis", "pdfs", "DE_boxplots_byDiagnosis.pdf"), w=10)
 par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
 palette(brewer.pal(4,"Dark2"))
 
@@ -216,7 +216,7 @@ dev.off()
 
 e = geneExprs[rownames(sigGeneDupl),]
 
-pdf(here("DE_analysis", "pdfs", "DE_boxplots_byGenome_log2RPKM.pdf", w=10))
+pdf(here("DE_analysis", "pdfs", "DE_boxplots_byGenome_log2RPKM.pdf"), w=10)
 par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
 palette(brewer.pal(4,"Dark2"))
 for(i in 1:nrow(sigGeneDupl)) {
