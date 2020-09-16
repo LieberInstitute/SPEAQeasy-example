@@ -321,24 +321,12 @@ function toggle_visibility(id1) {
 <li><a href="#load-required-libraries"><span class="toc-section-number">1.1</span> Load required libraries</a></li>
 <li><a href="#load-data-and-prepare-directories-to-place-outputs-in"><span class="toc-section-number">1.2</span> Load data and prepare directories to place outputs in</a></li>
 <li><a href="#statistics-pcs"><span class="toc-section-number">1.3</span> statistics PCs</a></li>
-<li><a href="#here-we-are-using-principal-component-analysis-to-control-for-the-listed-variables-impact-on-expression.-this-will-be-later-added-into-our-linear-model"><span class="toc-section-number">1.4</span> Here we are using principal component analysis to control for the listed variables impact on expression. This will be later added into our linear model</a></li>
-<li><a href="#filter-for-expressed"><span class="toc-section-number">1.5</span> filter for expressed</a></li>
-<li><a href="#metrics"><span class="toc-section-number">1.6</span> metrics</a></li>
-<li><a href="#check-if-certain-statistics-changed-by-race-or-region"><span class="toc-section-number">1.7</span> check if certain statistics changed by race or region</a></li>
-<li><a href="#pc1-vs-pc2"><span class="toc-section-number">1.8</span> pc1 vs pc2</a></li>
-<li><a href="#by-line"><span class="toc-section-number">1.9</span> by line</a></li>
-<li><a href="#by-experiment"><span class="toc-section-number">1.10</span> by experiment</a></li>
-<li><a href="#modeling"><span class="toc-section-number">1.11</span> modeling</a></li>
-<li><a href="#mean-variance"><span class="toc-section-number">1.12</span> mean-variance</a></li>
-<li><a href="#fit-linear-model"><span class="toc-section-number">1.13</span> fit linear model</a></li>
-<li><a href="#here-we-perform-an-empirical-bayesian-calculation-to-obtain-our-significant-genes"><span class="toc-section-number">1.14</span> here we perform an empirical bayesian calculation to obtain our significant genes</a></li>
-<li><a href="#check-plots"><span class="toc-section-number">1.15</span> check plots</a><ul>
-<li><a href="#make-boxplots"><span class="toc-section-number">1.15.1</span> make boxplots</a></li>
-<li><a href="#gene-ontology"><span class="toc-section-number">1.15.2</span> gene ontology</a></li>
-<li><a href="#clusterprofiler-is-a-geneontology-package-we-will-use-to-see-if-our-genes-are-specifically-differentially-expressed-in-certain-pathways."><span class="toc-section-number">1.15.3</span> clusterprofiler is a geneontology package we will use to see if our genes are specifically differentially expressed in certain pathways.</a></li>
-</ul></li>
-<li><a href="#get-significant-genes-by-sign"><span class="toc-section-number">1.16</span> get significant genes by sign</a></li>
-<li><a href="#do-go-and-kegg"><span class="toc-section-number">1.17</span> do GO and KEGG</a></li>
+<li><a href="#stats-vs.-race-and-brain-region"><span class="toc-section-number">1.4</span> Stats vs. race and brain region</a></li>
+<li><a href="#explore-and-visualize-gene-expression"><span class="toc-section-number">1.5</span> Explore and visualize gene expression</a></li>
+<li><a href="#modeling"><span class="toc-section-number">1.6</span> Modeling</a></li>
+<li><a href="#check-plots"><span class="toc-section-number">1.7</span> Check plots</a></li>
+<li><a href="#gene-ontology"><span class="toc-section-number">1.8</span> Gene ontology</a></li>
+<li><a href="#visualize-differentially-expressed-genes"><span class="toc-section-number">1.9</span> Visualize differentially expressed genes</a></li>
 </ul></li>
 </ul>
 </div>
@@ -373,208 +361,574 @@ dir.create(here(&quot;DE_analysis&quot;, &quot;rdas&quot;), showWarnings = FALSE
 </div>
 <div id="statistics-pcs" class="section level2">
 <h2><span class="header-section-number">1.3</span> statistics PCs</h2>
-</div>
-<div id="here-we-are-using-principal-component-analysis-to-control-for-the-listed-variables-impact-on-expression.-this-will-be-later-added-into-our-linear-model" class="section level2">
-<h2><span class="header-section-number">1.4</span> Here we are using principal component analysis to control for the listed variables impact on expression. This will be later added into our linear model</h2>
-<p>col_names = c(‘trimmed’, ‘numReads’, ‘numMapped’, ‘numUnmapped’,
-‘overallMapRate’, ‘concordMapRate’, ‘totalMapped’, ‘mitoMapped’,
-‘mitoRate’, ‘totalAssignedGene’)
+<p>Here we are using principal component analysis to control for the listed variables impact on expression. This will be later added into our linear model.</p>
+<pre class="r"><code>col_names = c(&#39;trimmed&#39;, &#39;numReads&#39;, &#39;numMapped&#39;, &#39;numUnmapped&#39;, 
+              &#39;overallMapRate&#39;, &#39;concordMapRate&#39;, &#39;totalMapped&#39;, &#39;mitoMapped&#39;,
+              &#39;mitoRate&#39;, &#39;totalAssignedGene&#39;)
 statsPca = prcomp(as.data.frame(colData(rse_gene)[,col_names]))
-rse_gene<span class="math inline">\(PC = statsPca\)</span>x[,1]
-getPcaVars(statsPca)[1] # 87.3</p>
+rse_gene$PC = statsPca$x[,1]
+getPcaVars(statsPca)[1]</code></pre>
+<pre><code>## [1] 87.3</code></pre>
 </div>
-<div id="filter-for-expressed" class="section level2">
-<h2><span class="header-section-number">1.5</span> filter for expressed</h2>
-<p>rse_gene = rse_gene[rowMeans(getRPKM(rse_gene,“Length”)) &gt; 0.2,]</p>
-<div id="section" class="section level14">
-<p class="heading"><span class="header-section-number">1.5.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
+<div id="stats-vs.-race-and-brain-region" class="section level2">
+<h2><span class="header-section-number">1.4</span> Stats vs. race and brain region</h2>
+<pre class="r"><code># Filter for expressed
+rse_gene = rse_gene[rowMeans(getRPKM(rse_gene,&quot;Length&quot;)) &gt; 0.2,]
+
+# Check if certain statistics changed by race or region
+pdf(file = here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;Region_Race_cellcheck.pdf&quot;))
+boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion,xlab=&quot;&quot;)
+boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion,xlab=&quot;&quot;)
+boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion,xlab=&quot;&quot;)
+boxplot(rse_gene$mitoRate ~ rse_gene$Race,las=3,xlab=&quot;&quot;)
+boxplot(rse_gene$gene_Assigned ~ rse_gene$Race,las=3,xlab=&quot;&quot;)
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
 </div>
-</div>
-<div id="metrics" class="section level2">
-<h2><span class="header-section-number">1.6</span> metrics</h2>
-<div id="section-1" class="section level14">
-<p class="heading"><span class="header-section-number">1.6.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
-</div>
-</div>
-<div id="check-if-certain-statistics-changed-by-race-or-region" class="section level2">
-<h2><span class="header-section-number">1.7</span> check if certain statistics changed by race or region</h2>
-<p>pdf(file = here(“DE_analysis”, “pdfs”, “Region_Race_cellcheck.pdf”))
-boxplot(rse_gene<span class="math inline">\(rRNA_rate ~ rse_gene\)</span>BrainRegion,xlab="“)
-boxplot(rse_gene<span class="math inline">\(mitoRate ~ rse_gene\)</span>BrainRegion,xlab=”“)
-boxplot(rse_gene<span class="math inline">\(gene_Assigned ~ rse_gene\)</span>BrainRegion,xlab=”“)
-boxplot(rse_gene<span class="math inline">\(mitoRate ~ rse_gene\)</span>Race,las=3,xlab=”“)
-boxplot(rse_gene<span class="math inline">\(gene_Assigned ~ rse_gene\)</span>Race,las=3,xlab=”")
-dev.off()</p>
-<div id="explore-gene-expression" class="section level4">
-<h4><span class="header-section-number">1.7.0.1</span> explore gene expression</h4>
-<p>geneExprs = log2(getRPKM(rse_gene,“Length”)+1)
+<div id="explore-and-visualize-gene-expression" class="section level2">
+<h2><span class="header-section-number">1.5</span> Explore and visualize gene expression</h2>
+<pre class="r"><code># Explore gene expression
+geneExprs = log2(getRPKM(rse_gene,&quot;Length&quot;)+1)
 pca = prcomp(t(geneExprs))
 pca_vars = getPcaVars(pca)
-pca_vars_lab = paste0(“PC”, seq(along=pca_vars), “:”,
-pca_vars, “% Var Expl”)</p>
-<div id="section-2" class="section level10">
-<p class="heading"><span class="header-section-number">1.7.0.1.0.0.0.0.0.1</span> </p>
-<p>pdf(here(“DE_analysis”, “pdfs”, “PCA_plotsExprs.pdf”), w=9)
+pca_vars_lab = paste0(&quot;PC&quot;, seq(along=pca_vars), &quot;: &quot;,
+    pca_vars, &quot;% Var Expl&quot;)
+
+
+# Set up plots
+pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;PCA_plotsExprs.pdf&quot;), w=9)
 par(mar=c(8,6,2,2),cex.axis=1.8,cex.lab=1.8)
-palette(brewer.pal(4,“Dark2”))</p>
-</div>
-</div>
-</div>
-<div id="pc1-vs-pc2" class="section level2">
-<h2><span class="header-section-number">1.8</span> pc1 vs pc2</h2>
-<p>plot(pca<span class="math inline">\(x, pch=21, bg=factor(rse_gene\)</span>PrimaryDx),cex=1.2,
-xlab = pca_vars_lab[1], ylab = pca_vars_lab[2])
-legend(“bottomleft”, levels(rse_gene$PrimaryDx), col=1:2, pch=15,cex=2)</p>
-</div>
-<div id="by-line" class="section level2">
-<h2><span class="header-section-number">1.9</span> by line</h2>
-<p>for(i in 1:10) {
-boxplot(pca<span class="math inline">\(x[,i] ~ rse_gene\)</span>Sex,
-ylab=pca_vars_lab[i], las = 3,xlab=“Sex”,outline=FALSE)
-points( pca<span class="math inline">\(x[,i] ~ jitter(as.numeric(factor(rse_gene\)</span>Sex))),
-pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
-}</p>
-</div>
-<div id="by-experiment" class="section level2">
-<h2><span class="header-section-number">1.10</span> by experiment</h2>
-<p>for(i in 1:10) {
-boxplot(pca<span class="math inline">\(x[,i] ~ rse_gene\)</span>Race,
-ylab=pca_vars_lab[i], las = 3,xlab=“Race”,outline=FALSE)
-points( pca<span class="math inline">\(x[,i] ~ jitter(as.numeric(factor(rse_gene\)</span>Race))),
-pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
+palette(brewer.pal(4,&quot;Dark2&quot;))
+
+# PC1 vs. PC2
+plot(pca$x, pch=21, bg=factor(rse_gene$PrimaryDx),cex=1.2,
+    xlab = pca_vars_lab[1], ylab = pca_vars_lab[2])
+legend(&quot;bottomleft&quot;, levels(rse_gene$PrimaryDx), col=1:2, pch=15,cex=2)
+
+
+# By line
+for(i in 1:10) {
+    boxplot(pca$x[,i] ~ rse_gene$Sex,
+        ylab=pca_vars_lab[i], las = 3,xlab=&quot;Sex&quot;,outline=FALSE)
+    points( pca$x[,i] ~ jitter(as.numeric(factor(rse_gene$Sex))),
+        pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
 }
-dev.off()</p>
-<div id="section-3" class="section level20">
-<p class="heading"><span class="header-section-number">1.10.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
-</div>
+
+# By experiment
+for(i in 1:10) {
+    boxplot(pca$x[,i] ~ rse_gene$Race,
+        ylab=pca_vars_lab[i], las = 3,xlab=&quot;Race&quot;,outline=FALSE)
+    points( pca$x[,i] ~ jitter(as.numeric(factor(rse_gene$Race))),
+        pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
+}
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
 </div>
 <div id="modeling" class="section level2">
-<h2><span class="header-section-number">1.11</span> modeling</h2>
-<div id="section-4" class="section level20">
-<p class="heading"><span class="header-section-number">1.11.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
-<p>dge = DGEList(counts = assays(rse_gene)$counts,
-genes = rowData(rse_gene))
-dge = calcNormFactors(dge)</p>
-</div>
-</div>
-<div id="mean-variance" class="section level2">
-<h2><span class="header-section-number">1.12</span> mean-variance</h2>
-<p>mod = model.matrix(~PrimaryDx + PC + BrainRegion,
-data=colData(rse_gene))
-pdf(file = “DE_analysis/pdfs/vGene.pdf”)
-vGene = voom(dge,mod,plot=TRUE)
-dev.off()</p>
-<p>##Get duplicate correlation
-gene_dupCorr = duplicateCorrelation(vGene<span class="math inline">\(E, mod,  block=colData(rse_gene)\)</span>SAMPLE_ID)
-save(gene_dupCorr, file = “DE_analysis/rdas/gene_dupCorr_neurons.rda”)</p>
-</div>
-<div id="fit-linear-model" class="section level2">
-<h2><span class="header-section-number">1.13</span> fit linear model</h2>
-<p>fitGeneDupl = lmFit(vGene,
-correlation=gene_dupCorr<span class="math inline">\(consensus.correlation,  block=colData(rse_gene)\)</span>SAMPLEID)</p>
-</div>
-<div id="here-we-perform-an-empirical-bayesian-calculation-to-obtain-our-significant-genes" class="section level2">
-<h2><span class="header-section-number">1.14</span> here we perform an empirical bayesian calculation to obtain our significant genes</h2>
-<p>ebGeneDupl = eBayes(fitGeneDupl)
-outGeneDupl = topTable(ebGeneDupl,coef=2,
-p.value = 1,number=nrow(rse_gene),sort=“none”)</p>
-<p>pdf(file = here(“DE_analysis”, “pdfs”, “hist_pval.pdf”))
-hist(outGeneDupl<span class="math inline">\(P.Value) dev.off() table(outGeneDupl\)</span>adj.P.Val &lt; 0.05)
-table(outGeneDupl$adj.P.Val &lt; 0.1)</p>
-<p>sigGeneDupl = topTable(ebGeneDupl,coef=2,
-p.value = 0.1,number=nrow(rse_gene))</p>
-<p>sigGeneDupl[,c(“Symbol”,“logFC”, “P.Value”,“AveExpr”)]
-sigGeneDupl[sigGeneDupl$logFC &gt; 0,c(“Symbol”,“logFC”, “P.Value”)]
-sigGeneDupl[sigGeneDupl$logFC &lt; 0,c(“Symbol”,“logFC”, “P.Value”)]</p>
-<p>write.csv(outGeneDupl, file = here(“DE_analysis”, “tables”, “de_stats_allExprs.csv”))
-write.csv(sigGeneDupl, file = here(“DE_analysis”, “tables”, “de_stats_fdr10_sorted.csv”))</p>
-<div id="section-5" class="section level19">
-<p class="heading"><span class="header-section-number">1.14.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
-</div>
+<h2><span class="header-section-number">1.6</span> Modeling</h2>
+<pre class="r"><code>dge = DGEList(counts = assays(rse_gene)$counts,
+    genes = rowData(rse_gene))
+dge = calcNormFactors(dge)
+
+# Mean-variance
+mod = model.matrix(~PrimaryDx + PC + BrainRegion,
+    data=colData(rse_gene))
+pdf(file = &quot;DE_analysis/pdfs/vGene.pdf&quot;)
+vGene = voom(dge,mod,plot=TRUE)</code></pre>
+<pre><code>## Coefficients not estimable: PrimaryDxOther</code></pre>
+<pre><code>## Warning: Partial NA coefficients for 26708 probe(s)</code></pre>
+<pre class="r"><code>dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code># Get duplicate correlation
+gene_dupCorr = duplicateCorrelation(vGene$E, mod,
+    block=colData(rse_gene)$SAMPLE_ID)</code></pre>
+<pre><code>## Coefficients not estimable: PrimaryDxOther</code></pre>
+<pre class="r"><code>save(gene_dupCorr, file = here(&quot;DE_analysis&quot;, &quot;rdas&quot;, &quot;gene_dupCorr_neurons.rda&quot;))
+
+# Fit linear model
+fitGeneDupl = lmFit(vGene,
+    correlation=gene_dupCorr$consensus.correlation,
+    block=colData(rse_gene)$SAMPLEID)</code></pre>
+<pre><code>## Coefficients not estimable: PrimaryDxOther</code></pre>
+<pre><code>## Warning: Partial NA coefficients for 26708 probe(s)</code></pre>
+<pre class="r"><code># Here we perform an empirical Bayesian calculation to obtain our significant genes
+ebGeneDupl = eBayes(fitGeneDupl)</code></pre>
+<pre><code>## Warning in .ebayes(fit = fit, proportion = proportion, stdev.coef.lim = stdev.coef.lim, : Estimation of var.prior failed - set to
+## default value</code></pre>
+<pre class="r"><code>outGeneDupl = topTable(ebGeneDupl,coef=2,
+    p.value = 1,number=nrow(rse_gene),sort=&quot;none&quot;)
+
+pdf(file = here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;hist_pval.pdf&quot;))
+hist(outGeneDupl$P.Value)
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>table(outGeneDupl$adj.P.Val &lt; 0.05)</code></pre>
+<pre><code>## 
+## FALSE  TRUE 
+## 26707     1</code></pre>
+<pre class="r"><code>table(outGeneDupl$adj.P.Val &lt; 0.1)</code></pre>
+<pre><code>## 
+## FALSE  TRUE 
+## 26706     2</code></pre>
+<pre class="r"><code>sigGeneDupl =  topTable(ebGeneDupl,coef=2,
+    p.value = 0.1,number=nrow(rse_gene))
+
+sigGeneDupl[,c(&quot;Symbol&quot;,&quot;logFC&quot;, &quot;P.Value&quot;,&quot;AveExpr&quot;)]</code></pre>
+<pre><code>##                   Symbol      logFC      P.Value   AveExpr
+## ENSG00000269699.6   ZIM2 -1.1238665 1.448916e-06 0.8970203
+## ENSG00000126368.6  NR1D1 -0.7637626 6.833687e-06 4.6128957</code></pre>
+<pre class="r"><code>sigGeneDupl[sigGeneDupl$logFC &gt; 0,c(&quot;Symbol&quot;,&quot;logFC&quot;, &quot;P.Value&quot;)]</code></pre>
+<pre><code>## [1] Symbol  logFC   P.Value
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<pre class="r"><code>sigGeneDupl[sigGeneDupl$logFC &lt;  0,c(&quot;Symbol&quot;,&quot;logFC&quot;, &quot;P.Value&quot;)]</code></pre>
+<pre><code>##                   Symbol      logFC      P.Value
+## ENSG00000269699.6   ZIM2 -1.1238665 1.448916e-06
+## ENSG00000126368.6  NR1D1 -0.7637626 6.833687e-06</code></pre>
+<pre class="r"><code>write.csv(outGeneDupl, file = here(&quot;DE_analysis&quot;, &quot;tables&quot;, &quot;de_stats_allExprs.csv&quot;))
+write.csv(sigGeneDupl, file = here(&quot;DE_analysis&quot;, &quot;tables&quot;, &quot;de_stats_fdr10_sorted.csv&quot;))</code></pre>
 </div>
 <div id="check-plots" class="section level2">
-<h2><span class="header-section-number">1.15</span> check plots</h2>
-<div id="section-6" class="section level19">
-<p class="heading"><span class="header-section-number">1.15.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
-<p>exprs = vGene$E[rownames(sigGeneDupl),]</p>
-</div>
-<div id="make-boxplots" class="section level3">
-<h3><span class="header-section-number">1.15.1</span> make boxplots</h3>
-<p>pdf(here(“DE_analysis”, “pdfs”, “DE_boxplots_byDiagnosis.pdf”, w=10))
+<h2><span class="header-section-number">1.7</span> Check plots</h2>
+<pre class="r"><code>exprs = vGene$E[rownames(sigGeneDupl),]
+
+# Make boxplots
+pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byDiagnosis.pdf&quot;), w=10)
 par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
-palette(brewer.pal(4,“Dark2”))
+palette(brewer.pal(4,&quot;Dark2&quot;))
+
 for(i in 1:nrow(sigGeneDupl)) {
-yy = exprs[i,]
-boxplot(yy ~ rse_gene<span class="math inline">\(PrimaryDx, outline=FALSE,  ylim=range(yy), ylab=&quot;Normalized log2 Exprs&quot;, xlab=&quot;&quot;,  main = paste(sigGeneDupl\)</span>Symbol[i], “-”, sigGeneDupl<span class="math inline">\(gencodeID[i]))  points(yy ~ jitter(as.numeric(rse_gene\)</span>PrimaryDx)),
-pch = 21, bg= rse_gene<span class="math inline">\(PrimaryDx,cex=1.3)  ll = ifelse(sigGeneDupl\)</span>logFC[i] &gt; 0, “topleft”, “topright”)
-legend(ll, paste0(“p=”, signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
+    yy = exprs[i,]
+    boxplot(yy ~ rse_gene$PrimaryDx, outline=FALSE,
+        ylim=range(yy), ylab=&quot;Normalized log2 Exprs&quot;, xlab=&quot;&quot;,
+        main = paste(sigGeneDupl$Symbol[i], &quot;-&quot;, sigGeneDupl$gencodeID[i]))
+    points(yy ~ jitter(as.numeric(rse_gene$PrimaryDx)),
+        pch = 21, bg= rse_gene$PrimaryDx,cex=1.3)
+    ll = ifelse(sigGeneDupl$logFC[i] &gt; 0, &quot;topleft&quot;, &quot;topright&quot;)
+    legend(ll, paste0(&quot;p=&quot;, signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
 }
-dev.off()</p>
-<p>e = geneExprs[rownames(sigGeneDupl),]</p>
-<p>pdf(here(“DE_analysis”, “pdfs”, “DE_boxplots_byGenome_log2RPKM.pdf”, w=10))
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>e = geneExprs[rownames(sigGeneDupl),]
+
+pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byGenome_log2RPKM.pdf&quot;), w=10)
 par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
-palette(brewer.pal(4,“Dark2”))
+palette(brewer.pal(4,&quot;Dark2&quot;))
 for(i in 1:nrow(sigGeneDupl)) {
-yy = e[i,]
-boxplot(yy ~ rse_gene<span class="math inline">\(PrimaryDx, las=3,outline=FALSE,  ylim=range(yy), ylab=&quot;log2(RPKM+1)&quot;, xlab=&quot;&quot;,  main = paste(sigGeneDupl\)</span>Symbol[i], “-”, sigGeneDupl<span class="math inline">\(gencodeID[i]))  points(yy ~ jitter(as.numeric(rse_gene\)</span>PrimaryDx)),
-pch = 21, bg= rse_gene<span class="math inline">\(PrimaryDx,cex=1.3)  ll = ifelse(sigGeneDupl\)</span>logFC[i] &gt; 0, “topleft”, “topright”)
-legend(ll, paste0(“p=”, signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
+    yy = e[i,]
+    boxplot(yy ~ rse_gene$PrimaryDx, las=3,outline=FALSE,
+        ylim=range(yy), ylab=&quot;log2(RPKM+1)&quot;, xlab=&quot;&quot;,
+        main = paste(sigGeneDupl$Symbol[i], &quot;-&quot;, sigGeneDupl$gencodeID[i]))
+    points(yy ~ jitter(as.numeric(rse_gene$PrimaryDx)),
+        pch = 21, bg= rse_gene$PrimaryDx,cex=1.3)
+    ll = ifelse(sigGeneDupl$logFC[i] &gt; 0, &quot;topleft&quot;, &quot;topright&quot;)
+    legend(ll, paste0(&quot;p=&quot;, signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
 }
-dev.off()</p>
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
 </div>
-<div id="gene-ontology" class="section level3">
-<h3><span class="header-section-number">1.15.2</span> gene ontology</h3>
-</div>
-<div id="clusterprofiler-is-a-geneontology-package-we-will-use-to-see-if-our-genes-are-specifically-differentially-expressed-in-certain-pathways." class="section level3">
-<h3><span class="header-section-number">1.15.3</span> clusterprofiler is a geneontology package we will use to see if our genes are specifically differentially expressed in certain pathways.</h3>
-</div>
-</div>
-<div id="get-significant-genes-by-sign" class="section level2">
-<h2><span class="header-section-number">1.16</span> get significant genes by sign</h2>
-<p>sigGene = outGeneDupl[outGeneDupl$P.Value &lt; 0.005,]
-sigGeneList = split(as.character(sigGene<span class="math inline">\(EntrezID), sign(sigGene\)</span>logFC))
+<div id="gene-ontology" class="section level2">
+<h2><span class="header-section-number">1.8</span> Gene ontology</h2>
+<p><code>clusterProfiler</code> is a gene ontology package we will use to see if our genes are specifically differentially expressed in certain pathways.</p>
+<pre class="r"><code># Get significant genes by sign
+sigGene = outGeneDupl[outGeneDupl$P.Value &lt; 0.005,]
+sigGeneList = split(as.character(sigGene$EntrezID), sign(sigGene$logFC))
 sigGeneList = lapply(sigGeneList, function(x) x[!is.na(x)])
 geneUniverse = as.character(outGeneDupl$EntrezID)
-geneUniverse = geneUniverse[!is.na(geneUniverse)]</p>
+geneUniverse = geneUniverse[!is.na(geneUniverse)]
+
+# Do GO and KEGG
+goBP_Adj &lt;- compareCluster(sigGeneList, fun = &quot;enrichGO&quot;,
+    universe = geneUniverse, OrgDb = org.Hs.eg.db,
+    ont = &quot;BP&quot;, pAdjustMethod = &quot;BH&quot;, pvalueCutoff  = 1,
+    qvalueCutoff  = 1,  readable= TRUE)
+
+goMF_Adj &lt;- compareCluster(sigGeneList, fun = &quot;enrichGO&quot;,
+    universe = geneUniverse, OrgDb = org.Hs.eg.db,
+    ont = &quot;MF&quot;, pAdjustMethod = &quot;BH&quot;, pvalueCutoff  = 1,
+    qvalueCutoff  = 1,  readable= TRUE)
+
+goCC_Adj &lt;- compareCluster(sigGeneList, fun = &quot;enrichGO&quot;,
+    universe = geneUniverse, OrgDb = org.Hs.eg.db,
+    ont = &quot;CC&quot;, pAdjustMethod = &quot;BH&quot;, pvalueCutoff  = 1,
+    qvalueCutoff  = 1,  readable= TRUE)
+
+kegg_Adj &lt;- compareCluster(sigGeneList, fun = &quot;enrichKEGG&quot;,
+    universe = geneUniverse,  pAdjustMethod = &quot;BH&quot;,
+    pvalueCutoff  = 1, qvalueCutoff  = 1)
+
+save(goBP_Adj, goCC_Adj, goMF_Adj, kegg_Adj,
+    file = here(&quot;DE_analysis&quot;, &quot;rdas&quot;, &quot;gene_set_objects_p005.rda&quot;))
+
+goList = list(BP = goBP_Adj, MF = goMF_Adj, CC = goCC_Adj, KEGG = kegg_Adj)
+goDf = dplyr::bind_rows(lapply(goList, as.data.frame), .id = &quot;Ontology&quot;)
+goDf = goDf[order(goDf$pvalue),]
+
+write.csv(goDf, file = here(&quot;DE_analysis&quot;, &quot;tables&quot;, &quot;geneSet_output.csv&quot;), row.names=FALSE)
+
+options(width=130)
+goDf[goDf$p.adjust &lt; 0.05, c(1:5,7)]</code></pre>
+<pre><code>##      Ontology Cluster         ID                                                                  Description GeneRatio
+## 1311       BP       1 GO:0032640                                             tumor necrosis factor production      9/84
+## 1312       BP       1 GO:0071706                        tumor necrosis factor superfamily cytokine production      9/84
+## 1313       BP       1 GO:0050865                                                regulation of cell activation     14/84
+## 1314       BP       1 GO:0032611                                                interleukin-1 beta production      7/84
+## 1315       BP       1 GO:0032612                                                     interleukin-1 production      7/84
+## 1316       BP       1 GO:0032680                               regulation of tumor necrosis factor production      8/84
+## 1317       BP       1 GO:1903555          regulation of tumor necrosis factor superfamily cytokine production      8/84
+## 1318       BP       1 GO:0032651                                  regulation of interleukin-1 beta production      6/84
+## 1319       BP       1 GO:0050867                                       positive regulation of cell activation     10/84
+## 1320       BP       1 GO:0002521                                                    leukocyte differentiation     12/84
+## 1321       BP       1 GO:0002694                                           regulation of leukocyte activation     12/84
+## 1322       BP       1 GO:0032652                                       regulation of interleukin-1 production      6/84
+## 1323       BP       1 GO:0009617                                                        response to bacterium     12/84
+## 1324       BP       1 GO:0042742                                                defense response to bacterium      7/84
+## 1325       BP       1 GO:0071346                                        cellular response to interferon-gamma      7/84
+## 1326       BP       1 GO:0050900                                                          leukocyte migration     10/84
+## 3316       MF       1 GO:0045028                    G protein-coupled purinergic nucleotide receptor activity      3/88
+## 1327       BP       1 GO:0002687                                   positive regulation of leukocyte migration      6/84
+## 1328       BP       1 GO:0034341                                                 response to interferon-gamma      7/84
+## 3317       MF       1 GO:0046935                           1-phosphatidylinositol-3-kinase regulator activity      3/88
+## 1329       BP       1 GO:0031347                                               regulation of defense response     12/84
+## 1330       BP       1 GO:0002685                                            regulation of leukocyte migration      7/84
+## 1331       BP       1 GO:0071219                            cellular response to molecule of bacterial origin      7/84
+## 1332       BP       1 GO:0032760                      positive regulation of tumor necrosis factor production      5/84
+## 1333       BP       1 GO:1903975                                           regulation of glial cell migration      3/84
+## 1334       BP       1 GO:1903557 positive regulation of tumor necrosis factor superfamily cytokine production      5/84
+## 1335       BP       1 GO:0032635                                                     interleukin-6 production      6/84
+## 1336       BP       1 GO:0006909                                                                 phagocytosis      8/84
+## 1337       BP       1 GO:0032609                                                  interferon-gamma production      5/84
+## 1338       BP       1 GO:0042116                                                        macrophage activation      5/84
+## 3318       MF       1 GO:0035014                             phosphatidylinositol 3-kinase regulator activity      3/88
+## 1339       BP       1 GO:0002696                                  positive regulation of leukocyte activation      8/84
+## 1340       BP       1 GO:0050702                                                 interleukin-1 beta secretion      4/84
+## 1341       BP       1 GO:0060216                                                       definitive hemopoiesis      3/84
+## 3319       MF       1 GO:0001614                                      purinergic nucleotide receptor activity      3/88
+## 3320       MF       1 GO:0016502                                                 nucleotide receptor activity      3/88
+## 1342       BP       1 GO:0071216                                         cellular response to biotic stimulus      7/84
+## 3321       MF       1 GO:0004930                                          G protein-coupled receptor activity      9/88
+## 1343       BP       1 GO:0050701                                                      interleukin-1 secretion      4/84
+## 1344       BP       1 GO:0043032                                 positive regulation of macrophage activation      3/84
+## 1345       BP       1 GO:0050901                                               leukocyte tethering or rolling      3/84
+## 1346       BP       1 GO:0032729                           positive regulation of interferon-gamma production      4/84
+## 1347       BP       1 GO:0006911                                                     phagocytosis, engulfment      4/84
+## 1348       BP       1 GO:0070098                                         chemokine-mediated signaling pathway      4/84
+## 1349       BP       1 GO:0007599                                                                   hemostasis      8/84
+## 1350       BP       1 GO:0032691                         negative regulation of interleukin-1 beta production      3/84
+## 3137       MF      -1 GO:0070888                                                                E-box binding      3/41
+## 1351       BP       1 GO:0032692                              negative regulation of interleukin-1 production      3/84
+## 1352       BP       1 GO:0001819                                   positive regulation of cytokine production      9/84
+## 1353       BP       1 GO:0031349                                      positive regulation of defense response      8/84
+## 1354       BP       1 GO:0050766                                          positive regulation of phagocytosis      4/84
+## 3871     KEGG       1   hsa04061                Viral protein interaction with cytokine and cytokine receptor      4/46
+## 1355       BP       1 GO:0043410                                          positive regulation of MAPK cascade     10/84
+## 1356       BP       1 GO:0071222                                      cellular response to lipopolysaccharide      6/84
+## 1357       BP       1 GO:0099024                                                 plasma membrane invagination      4/84
+## 1358       BP       1 GO:1990868                                                        response to chemokine      4/84
+## 1359       BP       1 GO:1990869                                               cellular response to chemokine      4/84
+## 1360       BP       1 GO:0032637                                                     interleukin-8 production      4/84
+## 1361       BP       1 GO:0050729                                 positive regulation of inflammatory response      5/84
+## 1362       BP       1 GO:0050718                          positive regulation of interleukin-1 beta secretion      3/84
+## 1363       BP       1 GO:0032675                                       regulation of interleukin-6 production      5/84
+## 1364       BP       1 GO:0035590                             purinergic nucleotide receptor signaling pathway      3/84
+## 1365       BP       1 GO:0050716                               positive regulation of interleukin-1 secretion      3/84
+## 1366       BP       1 GO:0032103                         positive regulation of response to external stimulus      9/84
+## 1367       BP       1 GO:0002831                                    regulation of response to biotic stimulus      8/84
+## 1368       BP       1 GO:0002275                          myeloid cell activation involved in immune response     10/84
+## 1369       BP       1 GO:0030851                                                  granulocyte differentiation      3/84
+## 1370       BP       1 GO:2000403                                  positive regulation of lymphocyte migration      3/84
+## 1371       BP       1 GO:0002573                                            myeloid leukocyte differentiation      6/84
+## 1372       BP       1 GO:0010324                                                        membrane invagination      4/84
+## 1373       BP       1 GO:0061756                              leukocyte adhesion to vascular endothelial cell      3/84
+## 1374       BP       1 GO:0032649                                    regulation of interferon-gamma production      4/84
+## 3872     KEGG       1   hsa04060                                       Cytokine-cytokine receptor interaction      6/46
+## 3322       MF       1 GO:0005126                                                    cytokine receptor binding      6/88
+## 1375       BP       1 GO:0032496                                               response to lipopolysaccharide      7/84
+## 1376       BP       1 GO:1903532                                     positive regulation of secretion by cell      8/84
+## 1377       BP       1 GO:0072676                                                         lymphocyte migration      4/84
+## 1378       BP       1 GO:0007159                                                 leukocyte cell-cell adhesion      7/84
+## 1379       BP       1 GO:0032755                              positive regulation of interleukin-6 production      4/84
+## 1380       BP       1 GO:0002237                                     response to molecule of bacterial origin      7/84
+## 1381       BP       1 GO:0002683                                 negative regulation of immune system process      8/84
+## 1382       BP       1 GO:1905521                                           regulation of macrophage migration      3/84
+## 1383       BP       1 GO:0007596                                                            blood coagulation      7/84
+## 1384       BP       1 GO:0050817                                                                  coagulation      7/84
+## 1385       BP       1 GO:0050706                                   regulation of interleukin-1 beta secretion      3/84
+## 1386       BP       1 GO:0051047                                             positive regulation of secretion      8/84
+## 1387       BP       1 GO:0042035                                  regulation of cytokine biosynthetic process      4/84
+## 1388       BP       1 GO:0050764                                                   regulation of phagocytosis      4/84
+## 1389       BP       1 GO:0001774                                                   microglial cell activation      3/84
+## 1390       BP       1 GO:0002269                       leukocyte activation involved in inflammatory response      3/84
+## 1391       BP       1 GO:0030225                                                   macrophage differentiation      3/84
+## 1392       BP       1 GO:0050704                                        regulation of interleukin-1 secretion      3/84
+## 3323       MF       1 GO:0000978        RNA polymerase II cis-regulatory region sequence-specific DNA binding      9/88
+## 1393       BP       1 GO:0030335                                        positive regulation of cell migration      9/84
+## 3324       MF       1 GO:0005525                                                                  GTP binding      8/88
+## 1394       BP       1 GO:0030099                                                 myeloid cell differentiation      8/84
+## 1395       BP       1 GO:0072604                                                      interleukin-6 secretion      3/84
+## 3325       MF       1 GO:0032550                                                purine ribonucleoside binding      8/88
+## 3326       MF       1 GO:0001883                                                    purine nucleoside binding      8/88
+## 3327       MF       1 GO:0032549                                                       ribonucleoside binding      8/88
+## 1396       BP       1 GO:0008217                                                 regulation of blood pressure      5/84
+## 1397       BP       1 GO:0042089                                                cytokine biosynthetic process      4/84
+## 1398       BP       1 GO:0042107                                                   cytokine metabolic process      4/84
+## 3328       MF       1 GO:0000987                          cis-regulatory region sequence-specific DNA binding      9/88
+## 1399       BP       1 GO:1902105                                      regulation of leukocyte differentiation      6/84
+## 1400       BP       1 GO:0045766                                          positive regulation of angiogenesis      5/84
+## 1401       BP       1 GO:2000147                                         positive regulation of cell motility      9/84
+## 1402       BP       1 GO:0002363                                         alpha-beta T cell lineage commitment      2/84
+## 1403       BP       1 GO:0150078                            positive regulation of neuroinflammatory response      2/84
+## 1404       BP       1 GO:0033003                                           regulation of mast cell activation      3/84
+## 3329       MF       1 GO:0001882                                                           nucleoside binding      8/88
+## 1405       BP       1 GO:0032731                         positive regulation of interleukin-1 beta production      3/84
+## 3330       MF       1 GO:0019001                                                    guanyl nucleotide binding      8/88
+## 3331       MF       1 GO:0032561                                                guanyl ribonucleotide binding      8/88
+## 1406       BP       1 GO:0001818                                   negative regulation of cytokine production      6/84
+## 1407       BP       1 GO:0048863                                                    stem cell differentiation      6/84
+## 1408       BP       1 GO:0043030                                          regulation of macrophage activation      3/84
+## 1409       BP       1 GO:0002697                                        regulation of immune effector process      7/84
+## 1410       BP       1 GO:0040017                                            positive regulation of locomotion      9/84
+## 1411       BP       1 GO:0043369           CD4-positive or CD8-positive, alpha-beta T cell lineage commitment      2/84
+## 1412       BP       1 GO:0098883                                                              synapse pruning      2/84
+## 1413       BP       1 GO:0051272                           positive regulation of cellular component movement      9/84
+## 3332       MF       1 GO:0070888                                                                E-box binding      3/88
+## 1414       BP       1 GO:0097529                                                  myeloid leukocyte migration      5/84
+## 1415       BP       1 GO:0043300                                        regulation of leukocyte degranulation      3/84
+## 1416       BP       1 GO:0002244                                hematopoietic progenitor cell differentiation      5/84
+## 1417       BP       1 GO:0002703                                    regulation of leukocyte mediated immunity      5/84
+## 1418       BP       1 GO:0070374                                 positive regulation of ERK1 and ERK2 cascade      5/84
+## 3333       MF       1 GO:0048020                                               CCR chemokine receptor binding      2/88
+## 1419       BP       1 GO:1903708                                           positive regulation of hemopoiesis      5/84
+## 1420       BP       1 GO:0032732                              positive regulation of interleukin-1 production      3/84
+## 1421       BP       1 GO:1905517                                                         macrophage migration      3/84
+## 1422       BP       1 GO:0070372                                          regulation of ERK1 and ERK2 cascade      6/84
+## 1423       BP       1 GO:1903037                                   regulation of leukocyte cell-cell adhesion      6/84
+## 1424       BP       1 GO:0071692                                 protein localization to extracellular region      9/84
+## 1425       BP       1 GO:0045088                                         regulation of innate immune response      6/84
+## 1426       BP       1 GO:0061900                                                        glial cell activation      3/84
+## 1427       BP       1 GO:0010919                        regulation of inositol phosphate biosynthetic process      2/84
+## 1428       BP       1 GO:0033004                                  negative regulation of mast cell activation      2/84
+## 1429       BP       1 GO:0060100                              positive regulation of phagocytosis, engulfment      2/84
+## 1430       BP       1 GO:1905155                                 positive regulation of membrane invagination      2/84
+## 1431       BP       1 GO:0050878                                              regulation of body fluid levels      8/84
+## 1432       BP       1 GO:0002761                              regulation of myeloid leukocyte differentiation      4/84
+## 1433       BP       1 GO:1904018                               positive regulation of vasculature development      5/84
+## 1434       BP       1 GO:0008347                                                         glial cell migration      3/84
+## 1435       BP       1 GO:0043551                         regulation of phosphatidylinositol 3-kinase activity      3/84
+## 1436       BP       1 GO:0072678                                                             T cell migration      3/84
+## 3334       MF       1 GO:0019955                                                             cytokine binding      4/88
+## 1437       BP       1 GO:0001562                                                        response to protozoan      2/84
+## 1438       BP       1 GO:0042832                                                defense response to protozoan      2/84
+## 1439       BP       1 GO:0060099                                       regulation of phagocytosis, engulfment      2/84
+## 1440       BP       1 GO:1903978                                     regulation of microglial cell activation      2/84
+## 1441       BP       1 GO:2000401                                           regulation of lymphocyte migration      3/84
+## 1442       BP       1 GO:0043270                                         positive regulation of ion transport      6/84
+## 1443       BP       1 GO:0042108                         positive regulation of cytokine biosynthetic process      3/84
+## 1444       BP       1 GO:0070371                                                        ERK1 and ERK2 cascade      6/84
+## 1445       BP       1 GO:0002790                                                            peptide secretion      9/84
+## 1446       BP       1 GO:0002360                                                    T cell lineage commitment      2/84
+## 1447       BP       1 GO:0042104                        positive regulation of activated T cell proliferation      2/84
+## 1448       BP       1 GO:1905153                                          regulation of membrane invagination      2/84
+## 1449       BP       1 GO:0002886                            regulation of myeloid leukocyte mediated immunity      3/84
+## 1450       BP       1 GO:0045765                                                   regulation of angiogenesis      6/84
+## 1451       BP       1 GO:0032677                                       regulation of interleukin-8 production      3/84
+## 1452       BP       1 GO:0045123                                                       cellular extravasation      3/84
+## 1453       BP       1 GO:0050727                                          regulation of inflammatory response      6/84
+## 1454       BP       1 GO:0002577                            regulation of antigen processing and presentation      2/84
+## 1455       BP       1 GO:0150146                                                    cell junction disassembly      2/84
+## 1456       BP       1 GO:0006954                                                        inflammatory response      9/84
+## 1457       BP       1 GO:0031663                                lipopolysaccharide-mediated signaling pathway      3/84
+##            pvalue
+## 1311 4.442846e-08
+## 1312 5.955807e-08
+## 1313 2.042035e-07
+## 1314 2.762117e-07
+## 1315 4.846558e-07
+## 1316 5.291141e-07
+## 1317 6.457953e-07
+## 1318 2.297132e-06
+## 1319 2.349005e-06
+## 1320 3.605350e-06
+## 1321 3.605350e-06
+## 1322 3.637541e-06
+## 1323 6.604984e-06
+## 1324 9.663583e-06
+## 1325 2.188166e-05
+## 1326 2.555242e-05
+## 3316 3.086309e-05
+## 1327 3.901699e-05
+## 1328 3.938836e-05
+## 3317 4.223712e-05
+## 1329 4.302992e-05
+## 1330 4.665008e-05
+## 1331 4.862740e-05
+## 1332 5.573978e-05
+## 1333 6.417224e-05
+## 1334 6.438378e-05
+## 1335 6.633435e-05
+## 1336 7.418961e-05
+## 1337 7.924753e-05
+## 1338 8.474696e-05
+## 3318 9.186960e-05
+## 1339 9.207168e-05
+## 1340 9.843140e-05
+## 1341 1.011745e-04
+## 3319 1.142974e-04
+## 3320 1.142974e-04
+## 1342 1.169372e-04
+## 3321 1.277876e-04
+## 1343 1.320556e-04
+## 1344 1.498475e-04
+## 1345 1.498475e-04
+## 1346 1.586476e-04
+## 1347 1.733017e-04
+## 1348 1.733017e-04
+## 1349 2.032086e-04
+## 1350 2.116152e-04
+## 3137 2.187705e-04
+## 1351 2.478391e-04
+## 1352 2.514522e-04
+## 1353 2.564692e-04
+## 1354 2.825185e-04
+## 3871 2.923628e-04
+## 1355 2.986591e-04
+## 1356 3.212669e-04
+## 1357 3.279249e-04
+## 1358 3.279249e-04
+## 1359 3.279249e-04
+## 1360 3.783360e-04
+## 1361 3.798024e-04
+## 1362 4.321639e-04
+## 1363 4.766011e-04
+## 1364 4.888890e-04
+## 1365 4.888890e-04
+## 1366 4.971077e-04
+## 1367 5.110894e-04
+## 1368 5.390682e-04
+## 1369 5.501749e-04
+## 1370 5.501749e-04
+## 1371 5.551129e-04
+## 1372 5.626928e-04
+## 1373 6.161675e-04
+## 1374 6.754461e-04
+## 3872 7.205888e-04
+## 3322 7.359591e-04
+## 1375 7.424577e-04
+## 1376 7.846042e-04
+## 1377 8.033448e-04
+## 1378 8.182442e-04
+## 1379 8.495298e-04
+## 1380 9.655090e-04
+## 1381 9.791509e-04
+## 1382 1.021620e-03
+## 1383 1.034691e-03
+## 1384 1.082942e-03
+## 1385 1.118743e-03
+## 1386 1.143604e-03
+## 1387 1.166745e-03
+## 1388 1.166745e-03
+## 1389 1.330039e-03
+## 1390 1.330039e-03
+## 1391 1.330039e-03
+## 1392 1.330039e-03
+## 3323 1.337238e-03
+## 1393 1.367487e-03
+## 3324 1.384455e-03
+## 1394 1.431051e-03
+## 1395 1.444451e-03
+## 3325 1.493956e-03
+## 3326 1.580520e-03
+## 3327 1.580520e-03
+## 1396 1.596835e-03
+## 1397 1.632240e-03
+## 1398 1.632240e-03
+## 3328 1.632513e-03
+## 1399 1.635117e-03
+## 1400 1.649303e-03
+## 1401 1.654766e-03
+## 1402 1.677685e-03
+## 1403 1.677685e-03
+## 1404 1.691385e-03
+## 3329 1.798052e-03
+## 1405 1.824131e-03
+## 3330 1.830975e-03
+## 3331 1.830975e-03
+## 1406 1.942791e-03
+## 1407 1.942791e-03
+## 1408 1.963208e-03
+## 1409 2.003158e-03
+## 1410 2.018912e-03
+## 1411 2.042202e-03
+## 1412 2.042202e-03
+## 1413 2.049387e-03
+## 3332 2.051128e-03
+## 1414 2.052809e-03
+## 1415 2.108721e-03
+## 1416 2.115847e-03
+## 1417 2.180288e-03
+## 1418 2.180288e-03
+## 3333 2.213958e-03
+## 1419 2.246151e-03
+## 1420 2.260772e-03
+## 1421 2.260772e-03
+## 1422 2.292524e-03
+## 1423 2.346125e-03
+## 1424 2.374893e-03
+## 1425 2.400666e-03
+## 1426 2.419462e-03
+## 1427 2.440725e-03
+## 1428 2.440725e-03
+## 1429 2.440725e-03
+## 1430 2.440725e-03
+## 1431 2.485301e-03
+## 1432 2.602808e-03
+## 1433 2.748562e-03
+## 1434 2.757143e-03
+## 1435 2.757143e-03
+## 1436 2.757143e-03
+## 3334 2.788894e-03
+## 1437 2.872826e-03
+## 1438 2.872826e-03
+## 1439 2.872826e-03
+## 1440 2.872826e-03
+## 1441 2.936322e-03
+## 1442 3.000153e-03
+## 1443 3.122514e-03
+## 1444 3.132401e-03
+## 1445 3.149398e-03
+## 1446 3.338079e-03
+## 1447 3.338079e-03
+## 1448 3.338079e-03
+## 1449 3.516285e-03
+## 1450 3.629843e-03
+## 1451 3.724031e-03
+## 1452 3.724031e-03
+## 1453 3.782205e-03
+## 1454 3.836064e-03
+## 1455 3.836064e-03
+## 1456 3.902893e-03
+## 1457 3.939125e-03</code></pre>
 </div>
-<div id="do-go-and-kegg" class="section level2">
-<h2><span class="header-section-number">1.17</span> do GO and KEGG</h2>
-<p>goBP_Adj &lt;- compareCluster(sigGeneList, fun = “enrichGO”,
-universe = geneUniverse, OrgDb = org.Hs.eg.db,
-ont = “BP”, pAdjustMethod = “BH”, pvalueCutoff = 1,
-qvalueCutoff = 1, readable= TRUE)</p>
-<p>goMF_Adj &lt;- compareCluster(sigGeneList, fun = “enrichGO”,
-universe = geneUniverse, OrgDb = org.Hs.eg.db,
-ont = “MF”, pAdjustMethod = “BH”, pvalueCutoff = 1,
-qvalueCutoff = 1, readable= TRUE)</p>
-<p>goCC_Adj &lt;- compareCluster(sigGeneList, fun = “enrichGO”,
-universe = geneUniverse, OrgDb = org.Hs.eg.db,
-ont = “CC”, pAdjustMethod = “BH”, pvalueCutoff = 1,
-qvalueCutoff = 1, readable= TRUE)</p>
-<p>kegg_Adj &lt;- compareCluster(sigGeneList, fun = “enrichKEGG”,
-universe = geneUniverse, pAdjustMethod = “BH”,
-pvalueCutoff = 1, qvalueCutoff = 1)</p>
-<p>save(goBP_Adj, goCC_Adj, goMF_Adj, kegg_Adj,
-file = here(“DE_analysis”, “rdas”, “gene_set_objects_p005.rda”))</p>
-<p>goList = list(BP = goBP_Adj, MF = goMF_Adj, CC = goCC_Adj, KEGG = kegg_Adj)
-goDf = dplyr::bind_rows(lapply(goList, as.data.frame), .id = “Ontology”)
-goDf = goDf[order(goDf$pvalue),]</p>
-<p>write.csv(goDf, file = here(“DE_analysis”, “tables”, “geneSet_output.csv”), row.names=FALSE)</p>
-<p>options(width=130)
-goDf[goDf$p.adjust &lt; 0.05, c(1:5,7)]</p>
-<div id="section-7" class="section level48">
-<p class="heading"><span class="header-section-number">1.17.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> </p>
-<p>#make heatmap of differentially expressed genes#
-################################################</p>
-<p>exprs_heatmap = vGene$E[rownames(sigGene),]</p>
-<p>df &lt;- as.data.frame(colData(rse_gene)[,c(“PrimaryDx”)])
+<div id="visualize-differentially-expressed-genes" class="section level2">
+<h2><span class="header-section-number">1.9</span> Visualize differentially expressed genes</h2>
+<p>Here we visualize DEGs with a heatmap.</p>
+<pre class="r"><code>exprs_heatmap = vGene$E[rownames(sigGene),]
+
+df &lt;- as.data.frame(colData(rse_gene)[,c(&quot;PrimaryDx&quot;)])
 rownames(df) &lt;- colnames(exprs_heatmap)
-colnames(df)&lt;-“diagnosis”</p>
-<p>pdf(file=here(“DE_analysis”, “pdfs”, “de_heatmap.pdf”))
+colnames(df)&lt;-&quot;diagnosis&quot;
+
+pdf(file=here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;de_heatmap.pdf&quot;))
 pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
-cluster_cols=TRUE, annotation_col=df)
-dev.off()</p>
-</div>
+         cluster_cols=TRUE, annotation_col=df)
+dev.off()</code></pre>
+<pre><code>## pdf 
+##   3</code></pre>
 </div>
 </div>
 
