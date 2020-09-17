@@ -20,6 +20,7 @@ A guided example showing how processed results from the RNAseq pipeline [SPEAQea
 ## Bib setup
 library('knitcitations')
 library('BiocStyle')
+library('devtools')
 
 ## Load knitcitations with a clean bibliography
 cleanbib()
@@ -29,6 +30,7 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 bibs <- c(
     R = citation(),
     biocStyle = citation('BiocStyle'),
+    devtools = citation('devtools'),
     clusterProfiler = citation('clusterProfiler'),
     edgeR = citation('edgeR')[1],
     getopt = citation('getopt'),
@@ -59,6 +61,7 @@ The analysis was possible thanks to R and many of its packages:
 * R `r citep(bib[['R']])`
 * `r Biocpkg('BiocStyle')` `r citep(bib[['biocStyle']])`
 * `r Biocpkg('clusterProfiler')` `r citep(bib[['clusterProfiler']])`
+* `r CRANpkg('devtools')` `r citep(bib[['devtools']])`
 * `r Biocpkg('edgeR')` `r citep(bib[['edgeR']])`
 * `r CRANpkg('getopt')` `r citep(bib[['getopt']])`
 * `r CRANpkg('here')` `r citep(bib[['here']])`
@@ -77,7 +80,19 @@ The analysis was possible thanks to R and many of its packages:
 
 [Bibliography file](index.bib)
 
-```{r bibliography, results='asis', echo=FALSE, warning = FALSE, message = FALSE}
-## Print bibliography
+```{r bibliography, results='asis', echo=FALSE, warning = FALSE}
+# Print bibliography
 bibliography()
+```
+
+```{r reproducibility}
+# Time spent creating this report:
+diff(c(timestart, Sys.time()))
+
+# Date this report was generated
+message(Sys.time())
+
+# Reproducibility info
+options(width = 120)
+devtools::session_info()
 ```

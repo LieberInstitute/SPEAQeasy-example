@@ -21,17 +21,22 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 
 ## Write bibliography information
 bibs <- c(
-    SummarizedExperiment = citation('SummarizedExperiment'),
-    recount = citation('recount'),
-    edgeR = citation('edgeR'),
-    limma = citation('limma'),
-    jaffelab = citation('jaffelab'),
-    RColorBrewer = citation('RColorBrewer'),
+    BiocStyle = citation('BiocStyle'),
     clusterProfiler = citation('clusterProfiler'),
+    devtools = citation('devtools'),
+    edgeR = citation('edgeR'),
+    here = citation('here'),
+    jaffelab = citation('jaffelab'),
+    knitcitations = citation('knitcitations'),
+    limma = citation('limma'),
     org.Hs.eg.db = citation('org.Hs.eg.db'),
-    pheatmap = citation('pheatmap'),R = citation(),
-    voom = RefManageR::BibEntry('article', key = 'voom', author = 'CW Law and Y Chen and W Shi and GK Smyth', year = '2014', title = 'Voom: precision weights unlock linear model analysis tools for RNA-seq read counts', journal = 'Genome Biology', volume = '15', pages = 'R29'),
-    here = citation("here")
+    pheatmap = citation('pheatmap'),
+    R = citation(),
+    RColorBrewer = citation('RColorBrewer'),
+    rmarkdown = citation('rmarkdown'),
+    recount = citation('recount'),
+    SummarizedExperiment = citation('SummarizedExperiment'),
+    voom = RefManageR::BibEntry('article', key = 'voom', author = 'CW Law and Y Chen and W Shi and GK Smyth', year = '2014', title = 'Voom: precision weights unlock linear model analysis tools for RNA-seq read counts', journal = 'Genome Biology', volume = '15', pages = 'R29')
 )
 
 write.bibtex(bibs, file = 'de_analysis.bib')
@@ -58,6 +63,7 @@ library("clusterProfiler")
 library("org.Hs.eg.db")
 library("pheatmap")
 library("here")
+library("devtools")
 ```
 
 ## Load data and prepare directories to place outputs in
@@ -335,4 +341,44 @@ pdf(file=here("DE_analysis", "pdfs", "de_heatmap.pdf"))
 pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
          cluster_cols=TRUE, annotation_col=df)
 dev.off()
+```
+
+# Reproducibility
+
+This analysis report was made possible thanks to:
+
+* R `r citep(bib[['R']])`
+* `r Biocpkg('BiocStyle')` `r citep(bib[['BiocStyle']])`
+* `r Biocpkg('clusterProfiler')` `r citep(bib[['clusterProfiler']])`
+* `r CRANpkg('devtools')` `r citep(bib[['devtools']])`
+* `r Biocpkg('edgeR')` `r citep(bib[['edgeR']])`
+* `r CRANpkg('here')` `r citep(bib[['here']])`
+* `r Githubpkg('LieberInstitute/jaffelab')` `r citep(bib[['jaffelab']])`
+* `r Biocpkg('limma')` `r citep(bib[['limma']])`
+* `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`
+* `r Biocpkg('org.Hs.eg.db')` `r citep(bib[['org.Hs.eg.db']])`
+* `r CRANpkg('pheatmap')` `r citep(bib[['pheatmap']])`
+* `r CRANpkg('RColorBrewer')` `r citep(bib[['RColorBrewer']])`
+* `r Biocpkg('recount')` `r citep(bib[['recount']])`
+* `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])`
+* `r Biocpkg('SummarizedExperiment')` `r citep(bib[['SummarizedExperiment']])`
+* `r Biocpkg('voom')` `r citep(bib[['voom']])`
+
+[Bibliography file](de_analysis.bib)
+
+```{r bibliography, results='asis', echo=FALSE, warning = FALSE}
+# Print bibliography
+bibliography()
+```
+
+```{r reproducibility}
+# Time spent creating this report:
+diff(c(timestart, Sys.time()))
+
+# Date this report was generated
+message(Sys.time())
+
+# Reproducibility info
+options(width = 120)
+devtools::session_info()
 ```

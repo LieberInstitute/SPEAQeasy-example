@@ -19,10 +19,14 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 ## Write bibliography information
 bibs <- c(
     SummarizedExperiment = citation('SummarizedExperiment'),
+    devtools = citation('devtools'),
     jaffelab = citation('jaffelab'),
-    pheatmap = citation('pheatmap'),R = citation(),
+    knitcitations = citation('knitcitations'),
+    pheatmap = citation('pheatmap'),
+    R = citation(),
     tidyr = citation("tidyr"),
     here = citation('here'),
+    rmarkdown = citation('rmarkdown'),
     VariantAnnotation = citation("VariantAnnotation")
 )
 write.bibtex(bibs, file = 'swap_analysis.bib')
@@ -39,6 +43,7 @@ library("jaffelab")
 library("here")
 library("VariantAnnotation")
 library("SummarizedExperiment")
+library("devtools")
 ```
 
 
@@ -217,4 +222,37 @@ colData(rse_gene)$BrNum <- pd_example$BrNum
 save(rse_gene, file = "rse_speaqeasy.RData")
 ```
 
+# Reproducibility
 
+This analysis report was made possible thanks to:
+    
+* R `r citep(bib[['R']])`
+* `r CRANpkg('devtools')` `r citep(bib[['devtools']])`
+* `r CRANpkg('here')` `r citep(bib[['here']])`
+* `r Githubpkg('LieberInstitute/jaffelab')` `r citep(bib[['jaffelab']])`
+* `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`
+* `r CRANpkg('pheatmap')` `r citep(bib[['pheatmap']])`
+* `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])`
+* `r Biocpkg('SummarizedExperiment')` `r citep(bib[['SummarizedExperiment']])`
+* `r CRANpkg('tidyr')` `r citep(bib[['tidyr']])`
+* `r Biocpkg('voom')` `r citep(bib[['voom']])`
+* `r Biocpkg('VariantAnnotation')` `r citep(bib[['VariantAnnotation']])`
+
+[Bibliography file](swap_analysis.bib)
+
+```{r bibliography, results='asis', echo=FALSE, warning = FALSE}
+# Print bibliography
+bibliography()
+```
+
+```{r reproducibility}
+# Time spent creating this report:
+diff(c(timestart, Sys.time()))
+
+# Date this report was generated
+message(Sys.time())
+
+# Reproducibility info
+options(width = 120)
+devtools::session_info()
+```
