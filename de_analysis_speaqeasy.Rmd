@@ -96,6 +96,15 @@ getPcaVars(statsPca)[1]
 rse_gene = rse_gene[rowMeans(getRPKM(rse_gene,"Length")) > 0.2,]
 
 # Check if certain statistics changed by race or region
+
+# Display box plots here
+boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion,xlab="")
+boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion,xlab="")
+boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion,xlab="")
+boxplot(rse_gene$mitoRate ~ rse_gene$Race,las=3,xlab="")
+boxplot(rse_gene$gene_Assigned ~ rse_gene$Race,las=3,xlab="")
+
+# Save box plots to PDF
 pdf(file = here("DE_analysis", "pdfs", "Region_Race_cellcheck.pdf"))
 boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion,xlab="")
 boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion,xlab="")
@@ -115,33 +124,40 @@ pca_vars = getPcaVars(pca)
 pca_vars_lab = paste0("PC", seq(along=pca_vars), ": ",
 	pca_vars, "% Var Expl")
 
+# Group together code for generating plots of interest
+generate_plots = function() {
+    par(mar=c(8,6,2,2),cex.axis=1.8,cex.lab=1.8)
+    palette(brewer.pal(4,"Dark2"))
+    
+    # PC1 vs. PC2
+    plot(pca$x, pch=21, bg=factor(rse_gene$PrimaryDx),cex=1.2,
+    	xlab = pca_vars_lab[1], ylab = pca_vars_lab[2])
+    legend("bottomleft", levels(rse_gene$PrimaryDx), col=1:2, pch=15,cex=2)
+    
+    
+    # By line
+    for(i in 1:10) {
+    	boxplot(pca$x[,i] ~ rse_gene$Sex,
+    		ylab=pca_vars_lab[i], las = 3,xlab="Sex",outline=FALSE)
+    	points( pca$x[,i] ~ jitter(as.numeric(factor(rse_gene$Sex))),
+    		pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
+    }
+    
+    # By experiment
+    for(i in 1:10) {
+    	boxplot(pca$x[,i] ~ rse_gene$Race,
+    		ylab=pca_vars_lab[i], las = 3,xlab="Race",outline=FALSE)
+    	points( pca$x[,i] ~ jitter(as.numeric(factor(rse_gene$Race))),
+    		pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
+    }
+}
 
-# Set up plots
+# Display plots
+generate_plots()
+
+# Write plots to PDF
 pdf(here("DE_analysis", "pdfs", "PCA_plotsExprs.pdf"), w=9)
-par(mar=c(8,6,2,2),cex.axis=1.8,cex.lab=1.8)
-palette(brewer.pal(4,"Dark2"))
-
-# PC1 vs. PC2
-plot(pca$x, pch=21, bg=factor(rse_gene$PrimaryDx),cex=1.2,
-	xlab = pca_vars_lab[1], ylab = pca_vars_lab[2])
-legend("bottomleft", levels(rse_gene$PrimaryDx), col=1:2, pch=15,cex=2)
-
-
-# By line
-for(i in 1:10) {
-	boxplot(pca$x[,i] ~ rse_gene$Sex,
-		ylab=pca_vars_lab[i], las = 3,xlab="Sex",outline=FALSE)
-	points( pca$x[,i] ~ jitter(as.numeric(factor(rse_gene$Sex))),
-		pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
-}
-
-# By experiment
-for(i in 1:10) {
-	boxplot(pca$x[,i] ~ rse_gene$Race,
-		ylab=pca_vars_lab[i], las = 3,xlab="Race",outline=FALSE)
-	points( pca$x[,i] ~ jitter(as.numeric(factor(rse_gene$Race))),
-		pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
-}
+generate_plots()
 dev.off()
 ```
 
@@ -155,8 +171,12 @@ dge = calcNormFactors(dge)
 # Mean-variance
 mod = model.matrix(~PrimaryDx + PC + BrainRegion,
 	data=colData(rse_gene))
+
+vGene = invisible(voom(dge,mod,plot=TRUE))
+
+# Also write mean-variance plot to PDF
 pdf(file = "DE_analysis/pdfs/vGene.pdf")
-vGene = voom(dge,mod,plot=TRUE)
+invisible(voom(dge,mod,plot=TRUE))
 dev.off()
 
 # Get duplicate correlation
@@ -177,6 +197,8 @@ outGeneDupl = topTable(ebGeneDupl,coef=2,
 pdf(file = here("DE_analysis", "pdfs", "hist_pval.pdf"))
 hist(outGeneDupl$P.Value)
 dev.off()
+
+hist(outGeneDupl$P.Value)
 table(outGeneDupl$adj.P.Val < 0.05)
 table(outGeneDupl$adj.P.Val < 0.1)
 
@@ -196,39 +218,55 @@ write.csv(sigGeneDupl, file = here("DE_analysis", "tables", "de_stats_fdr10_sort
 ```{r check_plots, echo=TRUE}
 exprs = vGene$E[rownames(sigGeneDupl),]
 
-# Make boxplots
-pdf(here("DE_analysis", "pdfs", "DE_boxplots_byDiagnosis.pdf"), w=10)
-par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
-palette(brewer.pal(4,"Dark2"))
-
-for(i in 1:nrow(sigGeneDupl)) {
-	yy = exprs[i,]
-	boxplot(yy ~ rse_gene$PrimaryDx, outline=FALSE,
-		ylim=range(yy), ylab="Normalized log2 Exprs", xlab="",
-		main = paste(sigGeneDupl$Symbol[i], "-", sigGeneDupl$gencodeID[i]))
-	points(yy ~ jitter(as.numeric(rse_gene$PrimaryDx)),
-		pch = 21, bg= rse_gene$PrimaryDx,cex=1.3)
-	ll = ifelse(sigGeneDupl$logFC[i] > 0, "topleft", "topright")
-	legend(ll, paste0("p=", signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
+# Group together code for displaying boxplots
+generate_plots = function() {
+    par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
+    palette(brewer.pal(4,"Dark2"))
+    
+    for(i in 1:nrow(sigGeneDupl)) {
+        yy = exprs[i,]
+   	    boxplot(yy ~ rse_gene$PrimaryDx, outline=FALSE,
+            ylim=range(yy), ylab="Normalized log2 Exprs", xlab="",
+        main = paste(sigGeneDupl$Symbol[i], "-", sigGeneDupl$gencodeID[i]))
+        points(yy ~ jitter(as.numeric(rse_gene$PrimaryDx)),
+            pch = 21, bg= rse_gene$PrimaryDx,cex=1.3)
+        ll = ifelse(sigGeneDupl$logFC[i] > 0, "topleft", "topright")
+        legend(ll, paste0("p=", signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
+    }
 }
+
+# Show boxplots
+generate_plots()
+
+# Write plots to PDF
+pdf(here("DE_analysis", "pdfs", "DE_boxplots_byDiagnosis.pdf"), w=10)
+generate_plots()
 dev.off()
 
 
 e = geneExprs[rownames(sigGeneDupl),]
 
-pdf(here("DE_analysis", "pdfs", "DE_boxplots_byGenome_log2RPKM.pdf"), w=10)
-par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
-palette(brewer.pal(4,"Dark2"))
-for(i in 1:nrow(sigGeneDupl)) {
-	yy = e[i,]
-	boxplot(yy ~ rse_gene$PrimaryDx, las=3,outline=FALSE,
-		ylim=range(yy), ylab="log2(RPKM+1)", xlab="",
-		main = paste(sigGeneDupl$Symbol[i], "-", sigGeneDupl$gencodeID[i]))
-	points(yy ~ jitter(as.numeric(rse_gene$PrimaryDx)),
-		pch = 21, bg= rse_gene$PrimaryDx,cex=1.3)
-	ll = ifelse(sigGeneDupl$logFC[i] > 0, "topleft", "topright")
-	legend(ll, paste0("p=", signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
+generate_plots = function() {
+    par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
+    palette(brewer.pal(4,"Dark2"))
+    for(i in 1:nrow(sigGeneDupl)) {
+   	    yy = e[i,]
+        boxplot(yy ~ rse_gene$PrimaryDx, las=3,outline=FALSE,
+  		      ylim=range(yy), ylab="log2(RPKM+1)", xlab="",
+        main = paste(sigGeneDupl$Symbol[i], "-", sigGeneDupl$gencodeID[i]))
+   	    points(yy ~ jitter(as.numeric(rse_gene$PrimaryDx)),
+            pch = 21, bg= rse_gene$PrimaryDx,cex=1.3)
+        ll = ifelse(sigGeneDupl$logFC[i] > 0, "topleft", "topright")
+   	    legend(ll, paste0("p=", signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
+    }
 }
+
+# Display plots
+generate_plots()
+
+# Write the same plots to PDF
+pdf(here("DE_analysis", "pdfs", "DE_boxplots_byGenome_log2RPKM.pdf"), w=10)
+generate_plots()
 dev.off()
 ```
 
@@ -288,6 +326,11 @@ df <- as.data.frame(colData(rse_gene)[,c("PrimaryDx")])
 rownames(df) <- colnames(exprs_heatmap)
 colnames(df)<-"diagnosis"
 
+# Display heatmap
+pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
+         cluster_cols=TRUE, annotation_col=df)
+
+# Write heatmap to PDF
 pdf(file=here("DE_analysis", "pdfs", "de_heatmap.pdf"))
 pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
          cluster_cols=TRUE, annotation_col=df)
