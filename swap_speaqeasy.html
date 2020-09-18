@@ -16,24 +16,19 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
+
 </style>
 <script type="text/javascript">
 if (window.hljs) {
@@ -74,19 +69,17 @@ h6 {
 }
 </style>
 
+<link rel="stylesheet" href="/usr/local/lib/R/host-site-library/BiocStyle/resources/html/bioconductor.css" type="text/css" />
 
 
 
 <style type = "text/css">
 .main-container {
-  max-width: 940px;
+  max-width: 828px;
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
+
 img {
   max-width:100%;
 }
@@ -254,69 +247,13 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
 
-#TOC {
-  margin: 25px 0px 20px 0px;
+<script>
+function toggle_visibility(id1) {
+  var e = document.getElementById(id1);
+  e.style.display = ((e.style.display!="none") ? "none" : "block");
 }
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
+</script>
 
 </head>
 
@@ -324,16 +261,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -383,42 +310,24 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">SPEAQeasy_example</h1>
-<h4 class="author">Josh Stolz</h4>
-<h4 class="date">8/7/2020</h4>
+<p class="author-name">Josh Stolz</p>
+<h4 class="date">9/18/2020</h4>
 
 </div>
 
+<h1>Contents</h1>
+<div id="TOC">
+<ul>
+<li><a href="#reproducibility"><span class="toc-section-number">1</span> Reproducibility</a></li>
+</ul>
+</div>
 
 <pre class="r"><code>library(&quot;pheatmap&quot;)
-library(&quot;tidyr&quot;)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;tidyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:Matrix&#39;:
-## 
-##     expand, pack, unpack</code></pre>
-<pre><code>## The following object is masked from &#39;package:S4Vectors&#39;:
-## 
-##     expand</code></pre>
-<pre class="r"><code>library(&quot;jaffelab&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;jaffelab&quot;)
 library(&quot;here&quot;)
-library(&quot;VariantAnnotation&quot;)</code></pre>
-<pre><code>## Loading required package: Rsamtools</code></pre>
-<pre><code>## Loading required package: Biostrings</code></pre>
-<pre><code>## Loading required package: XVector</code></pre>
-<pre><code>## 
-## Attaching package: &#39;Biostrings&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:base&#39;:
-## 
-##     strsplit</code></pre>
-<pre><code>## 
-## Attaching package: &#39;VariantAnnotation&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:clusterProfiler&#39;:
-## 
-##     idType</code></pre>
-<pre><code>## The following object is masked from &#39;package:base&#39;:
-## 
-##     tabulate</code></pre>
-<pre class="r"><code>library(&quot;SummarizedExperiment&quot;)
+library(&quot;VariantAnnotation&quot;)
+library(&quot;SummarizedExperiment&quot;)
 library(&quot;devtools&quot;)
 library(&quot;BiocStyle&quot;)</code></pre>
 <p>In order to resolve the swaps to our best ability we need four data sets. Here we have load snpGeno_example which is from our topmed imputed genotype data, a phenotype data sheet (pd_example), a vcf file of the relevant speaqeasy output (Speaqeasy), and our current genotype sample sheet (brain_sentrix). This file is wrote in the directory listed below.</p>
@@ -469,7 +378,8 @@ corner(speaqeasy_Cor)</code></pre>
 ## R14296_H7JLCBBXX       0.03106472       0.18748043       0.04958385       1.00000000       0.16653808       0.27251010
 ## R14247_HF3JYBBXX       0.03384912       0.07080491       0.28798955       0.16653808       1.00000000       0.14097339
 ## R15093_HFY2MBBXX       0.18938568       0.04720309       0.25477682       0.27251010       0.14097339       1.00000000</code></pre>
-<p>Here in the heatmap below we can see that several points do not correlate with themselves in a semetrical matrix. This could be mismatches, but it also could be a result of a brain being sequenced twice. We will dig more into this later on. <img src="swap_speaqeasy_files/figure-html/check_correlations_speaqeasy-1.png" width="672" /></p>
+<p>Here in the heatmap below we can see that several points do not correlate with themselves in a semetrical matrix. This could be mismatches, but it also could be a result of a brain being sequenced twice. We will dig more into this later on.
+<img src="swap_speaqeasy_files/figure-html/check_correlations_speaqeasy-1.png" width="100%" /></p>
 <p>We repeat the process for the genotype data from topmed. First creating our numeric data for the genotypes.</p>
 <pre><code>## Geno_example
 ##  0|0  0|1  1|0  1|1 
@@ -488,7 +398,8 @@ corner(speaqeasy_Cor)</code></pre>
 ## 4572348855_R01C02        0.08186958
 ## 5535549043_R01C01        0.05331113
 ## 5535506145_R01C01        1.00000000</code></pre>
-<p>In this case the data only appears to have samples that match themselves. However there is the potential for a second kind of error where a brain has two samples, however the do not match each other. <img src="swap_speaqeasy_files/figure-html/check_correlations_genotypes-1.png" width="672" /></p>
+<p>In this case the data only appears to have samples that match themselves. However there is the potential for a second kind of error where a brain has two samples, however the do not match each other.
+<img src="swap_speaqeasy_files/figure-html/check_correlations_genotypes-1.png" width="100%" /></p>
 <p>In order to dig into this further we will collapse the correlation matrices into a data table shown below</p>
 <pre class="r"><code>corLong = data.frame(cor = signif(as.numeric(correlation_genotype),3))
 corLong$rowSample = rep(colnames(snpsGeno_example), times = ncol(snpsGeno_example))
@@ -598,21 +509,30 @@ save(rse_gene, file = &quot;rse_speaqeasy.RData&quot;)</code></pre>
 <li><em><a href="https://bioconductor.org/packages/3.12/VariantAnnotation">VariantAnnotation</a></em> (<a href='https://bookdown.org/yihui/rmarkdown'>Xie, Allaire, and Grolemund, 2018</a>)</li>
 </ul>
 <p><a href="swap_analysis.bib">Bibliography file</a></p>
-<p>[1] J. Allaire, Y. Xie, J. McPherson, J. Luraschi, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package version 2.3. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
-<p>[2] C. Boettiger. <em>knitcitations: Citations for ‘Knitr’ Markdown Files</em>. R package version 1.0.10. 2019. &lt;URL: <a href="https://github.com/cboettig/knitcitations" class="uri">https://github.com/cboettig/knitcitations</a>&gt;.</p>
-<p>[3] L. Collado-Torres, A. E. Jaffe, and E. E. Burke. <em>jaffelab: Commonly used functions by the Jaffe lab</em>. R package version 0.99.30. 2019. &lt;URL: <a href="https://github.com/LieberInstitute/jaffelab" class="uri">https://github.com/LieberInstitute/jaffelab</a>&gt;.</p>
+<p>[1] J. Allaire, Y. Xie, J. McPherson, J. Luraschi, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package
+version 2.3. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
+<p>[2] C. Boettiger. <em>knitcitations: Citations for ‘Knitr’ Markdown Files</em>. R package version 1.0.10. 2019.
+&lt;URL: <a href="https://github.com/cboettig/knitcitations" class="uri">https://github.com/cboettig/knitcitations</a>&gt;.</p>
+<p>[3] L. Collado-Torres, A. E. Jaffe, and E. E. Burke. <em>jaffelab: Commonly used functions by the Jaffe lab</em>.
+R package version 0.99.30. 2019. &lt;URL: <a href="https://github.com/LieberInstitute/jaffelab" class="uri">https://github.com/LieberInstitute/jaffelab</a>&gt;.</p>
 <p>[4] R. Kolde. <em>pheatmap: Pretty Heatmaps</em>. R package version 1.0.12. 2019.</p>
-<p>[5] M. Morgan, V. Obenchain, J. Hester, and H. Pagès. <em>SummarizedExperiment: SummarizedExperiment container</em>. R package version 1.19.6. 2020.</p>
-<p>[6] K. Müller. <em>here: A Simpler Way to Find Your Files</em>. <a href="https://github.com/krlmlr/here" class="uri">https://github.com/krlmlr/here</a>, <a href="http://krlmlr.github.io/here" class="uri">http://krlmlr.github.io/here</a>. 2017.</p>
-<p>[7] V. Obenchain, M. Lawrence, V. Carey, S. Gogarten, et al. “VariantAnnotation: a Bioconductor package for exploration and annotation of genetic variants”. In: <em>Bioinformatics</em> 30.14 (2014), pp. 2076-2078. DOI: 10.1093/bioinformatics/btu168.</p>
-<p>[8] R Core Team. <em>R: A Language and Environment for Statistical Computing</em>. R Foundation for Statistical Computing. Vienna, Austria, 2020. &lt;URL: <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>&gt;.</p>
-<p>[9] Y. Xie, J. Allaire, and G. Grolemund. <em>R Markdown: The Definitive Guide</em>. ISBN 9781138359338. Boca Raton, Florida: Chapman and Hall/CRC, 2018. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown" class="uri">https://bookdown.org/yihui/rmarkdown</a>&gt;.</p>
+<p>[5] M. Morgan, V. Obenchain, J. Hester, and H. Pagès. <em>SummarizedExperiment: SummarizedExperiment
+container</em>. R package version 1.19.6. 2020.</p>
+<p>[6] K. Müller. <em>here: A Simpler Way to Find Your Files</em>. <a href="https://github.com/krlmlr/here" class="uri">https://github.com/krlmlr/here</a>,
+<a href="http://krlmlr.github.io/here" class="uri">http://krlmlr.github.io/here</a>. 2017.</p>
+<p>[7] V. Obenchain, M. Lawrence, V. Carey, S. Gogarten, et al. “VariantAnnotation: a Bioconductor package for
+exploration and annotation of genetic variants”. In: <em>Bioinformatics</em> 30.14 (2014), pp. 2076-2078. DOI:
+10.1093/bioinformatics/btu168.</p>
+<p>[8] R Core Team. <em>R: A Language and Environment for Statistical Computing</em>. R Foundation for Statistical
+Computing. Vienna, Austria, 2020. &lt;URL: <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>&gt;.</p>
+<p>[9] Y. Xie, J. Allaire, and G. Grolemund. <em>R Markdown: The Definitive Guide</em>. ISBN 9781138359338. Boca
+Raton, Florida: Chapman and Hall/CRC, 2018. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown" class="uri">https://bookdown.org/yihui/rmarkdown</a>&gt;.</p>
 <pre class="r"><code># Time spent creating this report:
 diff(c(timestart, Sys.time()))</code></pre>
-<pre><code>## Time difference of 1.502707 secs</code></pre>
+<pre><code>## Time difference of 1.768302 secs</code></pre>
 <pre class="r"><code># Date this report was generated
 message(Sys.time())</code></pre>
-<pre><code>## 2020-09-18 17:02:03</code></pre>
+<pre><code>## 2020-09-18 17:59:08</code></pre>
 <pre class="r"><code># Reproducibility info
 options(width = 120)
 devtools::session_info()</code></pre>
@@ -815,8 +735,6 @@ devtools::session_info()</code></pre>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -849,33 +767,26 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
 
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+        "@media screen and (max-width: 991px)": {
+            ".MathJax_Display": {
+               "text-align": "center",
+               padding: "0 0 0 0"
+            }
+         }
+      }
+    }
+  });
 </script>
-
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
   (function () {
