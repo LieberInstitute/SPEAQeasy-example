@@ -36,7 +36,7 @@ bib <- read.bibtex('swap_analysis.bib')
 names(bib) <- names(bibs)
 ```
 
-```{r libraries, include=TRUE}
+```{r libraries, message = FALSE, warning = FALSE}
 library("pheatmap")
 library("tidyr")
 library("jaffelab")
