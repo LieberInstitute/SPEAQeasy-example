@@ -1,8 +1,13 @@
 ---
 title: "SPEAQeasy_example"
 author: "Josh Stolz"
-date: "8/7/2020"
-output: html_document
+date: "9/18/2020"
+output:
+  BiocStyle::html_document:
+    toc: true
+  pdf_document:
+    toc: true
+    number_sections: true
 ---
 
 

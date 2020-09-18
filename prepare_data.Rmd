@@ -1,6 +1,7 @@
 ---
 title: 'Download SPEAQeasy Example'
-date: 'July 8, 2020'
+author: 'Nick Eagles'
+date: '9/18/2020'
 output:
   BiocStyle::html_document:
     toc: true

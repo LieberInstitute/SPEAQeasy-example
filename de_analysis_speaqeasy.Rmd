@@ -1,6 +1,6 @@
 ---
 title: 'SPEAQeasy Differential Expression Analysis'
-date: 'July 10, 2020'
+date: '9/18/2020'
 output:
   BiocStyle::html_document:
     toc: true
