@@ -64,6 +64,7 @@ library("org.Hs.eg.db")
 library("pheatmap")
 library("here")
 library("devtools")
+library("BiocStyle")
 ```
 
 ## Load data and prepare directories to place outputs in
