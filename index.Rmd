@@ -2,6 +2,15 @@
 title: SPEAQeasy Example Analysis
 output:
   html_document:
+    author:
+      - name: Nicholas J. Eagles
+        affiliation:
+        - &libd Lieber Institute for Brain Development, Johns Hopkins Medical Campus
+      - name: Leonardo Collado-Torres
+        affiliation:
+        - *libd
+        - &ccb Center for Computational Biology, Johns Hopkins University
+        email: lcolladotor@gmail.com
     theme: spacelab
 ---
 
@@ -13,6 +22,22 @@ A guided example showing how processed results from the RNAseq pipeline [SPEAQea
 * [Run SPEAQeasy on your setup](run_speaqeasy.html)
 * [Resolve identity issues and attach phenotype data](swap_speaqeasy.html)
 * [Perform differential expression and visualize results](de_analysis_speaqeasy.html)
+
+# Cite `SPEAQeasy`
+
+We hope that [`SPEAQeasy`](http://research.libd.org/SPEAQeasy/) will be useful for your research. Please use the following information to cite the package and the overall approach. Thank you!
+
+```
+ADD CITATION INFO
+```
+
+
+This is a project by the [R/Bioconductor-powered Team Data Science](https://lcolladotor.github.io/bioc_team_ds) at the [Lieber Institute for Brain Development](https://www.libd.org/).
+
+|     |     |
+|-----|-----|
+| <a href="https://lcolladotor.github.io/bioc_team_ds"><img src="http://lcolladotor.github.io/img/Leo_transparente.png" width="250px"></a> | <a href="https://www.libd.org/"><img src="http://lcolladotor.github.io/img/LIBD_logo.jpg" width="250px"></a> |
+
 
 # References
 

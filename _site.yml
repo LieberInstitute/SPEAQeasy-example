@@ -15,7 +15,7 @@ navbar:
       href: de_analysis_speaqeasy.html
   right:
     - icon: fa-github fa-lg
-      href: https://github.com/lcolladotor/twitter-stats
+      href: https://github.com/LieberInstitute/SPEAQeasy-example
 output:
   html_document:
     theme: cosmo
