@@ -1,12 +1,17 @@
 ---
 title: 'SPEAQeasy Differential Expression Analysis'
-date: '9/18/2020'
-output:
+author: 
+  - name: Joshua M. Stolz
+    affiliation:
+    - &libd Lieber Institute for Brain Development, Johns Hopkins Medical Campus
+output: 
   BiocStyle::html_document:
+    self_contained: yes
     toc: true
-  pdf_document:
-    toc: true
-    number_sections: true
+    toc_float: true
+    toc_depth: 2
+    code_folding: show
+date: '9/18/2020'
 ---
 
 ```{r 'setup', echo = FALSE, warning = FALSE, message = FALSE}

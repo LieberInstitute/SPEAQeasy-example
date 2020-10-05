@@ -1,12 +1,17 @@
 ---
 title: 'Setting up and Running SPEAQeasy'
 date: 'July 11, 2020'
-output:
+output: 
   BiocStyle::html_document:
+    self_contained: yes
     toc: true
-  pdf_document:
-    toc: true
-    number_sections: true
+    toc_float: true
+    toc_depth: 2
+    code_folding: show
+author: 
+  - name: Nicholas J. Eagles
+    affiliation:
+    - &libd Lieber Institute for Brain Development, Johns Hopkins Medical Campus
 ---
 
 # Setting up SPEAQeasy
