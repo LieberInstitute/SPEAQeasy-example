@@ -19,11 +19,24 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -243,7 +256,70 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 246px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -260,6 +336,16 @@ function toggle_visibility(id1) {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -306,30 +392,23 @@ function toggle_visibility(id1) {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">SPEAQeasy Differential Expression Analysis</h1>
+<p class="author-name">Joshua M. Stolz<span class="affil-mark">1</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>Lieber Institute for Brain Development, Johns Hopkins Medical Campus</p>
 <h4 class="date">9/18/2020</h4>
 
 </div>
 
-<h1>Contents</h1>
-<div id="TOC">
-<ul>
-<li><a href="#analysis"><span class="toc-section-number">1</span> Analysis</a><ul>
-<li><a href="#load-required-libraries"><span class="toc-section-number">1.1</span> Load required libraries</a></li>
-<li><a href="#load-data-and-prepare-directories-to-place-outputs-in"><span class="toc-section-number">1.2</span> Load data and prepare directories to place outputs in</a></li>
-<li><a href="#statistics-pcs"><span class="toc-section-number">1.3</span> statistics PCs</a></li>
-<li><a href="#stats-vs.-race-and-brain-region"><span class="toc-section-number">1.4</span> Stats vs. race and brain region</a></li>
-<li><a href="#explore-and-visualize-gene-expression"><span class="toc-section-number">1.5</span> Explore and visualize gene expression</a></li>
-<li><a href="#modeling"><span class="toc-section-number">1.6</span> Modeling</a></li>
-<li><a href="#check-plots"><span class="toc-section-number">1.7</span> Check plots</a></li>
-<li><a href="#gene-ontology"><span class="toc-section-number">1.8</span> Gene ontology</a></li>
-<li><a href="#visualize-differentially-expressed-genes"><span class="toc-section-number">1.9</span> Visualize differentially expressed genes</a></li>
-</ul></li>
-<li><a href="#reproducibility"><span class="toc-section-number">2</span> Reproducibility</a></li>
-</ul>
-</div>
 
 <div id="analysis" class="section level1">
 <h1><span class="header-section-number">1</span> Analysis</h1>
@@ -381,15 +460,15 @@ rse_gene = rse_gene[rowMeans(getRPKM(rse_gene,&quot;Length&quot;)) &gt; 0.2,]
 
 # Display box plots here
 boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion,xlab=&quot;&quot;)</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-1.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-1.png" width="768" /></p>
 <pre class="r"><code>boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion,xlab=&quot;&quot;)</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-2.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-2.png" width="768" /></p>
 <pre class="r"><code>boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion,xlab=&quot;&quot;)</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-3.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-3.png" width="768" /></p>
 <pre class="r"><code>boxplot(rse_gene$mitoRate ~ rse_gene$Race,las=3,xlab=&quot;&quot;)</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-4.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-4.png" width="768" /></p>
 <pre class="r"><code>boxplot(rse_gene$gene_Assigned ~ rse_gene$Race,las=3,xlab=&quot;&quot;)</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-5.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/race_region-5.png" width="768" /></p>
 <pre class="r"><code># Save box plots to PDF
 pdf(file = here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;Region_Race_cellcheck.pdf&quot;))
 boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion,xlab=&quot;&quot;)
@@ -440,7 +519,7 @@ generate_plots = function() {
 
 # Display plots
 generate_plots()</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-1.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-2.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-3.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-4.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-5.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-6.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-7.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-8.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-9.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-10.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-11.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-12.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-13.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-14.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-15.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-16.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-17.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-18.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-19.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-20.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-21.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-1.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-2.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-3.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-4.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-5.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-6.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-7.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-8.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-9.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-10.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-11.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-12.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-13.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-14.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-15.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-16.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-17.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-18.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-19.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-20.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-21.png" width="768" /></p>
 <pre class="r"><code># Write plots to PDF
 pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;PCA_plotsExprs.pdf&quot;), w=9)
 generate_plots()
@@ -461,7 +540,7 @@ mod = model.matrix(~PrimaryDx + PC + BrainRegion,
 vGene = invisible(voom(dge,mod,plot=TRUE))</code></pre>
 <pre><code>## Coefficients not estimable: PrimaryDxOther</code></pre>
 <pre><code>## Warning: Partial NA coefficients for 26708 probe(s)</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/modeling-1.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/modeling-1.png" width="768" /></p>
 <pre class="r"><code># Also write mean-variance plot to PDF
 pdf(file = &quot;DE_analysis/pdfs/vGene.pdf&quot;)
 invisible(voom(dge,mod,plot=TRUE))</code></pre>
@@ -495,7 +574,7 @@ dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
 <pre class="r"><code>hist(outGeneDupl$P.Value)</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/modeling-2.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/modeling-2.png" width="768" /></p>
 <pre class="r"><code>table(outGeneDupl$adj.P.Val &lt; 0.05)</code></pre>
 <pre><code>## 
 ## FALSE  TRUE 
@@ -544,7 +623,7 @@ generate_plots = function() {
 
 # Show boxplots
 generate_plots()</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-1.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-2.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-1.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-2.png" width="768" /></p>
 <pre class="r"><code># Write plots to PDF
 pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byDiagnosis.pdf&quot;), w=10)
 generate_plots()
@@ -570,7 +649,7 @@ generate_plots = function() {
 
 # Display plots
 generate_plots()</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-3.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-4.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-3.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-4.png" width="768" /></p>
 <pre class="r"><code># Write the same plots to PDF
 pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byGenome_log2RPKM.pdf&quot;), w=10)
 generate_plots()
@@ -841,7 +920,7 @@ goDf[goDf$p.adjust &lt; 0.05, c(1:5,7)]</code></pre>
 ## 1352 2.514522e-04
 ## 1353 2.564692e-04
 ## 1354 2.825185e-04
-## 3871 2.923628e-04
+## 3871 2.918271e-04
 ## 1355 2.986591e-04
 ## 1356 3.212669e-04
 ## 1357 3.279249e-04
@@ -862,7 +941,7 @@ goDf[goDf$p.adjust &lt; 0.05, c(1:5,7)]</code></pre>
 ## 1372 5.626928e-04
 ## 1373 6.161675e-04
 ## 1374 6.754461e-04
-## 3872 7.205888e-04
+## 3872 7.187714e-04
 ## 3322 7.359591e-04
 ## 1375 7.424577e-04
 ## 1376 7.846042e-04
@@ -972,7 +1051,7 @@ colnames(df)&lt;-&quot;diagnosis&quot;
 # Display heatmap
 pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
          cluster_cols=TRUE, annotation_col=df)</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/heatmap-1.png" width="100%" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/heatmap-1.png" width="768" /></p>
 <pre class="r"><code># Write heatmap to PDF
 pdf(file=here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;de_heatmap.pdf&quot;))
 pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
@@ -1000,12 +1079,12 @@ dev.off()</code></pre>
 <li><em><a href="https://CRAN.R-project.org/package=RColorBrewer">RColorBrewer</a></em> (<a href='https://doi.org/10.1093/nar/gks042'>McCarthy, Chen, and Smyth, 2012</a>)</li>
 <li><em><a href="https://bioconductor.org/packages/3.12/recount">recount</a></em></li>
 <li><em><a href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em></li>
-<li><em><a href="https://bioconductor.org/packages/3.12/SummarizedExperiment">SummarizedExperiment</a></em> (<a href='https://bookdown.org/yihui/rmarkdown'>Xie, Allaire, and Grolemund, 2018</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/SummarizedExperiment">SummarizedExperiment</a></em> (<a href='https://bookdown.org/yihui/rmarkdown-cookbook'>Xie, Dervieux, and Riederer, 2020</a>)</li>
 <li><em><a href="https://bioconductor.org/packages/3.12/voom">voom</a></em> (<a href='https://doi.org/10.1089/omi.2011.0118'>Yu, Wang, Han, and He, 2012</a>)</li>
 </ul>
 <p><a href="de_analysis.bib">Bibliography file</a></p>
 <p>[1] J. Allaire, Y. Xie, J. McPherson, J. Luraschi, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package version
-2.3. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
+2.4. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
 <p>[2] C. Boettiger. <em>knitcitations: Citations for ‘Knitr’ Markdown Files</em>. R package version 1.0.10. 2019. &lt;URL:
 <a href="https://github.com/cboettig/knitcitations" class="uri">https://github.com/cboettig/knitcitations</a>&gt;.</p>
 <p>[3] L. Collado-Torres, A. E. Jaffe, and E. E. Burke. <em>jaffelab: Commonly used functions by the Jaffe lab</em>. R package
@@ -1031,30 +1110,30 @@ with respect to biological variation”. In: <em>Nucleic Acids Research</em> 40.
 10.1093/nar/gks042.</p>
 <p>[11] R Core Team. <em>R: A Language and Environment for Statistical Computing</em>. R Foundation for Statistical Computing.
 Vienna, Austria, 2020. &lt;URL: <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>&gt;.</p>
-<p>[12] Y. Xie, J. Allaire, and G. Grolemund. <em>R Markdown: The Definitive Guide</em>. ISBN 9781138359338. Boca Raton,
-Florida: Chapman and Hall/CRC, 2018. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown" class="uri">https://bookdown.org/yihui/rmarkdown</a>&gt;.</p>
+<p>[12] Y. Xie, C. Dervieux, and E. Riederer. <em>R Markdown Cookbook</em>. ISBN 9780367563837. Boca Raton, Florida: Chapman
+and Hall/CRC, 2020. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown-cookbook" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook</a>&gt;.</p>
 <p>[13] G. Yu, L. Wang, Y. Han, and Q. He. “clusterProfiler: an R package for comparing biological themes among gene
 clusters”. In: <em>OMICS: A Journal of Integrative Biology</em> 16.5 (2012), pp. 284-287. DOI: 10.1089/omi.2011.0118.</p>
 <pre class="r"><code># Time spent creating this report:
 diff(c(timestart, Sys.time()))</code></pre>
-<pre><code>## Time difference of 1.55064 mins</code></pre>
+<pre><code>## Time difference of 1.487975 mins</code></pre>
 <pre class="r"><code># Date this report was generated
 message(Sys.time())</code></pre>
-<pre><code>## 2020-09-25 16:58:41</code></pre>
+<pre><code>## 2020-10-05 14:36:57</code></pre>
 <pre class="r"><code># Reproducibility info
 options(width = 120)
 devtools::session_info()</code></pre>
 <pre><code>## ─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
-##  setting  value                                      
-##  version  R version 4.0.2 Patched (2020-09-17 r79226)
-##  os       Ubuntu 20.04.1 LTS                         
-##  system   x86_64, linux-gnu                          
-##  ui       X11                                        
-##  language (EN)                                       
-##  collate  en_US.UTF-8                                
-##  ctype    en_US.UTF-8                                
-##  tz       UTC                                        
-##  date     2020-09-25                                 
+##  setting  value                       
+##  version  R version 4.0.2 (2020-06-22)
+##  os       Ubuntu 20.04.1 LTS          
+##  system   x86_64, linux-gnu           
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  ctype    en_US.UTF-8                 
+##  tz       Etc/UTC                     
+##  date     2020-10-05                  
 ## 
 ## ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##  package              * version  date       lib source                                   
@@ -1063,14 +1142,14 @@ devtools::session_info()</code></pre>
 ##  assertthat             0.2.1    2019-03-21 [2] RSPM (R 4.0.0)                           
 ##  backports              1.1.10   2020-09-15 [2] RSPM (R 4.0.2)                           
 ##  base64enc              0.1-3    2015-07-28 [2] RSPM (R 4.0.0)                           
-##  bibtex                 0.4.2.2  2020-01-02 [1] RSPM (R 4.0.0)                           
+##  bibtex                 0.4.2.3  2020-09-19 [1] RSPM (R 4.0.2)                           
 ##  Biobase              * 2.49.1   2020-09-03 [1] Bioconductor                             
 ##  BiocFileCache          1.13.1   2020-08-04 [1] Bioconductor                             
 ##  BiocGenerics         * 0.35.4   2020-06-04 [1] Bioconductor                             
 ##  BiocManager          * 1.30.10  2019-11-16 [2] CRAN (R 4.0.2)                           
 ##  BiocParallel           1.23.2   2020-07-06 [1] Bioconductor                             
-##  BiocStyle            * 2.17.0   2020-04-27 [1] Bioconductor                             
-##  biomaRt                2.45.2   2020-07-05 [1] Bioconductor                             
+##  BiocStyle            * 2.17.1   2020-09-24 [1] Bioconductor                             
+##  biomaRt                2.45.3   2020-09-21 [1] Bioconductor                             
 ##  Biostrings             2.57.2   2020-06-09 [1] Bioconductor                             
 ##  bit                    4.0.4    2020-08-04 [1] RSPM (R 4.0.2)                           
 ##  bit64                  4.0.5    2020-08-30 [1] RSPM (R 4.0.2)                           
@@ -1092,46 +1171,46 @@ devtools::session_info()</code></pre>
 ##  data.table             1.13.0   2020-07-24 [1] RSPM (R 4.0.2)                           
 ##  DBI                    1.1.0    2019-12-15 [1] RSPM (R 4.0.0)                           
 ##  dbplyr                 1.4.4    2020-05-27 [1] RSPM (R 4.0.0)                           
-##  DelayedArray         * 0.15.7   2020-07-14 [1] Bioconductor                             
+##  DelayedArray           0.15.15  2020-10-03 [1] Bioconductor                             
 ##  derfinder              1.23.1   2020-05-10 [1] Bioconductor                             
 ##  derfinderHelper        1.23.1   2020-05-10 [1] Bioconductor                             
 ##  desc                   1.2.0    2018-05-01 [2] RSPM (R 4.0.0)                           
-##  devtools             * 2.3.1    2020-07-21 [2] RSPM (R 4.0.2)                           
+##  devtools             * 2.3.2    2020-09-18 [2] RSPM (R 4.0.2)                           
 ##  digest                 0.6.25   2020-02-23 [2] RSPM (R 4.0.0)                           
-##  DO.db                  2.9      2020-09-10 [1] Bioconductor                             
+##  DO.db                  2.9      2020-10-05 [1] Bioconductor                             
 ##  doRNG                  1.8.2    2020-01-27 [1] RSPM (R 4.0.0)                           
-##  DOSE                   3.15.0   2020-04-27 [1] Bioconductor                             
+##  DOSE                   3.15.1   2020-09-10 [1] Bioconductor                             
 ##  downloader             0.4      2015-07-09 [1] RSPM (R 4.0.0)                           
 ##  dplyr                  1.0.2    2020-08-18 [1] RSPM (R 4.0.2)                           
 ##  edgeR                * 3.31.4   2020-06-10 [1] Bioconductor                             
 ##  ellipsis               0.3.1    2020-05-15 [2] RSPM (R 4.0.0)                           
-##  enrichplot             1.9.1    2020-04-29 [1] Bioconductor                             
-##  europepmc              0.4      2020-05-31 [1] RSPM (R 4.0.0)                           
+##  enrichplot             1.9.3    2020-09-11 [1] Bioconductor                             
 ##  evaluate               0.14     2019-05-28 [2] RSPM (R 4.0.0)                           
 ##  fansi                  0.4.1    2020-01-08 [2] RSPM (R 4.0.0)                           
 ##  farver                 2.0.3    2020-01-16 [1] RSPM (R 4.0.0)                           
 ##  fastmatch              1.1-0    2017-01-28 [1] RSPM (R 4.0.0)                           
-##  fgsea                  1.15.0   2020-04-27 [1] Bioconductor                             
+##  fgsea                  1.15.2   2020-09-15 [1] Bioconductor                             
 ##  foreach                1.5.0    2020-03-30 [1] RSPM (R 4.0.0)                           
 ##  foreign                0.8-80   2020-05-24 [3] CRAN (R 4.0.2)                           
 ##  Formula                1.2-3    2018-05-03 [1] RSPM (R 4.0.0)                           
 ##  fs                     1.5.0    2020-07-31 [2] RSPM (R 4.0.2)                           
 ##  generics               0.0.2    2018-11-29 [1] RSPM (R 4.0.0)                           
 ##  GenomeInfoDb         * 1.25.11  2020-09-03 [1] Bioconductor                             
-##  GenomeInfoDbData       1.2.3    2020-09-10 [1] Bioconductor                             
+##  GenomeInfoDbData       1.2.3    2020-10-05 [1] Bioconductor                             
 ##  GenomicAlignments      1.25.3   2020-06-09 [1] Bioconductor                             
 ##  GenomicFeatures        1.41.3   2020-09-03 [1] Bioconductor                             
 ##  GenomicFiles           1.25.0   2020-04-27 [1] Bioconductor                             
 ##  GenomicRanges        * 1.41.6   2020-08-12 [1] Bioconductor                             
 ##  GEOquery               2.57.0   2020-04-27 [1] Bioconductor                             
 ##  ggforce                0.3.2    2020-06-23 [1] RSPM (R 4.0.2)                           
+##  ggnewscale             0.4.3    2020-08-27 [1] RSPM (R 4.0.2)                           
 ##  ggplot2                3.3.2    2020-06-19 [1] RSPM (R 4.0.1)                           
 ##  ggplotify              0.0.5    2020-03-12 [1] RSPM (R 4.0.0)                           
 ##  ggraph                 2.0.3    2020-05-20 [1] RSPM (R 4.0.2)                           
 ##  ggrepel                0.8.2    2020-03-08 [1] RSPM (R 4.0.2)                           
 ##  ggridges               0.5.2    2020-01-12 [1] RSPM (R 4.0.0)                           
 ##  glue                   1.4.2    2020-08-27 [2] RSPM (R 4.0.2)                           
-##  GO.db                  3.11.4   2020-09-10 [1] Bioconductor                             
+##  GO.db                  3.11.4   2020-10-05 [1] Bioconductor                             
 ##  googledrive            1.0.1    2020-05-05 [1] RSPM (R 4.0.0)                           
 ##  GOSemSim               2.15.2   2020-09-04 [1] Bioconductor                             
 ##  graphlayouts           0.7.0    2020-04-25 [1] RSPM (R 4.0.2)                           
@@ -1141,18 +1220,18 @@ devtools::session_info()</code></pre>
 ##  here                 * 0.1      2017-05-28 [1] RSPM (R 4.0.0)                           
 ##  Hmisc                  4.4-1    2020-08-10 [1] RSPM (R 4.0.2)                           
 ##  hms                    0.5.3    2020-01-08 [1] RSPM (R 4.0.0)                           
-##  htmlTable              2.0.1    2020-07-05 [1] RSPM (R 4.0.2)                           
+##  htmlTable              2.1.0    2020-09-16 [1] RSPM (R 4.0.2)                           
 ##  htmltools              0.5.0    2020-06-16 [2] RSPM (R 4.0.1)                           
 ##  htmlwidgets            1.5.1    2019-10-08 [2] RSPM (R 4.0.0)                           
 ##  httr                   1.4.2    2020-07-20 [2] RSPM (R 4.0.2)                           
 ##  igraph                 1.2.5    2020-03-19 [1] RSPM (R 4.0.0)                           
 ##  IRanges              * 2.23.10  2020-06-13 [1] Bioconductor                             
 ##  iterators              1.0.12   2019-07-26 [1] RSPM (R 4.0.0)                           
-##  jaffelab             * 0.99.30  2020-09-10 [1] Github (LieberInstitute/jaffelab@42637ff)
+##  jaffelab             * 0.99.30  2020-10-05 [1] Github (LieberInstitute/jaffelab@42637ff)
 ##  jpeg                   0.1-8.1  2019-10-24 [1] RSPM (R 4.0.0)                           
-##  jsonlite               1.7.1    2020-09-07 [1] RSPM (R 4.0.2)                           
+##  jsonlite               1.7.1    2020-09-07 [2] RSPM (R 4.0.2)                           
 ##  knitcitations        * 1.0.10   2019-09-15 [1] RSPM (R 4.0.0)                           
-##  knitr                  1.29     2020-06-23 [2] RSPM (R 4.0.2)                           
+##  knitr                  1.30     2020-09-22 [2] RSPM (R 4.0.2)                           
 ##  lattice                0.20-41  2020-04-02 [3] CRAN (R 4.0.2)                           
 ##  latticeExtra           0.6-29   2019-12-19 [1] RSPM (R 4.0.0)                           
 ##  lifecycle              0.2.0    2020-03-06 [2] RSPM (R 4.0.0)                           
@@ -1160,14 +1239,15 @@ devtools::session_info()</code></pre>
 ##  locfit                 1.5-9.4  2020-03-25 [1] RSPM (R 4.0.0)                           
 ##  lubridate              1.7.9    2020-06-08 [1] RSPM (R 4.0.2)                           
 ##  magrittr               1.5      2014-11-22 [2] RSPM (R 4.0.0)                           
-##  MASS                   7.3-53   2020-09-09 [3] CRAN (R 4.0.2)                           
-##  Matrix               * 1.2-18   2019-11-27 [3] CRAN (R 4.0.2)                           
-##  matrixStats          * 0.56.0   2020-03-13 [1] RSPM (R 4.0.0)                           
+##  MASS                   7.3-51.6 2020-04-26 [3] CRAN (R 4.0.2)                           
+##  Matrix                 1.2-18   2019-11-27 [3] CRAN (R 4.0.2)                           
+##  MatrixGenerics       * 1.1.3    2020-09-30 [1] Bioconductor                             
+##  matrixStats          * 0.57.0   2020-09-25 [1] RSPM (R 4.0.2)                           
 ##  memoise                1.1.0    2017-04-21 [2] RSPM (R 4.0.0)                           
 ##  munsell                0.5.0    2018-06-12 [1] RSPM (R 4.0.0)                           
 ##  nnet                   7.3-14   2020-04-26 [3] CRAN (R 4.0.2)                           
-##  openssl                1.4.2    2020-06-27 [2] RSPM (R 4.0.2)                           
-##  org.Hs.eg.db         * 3.11.4   2020-09-25 [1] Bioconductor                             
+##  openssl                1.4.3    2020-09-18 [2] RSPM (R 4.0.2)                           
+##  org.Hs.eg.db         * 3.11.4   2020-10-05 [1] Bioconductor                             
 ##  pheatmap             * 1.0.12   2019-01-04 [1] RSPM (R 4.0.0)                           
 ##  pillar                 1.4.6    2020-07-10 [2] RSPM (R 4.0.2)                           
 ##  pkgbuild               1.1.0    2020-07-13 [2] RSPM (R 4.0.2)                           
@@ -1195,40 +1275,39 @@ devtools::session_info()</code></pre>
 ##  rentrez                1.2.2    2019-05-02 [1] RSPM (R 4.0.0)                           
 ##  reshape2               1.4.4    2020-04-09 [1] RSPM (R 4.0.2)                           
 ##  rlang                  0.4.7    2020-07-09 [2] RSPM (R 4.0.2)                           
-##  rmarkdown              2.3      2020-06-18 [1] RSPM (R 4.0.1)                           
+##  rmarkdown              2.4      2020-09-30 [1] RSPM (R 4.0.2)                           
 ##  rngtools               1.5      2020-01-23 [1] RSPM (R 4.0.0)                           
 ##  rpart                  4.1-15   2019-04-12 [3] CRAN (R 4.0.2)                           
 ##  rprojroot              1.3-2    2018-01-03 [2] RSPM (R 4.0.0)                           
 ##  Rsamtools              2.5.3    2020-06-26 [1] Bioconductor                             
-##  RSQLite                2.2.0    2020-01-07 [1] RSPM (R 4.0.2)                           
+##  RSQLite                2.2.1    2020-09-30 [1] RSPM (R 4.0.2)                           
 ##  rstudioapi             0.11     2020-02-07 [2] RSPM (R 4.0.0)                           
 ##  rtracklayer            1.49.5   2020-08-07 [1] Bioconductor                             
 ##  rvcheck                0.1.8    2020-03-01 [1] RSPM (R 4.0.0)                           
-##  S4Vectors            * 0.27.12  2020-06-09 [1] Bioconductor                             
+##  S4Vectors            * 0.27.13  2020-09-18 [1] Bioconductor                             
 ##  scales                 1.1.1    2020-05-11 [1] RSPM (R 4.0.0)                           
-##  scatterpie             0.1.4    2019-11-08 [1] RSPM (R 4.0.0)                           
+##  scatterpie             0.1.5    2020-09-09 [1] RSPM (R 4.0.2)                           
 ##  segmented              1.2-0    2020-06-23 [1] RSPM (R 4.0.2)                           
 ##  sessioninfo            1.1.1    2018-11-05 [1] RSPM (R 4.0.0)                           
+##  shadowtext             0.0.7    2019-11-06 [1] RSPM (R 4.0.0)                           
 ##  statmod                1.4.34   2020-02-17 [1] RSPM (R 4.0.0)                           
 ##  stringi                1.5.3    2020-09-09 [2] RSPM (R 4.0.2)                           
 ##  stringr                1.4.0    2019-02-10 [2] RSPM (R 4.0.0)                           
-##  SummarizedExperiment * 1.19.6   2020-07-09 [1] Bioconductor                             
-##  survival               3.2-3    2020-06-13 [3] CRAN (R 4.0.2)                           
+##  SummarizedExperiment * 1.19.9   2020-10-01 [1] Bioconductor                             
+##  survival               3.1-12   2020-04-10 [3] CRAN (R 4.0.2)                           
 ##  testthat               2.3.2    2020-03-02 [2] RSPM (R 4.0.0)                           
 ##  tibble                 3.0.3    2020-07-10 [2] RSPM (R 4.0.2)                           
 ##  tidygraph              1.2.0    2020-05-12 [1] RSPM (R 4.0.2)                           
 ##  tidyr                  1.1.2    2020-08-27 [1] RSPM (R 4.0.2)                           
 ##  tidyselect             1.1.0    2020-05-11 [1] RSPM (R 4.0.0)                           
-##  triebeard              0.3.0    2016-08-04 [1] RSPM (R 4.0.2)                           
 ##  tweenr                 1.0.1    2018-12-14 [1] RSPM (R 4.0.2)                           
-##  urltools               1.7.3    2019-04-14 [1] RSPM (R 4.0.2)                           
 ##  usethis              * 1.6.3    2020-09-17 [2] RSPM (R 4.0.2)                           
 ##  VariantAnnotation      1.35.3   2020-06-26 [1] Bioconductor                             
 ##  vctrs                  0.3.4    2020-08-29 [2] RSPM (R 4.0.2)                           
 ##  viridis                0.5.1    2018-03-29 [1] RSPM (R 4.0.0)                           
 ##  viridisLite            0.3.0    2018-02-01 [1] RSPM (R 4.0.0)                           
-##  withr                  2.2.0    2020-04-20 [2] RSPM (R 4.0.0)                           
-##  xfun                   0.17     2020-09-09 [2] RSPM (R 4.0.2)                           
+##  withr                  2.3.0    2020-09-22 [2] RSPM (R 4.0.2)                           
+##  xfun                   0.18     2020-09-29 [2] RSPM (R 4.0.2)                           
 ##  XML                    3.99-0.5 2020-07-23 [1] RSPM (R 4.0.2)                           
 ##  xml2                   1.3.2    2020-04-23 [2] RSPM (R 4.0.0)                           
 ##  XVector                0.29.3   2020-06-25 [1] Bioconductor                             
@@ -1242,6 +1321,8 @@ devtools::session_info()</code></pre>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -1273,7 +1354,38 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
