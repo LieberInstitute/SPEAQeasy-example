@@ -84,6 +84,9 @@ load(here("rse_speaqeasy.RData"), verbose = TRUE)
 dir.create(here("DE_analysis", "pdfs"), showWarnings = FALSE)
 dir.create(here("DE_analysis", "tables"), showWarnings = FALSE)
 dir.create(here("DE_analysis", "rdas"), showWarnings = FALSE)
+
+## Clean up the PrimaryDx variable
+rse_gene$PrimaryDx <- factor(rse_gene$PrimaryDx)
 ```
 
 
