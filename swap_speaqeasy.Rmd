@@ -4,6 +4,9 @@ author:
   - name: Joshua M. Stolz
     affiliation:
     - &libd Lieber Institute for Brain Development, Johns Hopkins Medical Campus
+  - name: Louise Huuki
+    affiliation:
+    - *libd
 output: 
   BiocStyle::html_document:
     toc: true
