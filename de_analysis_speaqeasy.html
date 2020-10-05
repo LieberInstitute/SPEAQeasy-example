@@ -438,7 +438,10 @@ load(here(&quot;rse_speaqeasy.RData&quot;), verbose = TRUE)</code></pre>
 <pre class="r"><code># Create directories to organize outputs from this analysis
 dir.create(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;), showWarnings = FALSE)
 dir.create(here(&quot;DE_analysis&quot;, &quot;tables&quot;), showWarnings = FALSE)
-dir.create(here(&quot;DE_analysis&quot;, &quot;rdas&quot;), showWarnings = FALSE)</code></pre>
+dir.create(here(&quot;DE_analysis&quot;, &quot;rdas&quot;), showWarnings = FALSE)
+
+## Clean up the PrimaryDx variable
+rse_gene$PrimaryDx &lt;- factor(rse_gene$PrimaryDx)</code></pre>
 </div>
 <div id="statistics-pcs" class="section level2">
 <h2><span class="header-section-number">1.3</span> statistics PCs</h2>
@@ -538,34 +541,26 @@ mod = model.matrix(~PrimaryDx + PC + BrainRegion,
     data=colData(rse_gene))
 
 vGene = invisible(voom(dge,mod,plot=TRUE))</code></pre>
-<pre><code>## Coefficients not estimable: PrimaryDxOther</code></pre>
-<pre><code>## Warning: Partial NA coefficients for 26708 probe(s)</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/modeling-1.png" width="768" /></p>
 <pre class="r"><code># Also write mean-variance plot to PDF
 pdf(file = &quot;DE_analysis/pdfs/vGene.pdf&quot;)
-invisible(voom(dge,mod,plot=TRUE))</code></pre>
-<pre><code>## Coefficients not estimable: PrimaryDxOther</code></pre>
-<pre><code>## Warning: Partial NA coefficients for 26708 probe(s)</code></pre>
-<pre class="r"><code>dev.off()</code></pre>
+invisible(voom(dge,mod,plot=TRUE))
+dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
 <pre class="r"><code># Get duplicate correlation
 gene_dupCorr = duplicateCorrelation(vGene$E, mod,
-    block=colData(rse_gene)$SAMPLE_ID)</code></pre>
-<pre><code>## Coefficients not estimable: PrimaryDxOther</code></pre>
-<pre class="r"><code>save(gene_dupCorr, file = here(&quot;DE_analysis&quot;, &quot;rdas&quot;, &quot;gene_dupCorr_neurons.rda&quot;))
+    block=colData(rse_gene)$SAMPLE_ID)
+save(gene_dupCorr, file = here(&quot;DE_analysis&quot;, &quot;rdas&quot;, &quot;gene_dupCorr_neurons.rda&quot;))
 
 # Fit linear model
 fitGeneDupl = lmFit(vGene,
     correlation=gene_dupCorr$consensus.correlation,
-    block=colData(rse_gene)$SAMPLEID)</code></pre>
-<pre><code>## Coefficients not estimable: PrimaryDxOther</code></pre>
-<pre><code>## Warning: Partial NA coefficients for 26708 probe(s)</code></pre>
-<pre class="r"><code># Here we perform an empirical Bayesian calculation to obtain our significant genes
-ebGeneDupl = eBayes(fitGeneDupl)</code></pre>
-<pre><code>## Warning in .ebayes(fit = fit, proportion = proportion, stdev.coef.lim = stdev.coef.lim, : Estimation of var.prior failed
-## - set to default value</code></pre>
-<pre class="r"><code>outGeneDupl = topTable(ebGeneDupl,coef=2,
+    block=colData(rse_gene)$SAMPLEID)
+
+# Here we perform an empirical Bayesian calculation to obtain our significant genes
+ebGeneDupl = eBayes(fitGeneDupl)
+outGeneDupl = topTable(ebGeneDupl,coef=2,
     p.value = 1,number=nrow(rse_gene),sort=&quot;none&quot;)
 
 pdf(file = here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;hist_pval.pdf&quot;))
@@ -1116,10 +1111,10 @@ and Hall/CRC, 2020. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown-cookb
 clusters”. In: <em>OMICS: A Journal of Integrative Biology</em> 16.5 (2012), pp. 284-287. DOI: 10.1089/omi.2011.0118.</p>
 <pre class="r"><code># Time spent creating this report:
 diff(c(timestart, Sys.time()))</code></pre>
-<pre><code>## Time difference of 1.487975 mins</code></pre>
+<pre><code>## Time difference of 1.473727 mins</code></pre>
 <pre class="r"><code># Date this report was generated
 message(Sys.time())</code></pre>
-<pre><code>## 2020-10-05 14:36:57</code></pre>
+<pre><code>## 2020-10-05 14:53:23</code></pre>
 <pre class="r"><code># Reproducibility info
 options(width = 120)
 devtools::session_info()</code></pre>
