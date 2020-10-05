@@ -1,12 +1,11 @@
 ---
-title: "SPEAQeasy_example"
+title: "Identifying sample swaps"
 author: 
   - name: Joshua M. Stolz
     affiliation:
     - &libd Lieber Institute for Brain Development, Johns Hopkins Medical Campus
 output: 
   BiocStyle::html_document:
-    self_contained: yes
     toc: true
     toc_float: true
     toc_depth: 2

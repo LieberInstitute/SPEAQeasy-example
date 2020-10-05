@@ -3,7 +3,6 @@ title: 'Setting up and Running SPEAQeasy'
 date: 'July 11, 2020'
 output: 
   BiocStyle::html_document:
-    self_contained: yes
     toc: true
     toc_float: true
     toc_depth: 2
@@ -33,6 +32,18 @@ cd SPEAQeasy
 # the SPEAQeasy documentation linked above for more details.
 bash install_software.sh "local"
 ```
+
+Alternatively, you can download the contents of this repository using `r BiocStyle::CRANpkg("usethis")` ^[It will download the latest version, which you will need to re-run in case we make any changes.]
+
+```{r "download_with_usethis"}
+library("usethis")
+```
+
+```{r "download_use_course", eval = FALSE}
+use_course("https://github.com/LieberInstitute/SPEAQeasy-example/archive/master.zip")
+```
+
+
 
 # Modify the main script
 
