@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2020-10-05" />
+
+<title>SPEAQeasy bootcamp</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="/usr/local/lib/R/host-site-library/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 828px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 246px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+<script>
+function toggle_visibility(id1) {
+  var e = document.getElementById(id1);
+  e.style.display = ((e.style.display!="none") ? "none" : "block");
+}
+</script>
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SPEAQeasy example</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="prepare_data.html">Download Example Data</a>
+</li>
+<li>
+  <a href="run_speaqeasy.html">Run SPEAQeasy</a>
+</li>
+<li>
+  <a href="swap_speaqeasy.html">Resolve Sample Identities</a>
+</li>
+<li>
+  <a href="de_analysis_speaqeasy.html">Differential Expression</a>
+</li>
+<li>
+  <a href="bootcamp_intro">Bootcamp</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/LieberInstitute/SPEAQeasy-example">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">SPEAQeasy bootcamp</h1>
+<p class="author-name">Leonardo Collado-Torres<span class="affil-mark">1,2*</span></p>
+<p class="author-affiliation"><span class="affil-mark">1</span>Lieber Institute for Brain Development, Johns Hopkins Medical Campus<br><span class="affil-mark">2</span>Center for Computational Biology, Johns Hopkins University</p>
+<p class="author-email"><span class="affil-mark">*</span><a href="mailto:lcolladotor@gmail.com">lcolladotor@gmail.com</a></p>
+<h4 class="date">5 October 2020</h4>
+
+</div>
+
+
+<p>This document is part of the <em>R/Bioconductor-powered Team Data Science</em> <a href="https://lcolladotor.github.io/bioc_team_ds/rbioconductor-data-science-bootcamps.html#libd-bootcamps">LIBD bootcamps</a>.</p>
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">1</span> Setup</h1>
+<p>Please install the latest:</p>
+<ul>
+<li>R version from <a href="https://cran.r-project.org/">CRAN</a></li>
+<li><a href="https://rstudio.com/products/rstudio/download/">RStudio Destkop</a> <label for="sidenote-1" class="sidenote-number">1</label><label for="sidenote-1" class="margin-toggle" onclick="toggle_visibility('sidenote-1')">1</label><span class="sidenote" id="sidenote-1"><span class="sidenote-number">1</span> You might want to try out <a href="https://rstudio.com/products/rstudio/download/preview/">RStudio Desktop Preview</a> as discussed on the <a href="https://twitter.com/LIBDrstats/status/1312187753371561984?s=20">2020-10-02 LIBD rstats club session</a>. </span></li>
+</ul>
+<p>Once you have installed R and RStudio, please install the following R packages:</p>
+<pre class="r"><code>## For installing R packages from CRAN and GitHub
+if (!requireNamespace(&quot;remotes&quot;, quietly = TRUE)) {
+      install.packages(&quot;remotes&quot;)
+}
+
+## For installing Bioconductor packages
+remotes::install_cran(&quot;BiocManager&quot;)
+
+## Workflow-related R packages
+remotes::install_cran(c(
+    &quot;rmarkdown&quot;,
+    &quot;sessioninfo&quot;,
+    &quot;getopt&quot;,
+    &quot;here&quot;,
+    &quot;tidyr&quot;,
+    &quot;usethis&quot;
+))
+remotes::install_github(&quot;LieberInstitute/jaffelab&quot;)
+
+## Differential-expression related R packages
+BiocManager::install(c(&quot;limma&quot;, &quot;edgeR&quot;, &quot;SummarizedExperiment&quot;, &quot;recount&quot;))
+
+## Genomics-related R packages
+BiocManager::install(c(&quot;clusterProfiler&quot;, &quot;org.Hs.eg.db&quot;))
+
+## Visualization-related R packages
+remotes::install_cran(c(
+    &quot;pheatmap&quot;,
+    &quot;RColorBrewer&quot;,
+    &quot;VariantAnnotation&quot;,
+    &quot;ggplot2&quot;,
+    &quot;plotly&quot;
+))
+BiocManager::install(&quot;iSEE&quot;)
+
+## Extra ones
+remotes::install_cran(c(&quot;knitcitations&quot;, &quot;statmod&quot;))
+BiocManager::install(c(&quot;BiocStyle&quot;))</code></pre>
+</div>
+<div id="bootcamp-plan" class="section level1">
+<h1><span class="header-section-number">2</span> Bootcamp plan</h1>
+<ul>
+<li>Day 1: Monday October 5th 2020, 3-5 pm
+<ul>
+<li>RNA sequencing primer</li>
+<li>LIBD’s RNA-seq processing pipeline: SPEAQeasy</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/SummarizedExperiment">SummarizedExperiment</a></em> overview</li>
+<li>Exploring quality control metrics</li>
+</ul></li>
+<li>Day 2: Tuesday October 6th 2020, 3-5 pm
+<ul>
+<li>Exploring gene expression</li>
+<li>Identifying sample swaps</li>
+<li>Statistical modeling</li>
+</ul></li>
+<li>Day 3: Wednesday October 7th 2020, 1-3 pm
+<ul>
+<li>Visualizing differentially expressed genes</li>
+<li>Gene ontology enrichment analyses</li>
+<li>Beyond SPEAQeasy</li>
+</ul></li>
+</ul>
+</div>
+<div id="day-1" class="section level1">
+<h1><span class="header-section-number">3</span> Day 1</h1>
+<div id="rna-sequencing-primer" class="section level2">
+<h2><span class="header-section-number">3.1</span> RNA sequencing primer</h2>
+<p><a href="https://docs.google.com/presentation/d/1X3U2lcf75Yh9BK_Scs-O3M8b9-JauUNN8ZO_xhlKs7w/edit?usp=sharing">Slides</a></p>
+<p>For more details, I have some older slides on the technology for RNA-seq from <a href="http://lcolladotor.github.io/courses/PDCB-HTS.html">PDCB-HTS 2010</a>.</p>
+</div>
+<div id="speaqeasy-overview" class="section level2">
+<h2><span class="header-section-number">3.2</span> SPEAQeasy overview</h2>
+<p>Let’s go to the <a href="http://research.libd.org/SPEAQeasy/">SPEAQeasy</a> documentation website.</p>
+<p>We’ll mostly be using the <a href="http://research.libd.org/SPEAQeasy/outputs.html">SPEAQeasy main output files</a>.</p>
+<div id="speaqeasy-example" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> SPEAQeasy-example</h3>
+<p>Example data using <a href="http://research.libd.org/SPEAQeasy/">SPEAQeasy</a> with 40 samples from the Bipolar project with Peter Zandi et al.</p>
+<p>It shows:</p>
+<ol style="list-style-type: decimal">
+<li>How to download the example data</li>
+<li>How to run SPEAQeasy with this data</li>
+<li>How to identify sample swaps</li>
+<li>How to run differential expression analyses with this data</li>
+</ol>
+<p>We’ll view these links, but we’ll start with:</p>
+<ul>
+<li><a href="http://research.libd.org/SPEAQeasy-example/index.html">Home</a></li>
+<li><a href="http://research.libd.org/SPEAQeasy-example/prepare_data.html">Download data</a></li>
+</ul>
+</div>
+</div>
+<div id="summarizedexperiment-overview" class="section level2">
+<h2><span class="header-section-number">3.3</span> SummarizedExperiment overview</h2>
+<div id="general" class="section level3">
+<h3><span class="header-section-number">3.3.1</span> General</h3>
+<p>In general:</p>
+<ul>
+<li><em><a href="https://bioconductor.org/packages/3.12/SummarizedExperiment">SummarizedExperiment</a></em>
+<ul>
+<li><a href="http://bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html">Introduction vignette</a></li>
+</ul></li>
+<li>Bioconductor 2015 paper
+<ul>
+<li>DOI: <a href="https://doi.org/10.1038/nmeth.3252">10.1038/nmeth.3252</a></li>
+</ul></li>
+</ul>
+</div>
+<div id="example-data" class="section level3">
+<h3><span class="header-section-number">3.3.2</span> Example data</h3>
+<p>Let’s look at the example data</p>
+<pre class="r"><code>## For loading the data
+library(&quot;SummarizedExperiment&quot;)
+library(&quot;here&quot;)
+
+## Load the example data
+load(here(&quot;rse_speaqeasy.RData&quot;), verbose = TRUE)</code></pre>
+<pre><code>## Loading objects:
+##   rse_gene</code></pre>
+<p>Let’s look at the sample metadata we have in this example data. Some of these variables are defined in the <a href="http://research.libd.org/SPEAQeasy/outputs.html#quality-metrics">SPEAQeasy documentation</a> that we’ll be using shortly.</p>
+<pre class="r"><code>colData(rse_gene)</code></pre>
+<pre><code>## DataFrame with 40 rows and 67 columns
+##                         SAMPLE_ID FQCbasicStats perBaseQual perTileQual  perSeqQual perBaseContent   GCcontent
+##                       &lt;character&gt;   &lt;character&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;    &lt;character&gt; &lt;character&gt;
+## R13896_H7JKMBBXX R13896_H7JKMBBXX          PASS        PASS        WARN        PASS      FAIL/WARN        FAIL
+## R13903_HCTYLBBXX R13903_HCTYLBBXX          PASS        PASS   WARN/PASS        PASS      FAIL/WARN        FAIL
+## R13904_H7K5NBBXX R13904_H7K5NBBXX          PASS        FAIL        FAIL        PASS      FAIL/WARN        FAIL
+## R13983_H7JKMBBXX R13983_H7JKMBBXX          PASS        PASS   PASS/WARN        PASS      FAIL/WARN        FAIL
+## R13985_H7JM5BBXX R13985_H7JM5BBXX          PASS        PASS        WARN        PASS      FAIL/WARN        FAIL
+## ...                           ...           ...         ...         ...         ...            ...         ...
+## R15068_HFFGHBBXX R15068_HFFGHBBXX          PASS        PASS        PASS        PASS      FAIL/WARN        FAIL
+## R15090_HF5JNBBXX R15090_HF5JNBBXX          PASS        PASS        WARN        PASS      FAIL/WARN        FAIL
+## R15093_HFY2MBBXX R15093_HFY2MBBXX          PASS        PASS        WARN        PASS      FAIL/WARN        WARN
+## R15120_HFY2MBBXX R15120_HFY2MBBXX          PASS        PASS        WARN        PASS      FAIL/WARN   WARN/FAIL
+## R15134_HFFGHBBXX R15134_HFFGHBBXX          PASS        PASS        PASS        PASS      FAIL/WARN   FAIL/WARN
+##                     Ncontent SeqLengthDist SeqDuplication OverrepSeqs AdapterContent KmerContent SeqLength_R1
+##                  &lt;character&gt;   &lt;character&gt;    &lt;character&gt; &lt;character&gt;    &lt;character&gt; &lt;character&gt;  &lt;character&gt;
+## R13896_H7JKMBBXX        PASS          PASS           FAIL        FAIL           PASS          NA          101
+## R13903_HCTYLBBXX        PASS          PASS           FAIL        FAIL           WARN          NA          101
+## R13904_H7K5NBBXX        FAIL          PASS      PASS/WARN        WARN           PASS          NA          101
+## R13983_H7JKMBBXX        PASS          PASS           FAIL        WARN           PASS          NA          101
+## R13985_H7JM5BBXX        PASS          PASS           FAIL        FAIL           PASS          NA          101
+## ...                      ...           ...            ...         ...            ...         ...          ...
+## R15068_HFFGHBBXX        PASS          PASS           FAIL   FAIL/WARN           WARN          NA          101
+## R15090_HF5JNBBXX        PASS          PASS           FAIL        WARN           WARN          NA          101
+## R15093_HFY2MBBXX        PASS          PASS           FAIL        FAIL           WARN          NA          101
+## R15120_HFY2MBBXX        PASS          PASS           FAIL        FAIL           WARN          NA          101
+## R15134_HFFGHBBXX        PASS          PASS      FAIL/WARN        WARN           WARN          NA          101
+##                  percentGC_R1 phred20-21_R1 phred48-49_R1 phred76-77_R1 phred100-101_R1 phredGT30_R1 phredGT35_R1
+##                   &lt;character&gt;   &lt;character&gt;   &lt;character&gt;   &lt;character&gt;     &lt;character&gt;    &lt;numeric&gt;    &lt;numeric&gt;
+## R13896_H7JKMBBXX           49          41.0          41.0          41.0            41.0           NA           NA
+## R13903_HCTYLBBXX           48          41.0          41.0          41.0            41.0           NA           NA
+## R13904_H7K5NBBXX           51          41.0          32.0          41.0            36.5           NA           NA
+## R13983_H7JKMBBXX           48          41.0          41.0          41.0            41.0           NA           NA
+## R13985_H7JM5BBXX           49          41.0          41.0          41.0            41.0           NA           NA
+## ...                       ...           ...           ...           ...             ...          ...          ...
+## R15068_HFFGHBBXX           50          41.0          41.0          41.0            41.0           NA           NA
+## R15090_HF5JNBBXX           49          41.0          41.0          41.0            41.0           NA           NA
+## R15093_HFY2MBBXX           45          41.0          41.0          41.0            41.0           NA           NA
+## R15120_HFY2MBBXX           47          41.0          41.0          41.0            41.0           NA           NA
+## R15134_HFFGHBBXX           47          41.0          41.0          41.0            41.0           NA           NA
+##                  Adapter50-51_R1 Adapter70-71_R1 Adapter90_R1 SeqLength_R2 percentGC_R2 phred20-21_R2 phred48-49_R2
+##                        &lt;numeric&gt;       &lt;numeric&gt;    &lt;numeric&gt;  &lt;character&gt;  &lt;character&gt;   &lt;character&gt;   &lt;character&gt;
+## R13896_H7JKMBBXX       0.0655693        0.203478     0.828558          101           51          41.0          41.0
+## R13903_HCTYLBBXX       0.1480005        1.783971     8.469852          101           49          41.0          41.0
+## R13904_H7K5NBBXX       0.0374211        0.136403     0.749735          101           52          41.0          41.0
+## R13983_H7JKMBBXX       0.0766332        0.223703     0.949268          101           49          41.0          41.0
+## R13985_H7JM5BBXX       0.0473371        0.185952     0.963513          101           50          41.0          41.0
+## ...                          ...             ...          ...          ...          ...           ...           ...
+## R15068_HFFGHBBXX       0.1383892        1.491060      7.61316          101           50          41.0          41.0
+## R15090_HF5JNBBXX       0.1579186        1.738622      9.43662          101           49          41.0          41.0
+## R15093_HFY2MBBXX       1.2288606        2.036314      5.28201          101           46          41.0          41.0
+## R15120_HFY2MBBXX       0.2441761        1.343685      5.56046          101           47          41.0          41.0
+## R15134_HFFGHBBXX       0.0814902        0.947903      5.77523          101           47          41.0          41.0
+##                  phred76-77_R2 phred100-101_R2 phredGT30_R2 phredGT35_R2 Adapter50-51_R2 Adapter70-71_R2 Adapter90_R2
+##                    &lt;character&gt;     &lt;character&gt;    &lt;numeric&gt;    &lt;numeric&gt;       &lt;numeric&gt;       &lt;numeric&gt;    &lt;numeric&gt;
+## R13896_H7JKMBBXX          41.0            41.0           NA           NA       0.0770981        0.221583     0.834020
+## R13903_HCTYLBBXX          41.0            39.0           NA           NA       0.1469038        1.746648     8.258178
+## R13904_H7K5NBBXX          34.5            34.5           NA           NA       0.0378473        0.123074     0.513505
+## R13983_H7JKMBBXX          41.0            41.0           NA           NA       0.0892666        0.242025     0.958946
+## R13985_H7JM5BBXX          41.0            41.0           NA           NA       0.0586630        0.204227     0.974275
+## ...                        ...             ...          ...          ...             ...             ...          ...
+## R15068_HFFGHBBXX          41.0            39.0           NA           NA       0.1379108        1.457060      7.44452
+## R15090_HF5JNBBXX          41.0            41.0           NA           NA       0.1597005        1.719364      9.26811
+## R15093_HFY2MBBXX          41.0            41.0           NA           NA       1.2349352        2.037324      5.25166
+## R15120_HFY2MBBXX          41.0            41.0           NA           NA       0.2483485        1.340853      5.49817
+## R15134_HFFGHBBXX          37.0            37.0           NA           NA       0.0786028        0.868326      5.27811
+##                                 bamFile   trimmed  numReads numMapped numUnmapped overallMapRate concordMapRate
+##                             &lt;character&gt; &lt;logical&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;      &lt;numeric&gt;      &lt;numeric&gt;
+## R13896_H7JKMBBXX ./R13896_H7JKMBBXX_a..     FALSE 106584958  99089320     7495638         0.9297         0.8862
+## R13903_HCTYLBBXX ./R13903_HCTYLBBXX_a..     FALSE 134229992 111665224    22564768         0.8319         0.7780
+## R13904_H7K5NBBXX ./R13904_H7K5NBBXX_a..     FALSE  61243472  40741780    20501692         0.6652         0.5198
+## R13983_H7JKMBBXX ./R13983_H7JKMBBXX_a..     FALSE 144442600 134139823    10302777         0.9287         0.8839
+## R13985_H7JM5BBXX ./R13985_H7JM5BBXX_a..     FALSE 130903694 121295899     9607795         0.9266         0.8901
+## ...                                 ...       ...       ...       ...         ...            ...            ...
+## R15068_HFFGHBBXX ./R15068_HFFGHBBXX_a..     FALSE 107872614  92780134    15092480         0.8601         0.7986
+## R15090_HF5JNBBXX ./R15090_HF5JNBBXX_a..     FALSE 119870620 102489992    17380628         0.8550         0.7914
+## R15093_HFY2MBBXX ./R15093_HFY2MBBXX_a..     FALSE 141870034 123395884    18474150         0.8698         0.8271
+## R15120_HFY2MBBXX ./R15120_HFY2MBBXX_a..     FALSE 106271242  90596496    15674746         0.8525         0.8023
+## R15134_HFFGHBBXX ./R15134_HFFGHBBXX_a..     FALSE 120451238 101822895    18628343         0.8453         0.7509
+##                  totalMapped mitoMapped  mitoRate totalAssignedGene gene_Assigned gene_Unassigned_Unmapped
+##                    &lt;numeric&gt;  &lt;numeric&gt; &lt;numeric&gt;         &lt;numeric&gt;     &lt;integer&gt;                &lt;integer&gt;
+## R13896_H7JKMBBXX   160944960    2750646 0.0168034          0.256746      21573488                        0
+## R13903_HCTYLBBXX   139882024    2825252 0.0197975          0.379945      27896691                        0
+## R13904_H7K5NBBXX    54288854    1326211 0.0238463          0.371944      12380935                        0
+## R13983_H7JKMBBXX   196453977    3972690 0.0198212          0.288361      29704536                        0
+## R13985_H7JM5BBXX   187601620    5307450 0.0275127          0.276588      27270855                        0
+## ...                      ...        ...       ...               ...           ...                      ...
+## R15068_HFFGHBBXX   129937217    2236204 0.0169187          0.308115      21013286                        0
+## R15090_HF5JNBBXX   151483286    2642744 0.0171466          0.248909      19700029                        0
+## R15093_HFY2MBBXX   151106303    4022581 0.0259306          0.373461      29720302                        0
+## R15120_HFY2MBBXX   131550971    3668547 0.0271303          0.291463      20242616                        0
+## R15134_HFFGHBBXX   123436361    1922519 0.0153361          0.390820      26348889                        0
+##                  gene_Unassigned_Read_Type gene_Unassigned_Singleton gene_Unassigned_MappingQuality
+##                                  &lt;integer&gt;                 &lt;integer&gt;                      &lt;integer&gt;
+## R13896_H7JKMBBXX                         0                         0                              0
+## R13903_HCTYLBBXX                         0                         0                              0
+## R13904_H7K5NBBXX                         0                         0                              0
+## R13983_H7JKMBBXX                         0                         0                              0
+## R13985_H7JM5BBXX                         0                         0                              0
+## ...                                    ...                       ...                            ...
+## R15068_HFFGHBBXX                         0                         0                              0
+## R15090_HF5JNBBXX                         0                         0                              0
+## R15093_HFY2MBBXX                         0                         0                              0
+## R15120_HFY2MBBXX                         0                         0                              0
+## R15134_HFFGHBBXX                         0                         0                              0
+##                  gene_Unassigned_Chimera gene_Unassigned_FragmentLength gene_Unassigned_Duplicate
+##                                &lt;integer&gt;                      &lt;integer&gt;                 &lt;integer&gt;
+## R13896_H7JKMBBXX                       0                              0                         0
+## R13903_HCTYLBBXX                       0                              0                         0
+## R13904_H7K5NBBXX                       0                              0                         0
+## R13983_H7JKMBBXX                       0                              0                         0
+## R13985_H7JM5BBXX                       0                              0                         0
+## ...                                  ...                            ...                       ...
+## R15068_HFFGHBBXX                       0                              0                         0
+## R15090_HF5JNBBXX                       0                              0                         0
+## R15093_HFY2MBBXX                       0                              0                         0
+## R15120_HFY2MBBXX                       0                              0                         0
+## R15134_HFFGHBBXX                       0                              0                         0
+##                  gene_Unassigned_MultiMapping gene_Unassigned_Secondary gene_Unassigned_NonSplit
+##                                     &lt;integer&gt;                 &lt;integer&gt;                &lt;integer&gt;
+## R13896_H7JKMBBXX                     43753848                         0                        0
+## R13903_HCTYLBBXX                     23142526                         0                        0
+## R13904_H7K5NBBXX                     13059390                         0                        0
+## R13983_H7JKMBBXX                     45549411                         0                        0
+## R13985_H7JM5BBXX                     48981261                         0                        0
+## ...                                       ...                       ...                      ...
+## R15068_HFFGHBBXX                     28766178                         0                        0
+## R15090_HF5JNBBXX                     35626413                         0                        0
+## R15093_HFY2MBBXX                     22349534                         0                        0
+## R15120_HFY2MBBXX                     30546708                         0                        0
+## R15134_HFFGHBBXX                     17710168                         0                        0
+##                  gene_Unassigned_NoFeatures gene_Unassigned_Overlapping_Length gene_Unassigned_Ambiguity   rRNA_rate
+##                                   &lt;integer&gt;                          &lt;integer&gt;                 &lt;integer&gt;   &lt;numeric&gt;
+## R13896_H7JKMBBXX                   14465278                                  0                   4233906 4.35720e-06
+## R13903_HCTYLBBXX                   16347297                                  0                   6036512 1.72063e-06
+## R13904_H7K5NBBXX                    4073327                                  0                   3773441 2.31000e-05
+## R13983_H7JKMBBXX                   21412703                                  0                   6345085 2.89518e-06
+## R13985_H7JM5BBXX                   14890196                                  0                   7455151 8.39724e-06
+## ...                                     ...                                ...                       ...         ...
+## R15068_HFFGHBBXX                   12351911                                  0                   6068022 4.04506e-06
+## R15090_HF5JNBBXX                   20705757                                  0                   3113252 5.06091e-05
+## R15093_HFY2MBBXX                   24290093                                  0                   3220748 1.04306e-06
+## R15120_HFY2MBBXX                   16532910                                  0                   2129438 4.94007e-06
+## R15134_HFFGHBBXX                   19654182                                  0                   3706256 7.09707e-06
+##                  BrainRegion     Race PrimaryDx      Sex  AgeDeath       BrNum
+##                     &lt;factor&gt; &lt;factor&gt;  &lt;factor&gt; &lt;factor&gt; &lt;numeric&gt; &lt;character&gt;
+## R13896_H7JKMBBXX    Amygdala     CAUC   Bipolar        M     60.54      Br1992
+## R13903_HCTYLBBXX    Amygdala     CAUC   Bipolar        M     45.46      Br1677
+## R13904_H7K5NBBXX    Amygdala     CAUC   Bipolar        M     26.18      Br1734
+## R13983_H7JKMBBXX    Amygdala     CAUC   Bipolar        F     44.35      Br2262
+## R13985_H7JM5BBXX    Amygdala     CAUC   Control        F     48.99      Br1753
+## ...                      ...      ...       ...      ...       ...         ...
+## R15068_HFFGHBBXX    sACC         CAUC   Bipolar        F   36.6022      Br5867
+## R15090_HF5JNBBXX    Amygdala     CAUC   Bipolar        M   32.3642      Br5979
+## R15093_HFY2MBBXX    Amygdala     CAUC   Bipolar        F   33.0897      Br6016
+## R15120_HFY2MBBXX    Amygdala     CAUC   Control        F   71.0600      Br1756
+## R15134_HFFGHBBXX    sACC         CAUC   Control        F   49.0267      Br5931</code></pre>
+<p>SPEAQeasy can align data to the human or mouse genomes using specific Gencode annotations. The example data we are working with is from human using Gencode v32.</p>
+<pre class="r"><code>rowData(rse_gene)</code></pre>
+<pre><code>## DataFrame with 60609 rows and 10 columns
+##                      Length         gencodeID       ensemblID              gene_type      Symbol  EntrezID       Class
+##                   &lt;integer&gt;       &lt;character&gt;     &lt;character&gt;            &lt;character&gt; &lt;character&gt; &lt;integer&gt; &lt;character&gt;
+## ENSG00000223972.5      1735 ENSG00000223972.5 ENSG00000223972 transcribed_unproces..     DDX11L1        NA       InGen
+## ENSG00000227232.5      1351 ENSG00000227232.5 ENSG00000227232 unprocessed_pseudogene      WASH7P        NA       InGen
+## ENSG00000278267.1        68 ENSG00000278267.1 ENSG00000278267                  miRNA   MIR6859-1        NA       InGen
+## ENSG00000243485.5      1021 ENSG00000243485.5 ENSG00000243485                 lncRNA MIR1302-2HG        NA       InGen
+## ENSG00000284332.1       138 ENSG00000284332.1 ENSG00000284332                  miRNA   MIR1302-2        NA       InGen
+## ...                     ...               ...             ...                    ...         ...       ...         ...
+## ENSG00000198695.2       525 ENSG00000198695.2 ENSG00000198695         protein_coding      MT-ND6      4541       InGen
+## ENSG00000210194.1        69 ENSG00000210194.1 ENSG00000210194                Mt_tRNA       MT-TE        NA       InGen
+## ENSG00000198727.2      1141 ENSG00000198727.2 ENSG00000198727         protein_coding      MT-CYB      4519       InGen
+## ENSG00000210195.2        66 ENSG00000210195.2 ENSG00000210195                Mt_tRNA       MT-TT        NA       InGen
+## ENSG00000210196.2        68 ENSG00000210196.2 ENSG00000210196                Mt_tRNA       MT-TP        NA       InGen
+##                    meanExprs     NumTx              gencodeTx
+##                    &lt;numeric&gt; &lt;integer&gt;            &lt;character&gt;
+## ENSG00000223972.5 0.00347263         2 ENST00000456328.2;EN..
+## ENSG00000227232.5 1.57167877         1      ENST00000488147.1
+## ENSG00000278267.1 7.74437941         1      ENST00000619216.1
+## ENSG00000243485.5 0.01403484         2 ENST00000473358.1;EN..
+## ENSG00000284332.1 0.00000000         1      ENST00000607096.1
+## ...                      ...       ...                    ...
+## ENSG00000198695.2  182.92863         1      ENST00000361681.2
+## ENSG00000210194.1    9.80684         1      ENST00000387459.1
+## ENSG00000198727.2  826.87424         1      ENST00000361789.2
+## ENSG00000210195.2  276.37225         1      ENST00000387460.2
+## ENSG00000210196.2  366.58138         1      ENST00000387461.2</code></pre>
+<p>The bulk of the data is stored in the gene count matrix generated using <code>featureCounts</code> by <code>SPEAQeasy</code>. This is a large matrix with one row per gene and one column per sample. As such, we’ll just explore a tiny piece of it.</p>
+<pre class="r"><code>## The names of the count matrices we have
+assayNames(rse_gene)</code></pre>
+<pre><code>## [1] &quot;counts&quot;</code></pre>
+<pre class="r"><code>## The full &quot;counts&quot; matrix
+dim(assay(rse_gene, &quot;counts&quot;))</code></pre>
+<pre><code>## [1] 60609    40</code></pre>
+<pre class="r"><code>## The top left corner of the matrix counts
+jaffelab::corner(assay(rse_gene, &quot;counts&quot;))</code></pre>
+<pre><code>##                   R13896_H7JKMBBXX R13903_HCTYLBBXX R13904_H7K5NBBXX R13983_H7JKMBBXX R13985_H7JM5BBXX R13986_H7JM5BBXX
+## ENSG00000223972.5                0                0                0                0                0                0
+## ENSG00000227232.5               46               36               20              118               61               47
+## ENSG00000278267.1                8                3                0               13                4                8
+## ENSG00000243485.5                0                0                0                0                1                0
+## ENSG00000284332.1                0                0                0                0                0                0
+## ENSG00000237613.2                0                0                0                0                0                0</code></pre>
+</div>
+</div>
+<div id="exploring-quality-control-metrics" class="section level2">
+<h2><span class="header-section-number">3.4</span> Exploring quality control metrics</h2>
+<p>The <a href="http://research.libd.org/SPEAQeasy/outputs.html#quality-metrics">SPEAQeasy documentation</a> explains the meaning of some of the quality metrics that are included in the RSE files generated by this processing pipeline. Let’s explore these metrics and their relationship to some of our sample metadata we manually included, such as the age at time of death and primary diagnosis.</p>
+<p>We can start with some boxplots comparing some metrics against primary diagnosis and race, as shown in the <a href="http://research.libd.org/SPEAQeasy-example/de_analysis_speaqeasy.html#14_Stats_vs_race_and_brain_region">SPEAQeasy-example differential expression script</a>.</p>
+<p>We can also use tools like <em><a href="https://CRAN.R-project.org/package=ggplot2">ggplot2</a></em> and <em><a href="https://CRAN.R-project.org/package=plotly">plotly</a></em> to interactively explore some metrics. For doing so, it’ll be useful to check some of our LIBD rstats club sessions on:</p>
+<ul>
+<li><a href="https://twitter.com/LIBDrstats/status/1308934265267195905?s=20">High quality graphics in R</a></li>
+<li><a href="https://twitter.com/LIBDrstats/status/1304799631386308608?s=20">Interactive graphics with plotly</a></li>
+</ul>
+<div id="exercise" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> Exercise</h3>
+<p>Adapt the interactive graphics code from the LIBD rstats club session available <a href="https://gist.github.com/lcolladotor/350ac8843e153d135f64880a1d029b14">here</a> for our data.</p>
+</div>
+<div id="exercise-hints" class="section level3">
+<h3><span class="header-section-number">3.4.2</span> Exercise hints</h3>
+<pre class="r"><code>## First we load the required packages
+library(&quot;ggplot2&quot;)
+library(&quot;plotly&quot;)
+
+## Next, we convert the sample metadata to a data.frame
+## which will make it easier to work with
+pdf_df &lt;- as.data.frame(colData(rse_gene))
+
+## We need a &quot;key&quot; variable that is unique
+
+## Let&#39;s make the key
+
+## Let&#39;s make a &quot;highlighted&quot; table
+
+## Make a plot using the highlight table
+
+## Make a second plot
+
+## Convert them to interactive plots
+
+## Now group them together
+
+## Fancy one</code></pre>
+</div>
+<div id="exercise-full-solution" class="section level3">
+<h3><span class="header-section-number">3.4.3</span> Exercise full solution</h3>
+<pre class="r"><code>## First we load the required packages
+library(&quot;ggplot2&quot;)
+library(&quot;plotly&quot;)
+
+## Next, we convert the sample metadata to a data.frame
+## which will make it easier to work with
+pdf_df &lt;- as.data.frame(colData(rse_gene))
+
+## We need a &quot;key&quot; variable that is unique
+
+## Let&#39;s make the key
+
+## Let&#39;s make a &quot;highlighted&quot; table
+
+## Make a plot using the highlight table
+
+## Make a second plot
+
+## Convert them to interactive plots
+
+## Now group them together
+
+## Fancy one</code></pre>
+</div>
+</div>
+</div>
+<div id="day-2" class="section level1">
+<h1><span class="header-section-number">4</span> Day 2</h1>
+<div id="exploring-gene-expression" class="section level2">
+<h2><span class="header-section-number">4.1</span> Exploring gene expression</h2>
+</div>
+<div id="identifying-sample-swaps" class="section level2">
+<h2><span class="header-section-number">4.2</span> Identifying sample swaps</h2>
+</div>
+<div id="statistical-modeling" class="section level2">
+<h2><span class="header-section-number">4.3</span> Statistical modeling</h2>
+</div>
+</div>
+<div id="day-3" class="section level1">
+<h1><span class="header-section-number">5</span> Day 3</h1>
+<div id="visualizing-degs" class="section level2">
+<h2><span class="header-section-number">5.1</span> Visualizing DEGs</h2>
+</div>
+<div id="go-enrichment-analyses" class="section level2">
+<h2><span class="header-section-number">5.2</span> GO enrichment analyses</h2>
+</div>
+<div id="beyond-speaqeasy" class="section level2">
+<h2><span class="header-section-number">5.3</span> Beyond SPEAQeasy</h2>
+</div>
+</div>
+<div id="reproducibility" class="section level1">
+<h1><span class="header-section-number">6</span> Reproducibility</h1>
+<pre class="r"><code># Date this report was generated
+message(Sys.time())</code></pre>
+<pre><code>## 2020-10-05 17:45:03</code></pre>
+<pre class="r"><code># Reproducibility info
+options(width = 120)
+sessioninfo::session_info()</code></pre>
+<pre><code>## ─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
+##  setting  value                       
+##  version  R version 4.0.2 (2020-06-22)
+##  os       Ubuntu 20.04.1 LTS          
+##  system   x86_64, linux-gnu           
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  ctype    en_US.UTF-8                 
+##  tz       Etc/UTC                     
+##  date     2020-10-05                  
+## 
+## ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+##  package              * version  date       lib source                                   
+##  assertthat             0.2.1    2019-03-21 [2] RSPM (R 4.0.0)                           
+##  backports              1.1.10   2020-09-15 [2] RSPM (R 4.0.2)                           
+##  Biobase              * 2.49.1   2020-09-03 [1] Bioconductor                             
+##  BiocGenerics         * 0.35.4   2020-06-04 [1] Bioconductor                             
+##  BiocManager          * 1.30.10  2019-11-16 [2] CRAN (R 4.0.2)                           
+##  BiocStyle            * 2.17.1   2020-09-24 [1] Bioconductor                             
+##  bitops                 1.0-6    2013-08-17 [1] RSPM (R 4.0.0)                           
+##  bookdown               0.20     2020-06-23 [1] RSPM (R 4.0.2)                           
+##  cli                    2.0.2    2020-02-28 [2] RSPM (R 4.0.0)                           
+##  colorspace             1.4-1    2019-03-18 [1] RSPM (R 4.0.0)                           
+##  crayon                 1.3.4    2017-09-16 [2] RSPM (R 4.0.0)                           
+##  data.table             1.13.0   2020-07-24 [1] RSPM (R 4.0.2)                           
+##  DelayedArray           0.15.15  2020-10-03 [1] Bioconductor                             
+##  digest                 0.6.25   2020-02-23 [2] RSPM (R 4.0.0)                           
+##  dplyr                  1.0.2    2020-08-18 [1] RSPM (R 4.0.2)                           
+##  ellipsis               0.3.1    2020-05-15 [2] RSPM (R 4.0.0)                           
+##  evaluate               0.14     2019-05-28 [2] RSPM (R 4.0.0)                           
+##  fansi                  0.4.1    2020-01-08 [2] RSPM (R 4.0.0)                           
+##  generics               0.0.2    2018-11-29 [1] RSPM (R 4.0.0)                           
+##  GenomeInfoDb         * 1.25.11  2020-09-03 [1] Bioconductor                             
+##  GenomeInfoDbData       1.2.3    2020-10-05 [1] Bioconductor                             
+##  GenomicRanges        * 1.41.6   2020-08-12 [1] Bioconductor                             
+##  ggplot2              * 3.3.2    2020-06-19 [1] RSPM (R 4.0.1)                           
+##  glue                   1.4.2    2020-08-27 [2] RSPM (R 4.0.2)                           
+##  googledrive            1.0.1    2020-05-05 [1] RSPM (R 4.0.0)                           
+##  gtable                 0.3.0    2019-03-25 [1] RSPM (R 4.0.0)                           
+##  here                 * 0.1      2017-05-28 [1] RSPM (R 4.0.0)                           
+##  htmltools              0.5.0    2020-06-16 [2] RSPM (R 4.0.1)                           
+##  htmlwidgets            1.5.1    2019-10-08 [2] RSPM (R 4.0.0)                           
+##  httr                   1.4.2    2020-07-20 [2] RSPM (R 4.0.2)                           
+##  IRanges              * 2.23.10  2020-06-13 [1] Bioconductor                             
+##  jaffelab               0.99.30  2020-10-05 [1] Github (LieberInstitute/jaffelab@42637ff)
+##  jsonlite               1.7.1    2020-09-07 [2] RSPM (R 4.0.2)                           
+##  knitr                  1.30     2020-09-22 [2] RSPM (R 4.0.2)                           
+##  lattice                0.20-41  2020-04-02 [3] CRAN (R 4.0.2)                           
+##  lazyeval               0.2.2    2019-03-15 [2] RSPM (R 4.0.0)                           
+##  lifecycle              0.2.0    2020-03-06 [2] RSPM (R 4.0.0)                           
+##  limma                  3.45.14  2020-09-12 [1] Bioconductor                             
+##  magrittr               1.5      2014-11-22 [2] RSPM (R 4.0.0)                           
+##  Matrix                 1.2-18   2019-11-27 [3] CRAN (R 4.0.2)                           
+##  MatrixGenerics       * 1.1.3    2020-09-30 [1] Bioconductor                             
+##  matrixStats          * 0.57.0   2020-09-25 [1] RSPM (R 4.0.2)                           
+##  munsell                0.5.0    2018-06-12 [1] RSPM (R 4.0.0)                           
+##  pillar                 1.4.6    2020-07-10 [2] RSPM (R 4.0.2)                           
+##  pkgconfig              2.0.3    2019-09-22 [2] RSPM (R 4.0.0)                           
+##  plotly               * 4.9.2.1  2020-04-04 [1] RSPM (R 4.0.0)                           
+##  purrr                  0.3.4    2020-04-17 [2] RSPM (R 4.0.0)                           
+##  R6                     2.4.1    2019-11-12 [2] RSPM (R 4.0.0)                           
+##  rafalib                1.0.0    2015-08-09 [1] RSPM (R 4.0.0)                           
+##  RColorBrewer           1.1-2    2014-12-07 [1] RSPM (R 4.0.0)                           
+##  RCurl                  1.98-1.2 2020-04-18 [1] RSPM (R 4.0.0)                           
+##  rlang                  0.4.7    2020-07-09 [2] RSPM (R 4.0.2)                           
+##  rmarkdown              2.4      2020-09-30 [1] RSPM (R 4.0.2)                           
+##  rprojroot              1.3-2    2018-01-03 [2] RSPM (R 4.0.0)                           
+##  S4Vectors            * 0.27.13  2020-09-18 [1] Bioconductor                             
+##  scales                 1.1.1    2020-05-11 [1] RSPM (R 4.0.0)                           
+##  segmented              1.2-0    2020-06-23 [1] RSPM (R 4.0.2)                           
+##  sessioninfo            1.1.1    2018-11-05 [1] RSPM (R 4.0.0)                           
+##  stringi                1.5.3    2020-09-09 [2] RSPM (R 4.0.2)                           
+##  stringr                1.4.0    2019-02-10 [2] RSPM (R 4.0.0)                           
+##  SummarizedExperiment * 1.19.9   2020-10-01 [1] Bioconductor                             
+##  tibble                 3.0.3    2020-07-10 [2] RSPM (R 4.0.2)                           
+##  tidyr                  1.1.2    2020-08-27 [1] RSPM (R 4.0.2)                           
+##  tidyselect             1.1.0    2020-05-11 [1] RSPM (R 4.0.0)                           
+##  vctrs                  0.3.4    2020-08-29 [2] RSPM (R 4.0.2)                           
+##  viridisLite            0.3.0    2018-02-01 [1] RSPM (R 4.0.0)                           
+##  withr                  2.3.0    2020-09-22 [2] RSPM (R 4.0.2)                           
+##  xfun                   0.18     2020-09-29 [2] RSPM (R 4.0.2)                           
+##  XVector                0.29.3   2020-06-25 [1] Bioconductor                             
+##  yaml                   2.2.1    2020-02-01 [2] RSPM (R 4.0.0)                           
+##  zlibbioc               1.35.0   2020-04-27 [1] Bioconductor                             
+## 
+## [1] /usr/local/lib/R/host-site-library
+## [2] /usr/local/lib/R/site-library
+## [3] /usr/local/lib/R/library</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      styles: {
+        ".MathJax_Display": {
+           "text-align": "center",
+           padding: "0px 150px 0px 65px",
+           margin: "0px 0px 0.5em"
+        },
+        "@media screen and (max-width: 991px)": {
+            ".MathJax_Display": {
+               "text-align": "center",
+               padding: "0 0 0 0"
+            }
+         }
+      }
+    }
+  });
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
