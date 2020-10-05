@@ -123,8 +123,11 @@ In general:
 Let's look at the example data
 
 ```{r "load_data"}
+## For loading the data
 library("SummarizedExperiment")
 library("here")
+
+## Load the example data
 load(here("rse_speaqeasy.RData"), verbose = TRUE)
 ```
 
