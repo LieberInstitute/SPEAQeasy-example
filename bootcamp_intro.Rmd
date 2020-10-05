@@ -89,6 +89,8 @@ BiocManager::install(c("BiocStyle"))
 
 [Slides](https://docs.google.com/presentation/d/1X3U2lcf75Yh9BK_Scs-O3M8b9-JauUNN8ZO_xhlKs7w/edit?usp=sharing)
 
+For more details, I have some older slides on the technology for RNA-seq from [PDCB-HTS 2010](http://lcolladotor.github.io/courses/PDCB-HTS.html).
+
 ## SPEAQeasy overview
 
 Let's go to the [SPEAQeasy](http://research.libd.org/SPEAQeasy/) documentation website.
@@ -246,7 +248,7 @@ pdf_df <- as.data.frame(colData(rse_gene))
 
 # Day 3
 
-## Visualiziang DEGs
+## Visualizing DEGs
 
 ## GO enrichment analyses
 
