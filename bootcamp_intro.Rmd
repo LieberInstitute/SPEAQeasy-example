@@ -99,7 +99,7 @@ We'll mostly be using the [SPEAQeasy main output files](http://research.libd.org
 
 ### SPEAQeasy-example
 
-Example data using [SPEAQeasy](http://research.libd.org/SPEAQeasy/) with 40 samples from the Bipolar project with Peter Zandi et al.
+Example data using [SPEAQeasy-example](http://research.libd.org/SPEAQeasy-example/) with 40 samples from the Bipolar project with Peter Zandi et al.
 
 It shows:
 
