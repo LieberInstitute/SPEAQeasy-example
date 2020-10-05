@@ -13,6 +13,8 @@ navbar:
       href: swap_speaqeasy.html
     - text: "Differential Expression"
       href: de_analysis_speaqeasy.html
+    - text: "Bootcamp"
+      href: bootcamp_intro
   right:
     - icon: fa-github fa-lg
       href: https://github.com/LieberInstitute/SPEAQeasy-example
