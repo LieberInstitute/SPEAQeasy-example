@@ -33,18 +33,6 @@ cd SPEAQeasy
 bash install_software.sh "local"
 ```
 
-Alternatively, you can download the contents of this repository using `r BiocStyle::CRANpkg("usethis")` ^[It will download the latest version, which you will need to re-run in case we make any changes.]
-
-```{r "download_with_usethis"}
-library("usethis")
-```
-
-```{r "download_use_course", eval = FALSE}
-use_course("https://github.com/LieberInstitute/SPEAQeasy-example/archive/master.zip")
-```
-
-
-
 # Modify the main script
 
 For the purposes of the below example, we will consider a user who wishes to run SPEAQeasy on a computing cluster using SLURM, and managing dependencies with docker. However, the process is nearly identical regardless of the choice of "main" script. Below we examine the original content of `run_pipeline_slurm.sh`, our "main" script, which we will modify as appropriate for the particular example data set.

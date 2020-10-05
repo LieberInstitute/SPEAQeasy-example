@@ -23,6 +23,19 @@ git clone git@github.com:LieberInstitute/SPEAQeasy-example.git
 
 This repository contains genotype and phenotype data for the example set of 42 human samples, as well as the associated main outputs from the [SPEAQeasy](https://github.com/LieberInstitute/SPEAQeasy) pipeline. For the purposes of this example, the main outputs include a single VCF file of genotype calls for all samples, and `RangedSummarizedExperiment` objects containing gene, exon, and exon-exon junction counts.
 
+## Download static files
+
+Alternatively, you can download the contents of this repository using `r BiocStyle::CRANpkg("usethis")` ^[It will download the latest version, which you will need to re-run in case we make any changes.]
+
+```{r "download_with_usethis"}
+library("usethis")
+```
+
+```{r "download_use_course", eval = FALSE}
+use_course("https://github.com/LieberInstitute/SPEAQeasy-example/archive/master.zip")
+```
+
+
 # Pull example FASTQ data for use in SPEAQeasy
 
 You are encouraged to optionally reproduce our SPEAQeasy results before moving on to the identity resolution and differential expression steps. Those interested in running SPEAQeasy on the raw FASTQ files must download these files. Note that this is an optional step, as we provide the relevant SPEAQeasy outputs for those interested simply in how to use these outputs in subsequent analyses.
