@@ -1,0 +1,201 @@
+---
+title: SPEAQeasy bootcamp
+author: 
+  - name: Leonardo Collado-Torres
+    affiliation:
+    - &libd Lieber Institute for Brain Development, Johns Hopkins Medical Campus
+    - &ccb Center for Computational Biology, Johns Hopkins University
+    email: lcolladotor@gmail.com
+output: 
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    code_folding: show
+---
+
+# Setup
+
+Please install the latest:
+
+* R version from [CRAN](https://cran.r-project.org/)
+* [RStudio Destkop](https://rstudio.com/products/rstudio/download/) ^[You might want to try out [RStudio Desktop Preview](https://rstudio.com/products/rstudio/download/preview/) as discussed on the [2020-10-02 LIBD rstats club session](https://twitter.com/LIBDrstats/status/1312187753371561984?s=20). ]
+
+Once you have installed R and RStudio, please install the following R packages:
+
+```{r "install_packages", eval = FALSE}
+## For installing R packages from CRAN and GitHub
+if (!requireNamespace("remotes", quietly = TRUE)) {
+      install.packages("remotes")
+}
+
+## For installing Bioconductor packages
+remotes::install_cran("BiocManager")
+
+## Workflow-related R packages
+remotes::install_cran(c(
+    "rmarkdown",
+    "sessioninfo",
+    "getopt",
+    "here",
+    "tidyr",
+    "usethis"
+))
+remotes::install_github("LieberInstitute/jaffelab")
+
+## Differential-expression related R packages
+BiocManager::install(c("limma", "edgeR", "SummarizedExperiment", "recount"))
+
+## Genomics-related R packages
+BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"))
+
+## Visualization-related R packages
+remotes::install_cran(c(
+    "pheatmap",
+    "RColorBrewer",
+    "VariantAnnotation",
+    "ggplot2",
+    "plotly"
+))
+BiocManager::install("iSEE")
+
+## Extra ones
+remotes::install_cran(c("knitcitations", "statmod"))
+BiocManager::install(c("BiocStyle"))
+```
+
+# Bootcamp plan
+
+* Day 1: Monday October 5th 2020, 3-5 pm
+  - RNA sequencing primer
+  - LIBD's RNA-seq processing pipeline: SPEAQeasy
+  - `r BiocStyle::Biocpkg("SummarizedExperiment")` overview
+  - Exploring quality control metrics
+* Day 2: Tuesday October 6th 2020, 3-5 pm
+  - Exploring gene expression
+  - Identifying sample swaps
+  - Statistical modeling
+* Day 3: Wednesday October 7th 2020, 1-3 pm
+  - Visualizing differentially expressed genes
+  - Gene ontology enrichment analyses
+  - Beyond SPEAQeasy
+  
+
+# Day 1
+
+## RNA sequencing primer
+
+## SPEAQeasy overview
+
+Let's go to the [SPEAQeasy](http://research.libd.org/SPEAQeasy/) documentation website.
+
+We'll mostly be using the [SPEAQeasy main output files](http://research.libd.org/SPEAQeasy/outputs.html). 
+
+### SPEAQeasy-example
+
+Example data using [SPEAQeasy](http://research.libd.org/SPEAQeasy/) with 40 samples from the Bipolar project with Peter Zandi et al.
+
+It shows:
+
+1. How to download the example data
+1. How to run SPEAQeasy with this data
+1. How to identify sample swaps
+1. How to run differential expression analyses with this data
+
+We'll view these links, but we'll start with:
+
+* [Home](http://research.libd.org/SPEAQeasy-example/index.html)
+* [Download data](http://research.libd.org/SPEAQeasy-example/prepare_data.html)
+
+## SummarizedExperiment overview
+
+### General
+
+In general:
+
+* `r BiocStyle::Biocpkg("SummarizedExperiment")`
+  - [Introduction vignette](http://bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html)
+* Bioconductor 2015 paper
+  - DOI: [10.1038/nmeth.3252](https://doi.org/10.1038/nmeth.3252)
+  
+### Example data
+
+Let's look at the example data
+
+```{r "load_data"}
+library("SummarizedExperiment")
+library("here")
+load(here("rse_speaqeasy.RData"), verbose = TRUE)
+```
+
+
+
+```{r}
+colData(rse_gene)
+```
+
+```{r}
+rowData(rse_gene)
+```
+
+
+```{r}
+## The names of the count matrices we have
+assayNames(rse_gene)
+
+## The full "counts" matrix
+dim(assay(rse_gene, "counts"))
+
+## The top left corner of the matrix counts
+jaffelab::corner(assay(rse_gene, "counts"))
+```
+
+```{r}
+
+```
+
+
+
+
+## Exploring quality control metrics
+
+# Day 2
+
+## Exploring gene expression
+
+## Identifying sample swaps
+
+## Statistical modeling
+
+# Day 3
+
+## Visualiziang DEGs
+
+## GO enrichment analyses
+
+## Beyond SPEAQeasy
+
+
+
+
+## Age plotter
+
+[`jaffelab::agePloter()`](http://research.libd.org/jaffelab/reference/agePlotter.html)
+
+```{r}
+library("jaffelab")
+agePlotter(assay(rse_gene, "counts")[1, ], rse_gene$AgeDeath, mod = with(colData(rse_gene), model.matrix(~ AgeDeath)), ageBreaks = c(20, 40, 60, 100))
+```
+
+
+
+# Reproducibility
+
+```{r reproducibility}
+# Date this report was generated
+message(Sys.time())
+
+# Reproducibility info
+options(width = 120)
+sessioninfo::session_info()
+```
