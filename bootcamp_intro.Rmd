@@ -210,7 +210,7 @@ pdf_df <- as.data.frame(colData(rse_gene))
 
 ### Exercise full solution
 
-```{r "interactive_exploration"}
+```{r "interactive_exploration_answer"}
 ## First we load the required packages
 library("ggplot2")
 library("plotly")
