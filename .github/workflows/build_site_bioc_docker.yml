@@ -182,7 +182,7 @@ jobs:
         run: |
           ## For building the website & getting the R session info
           ## Edit as necessary with other packages in the future
-          BiocManager::install(c("rmarkdown", "sessioninfo", "BiocStyle", "clusterProfiler", "edgeR", "getopt", "here", "LieberInstitute/jaffelab", "knitcitations", "limma", "org.Hs.eg.db", "pheatmap", "RColorBrewer", "recount", "SummarizedExperiment", "tidyr", "VariantAnnotation", "statmod", "usethis", "iSEE"))
+          BiocManager::install(c("rmarkdown", "sessioninfo", "BiocStyle", "clusterProfiler", "edgeR", "getopt", "here", "LieberInstitute/jaffelab", "knitcitations", "limma", "org.Hs.eg.db", "pheatmap", "RColorBrewer", "recount", "SummarizedExperiment", "tidyr", "VariantAnnotation", "statmod", "usethis", "iSEE", "ggplot2", "plotly"))
           tinytex::install_tinytex()
         shell: Rscript {0}
 
