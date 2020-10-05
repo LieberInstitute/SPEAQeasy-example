@@ -253,19 +253,6 @@ pdf_df <- as.data.frame(colData(rse_gene))
 ## Beyond SPEAQeasy
 
 
-
-
-## Age plotter
-
-[`jaffelab::agePloter()`](http://research.libd.org/jaffelab/reference/agePlotter.html)
-
-```{r}
-library("jaffelab")
-agePlotter(assay(rse_gene, "counts")[1, ], rse_gene$AgeDeath, mod = with(colData(rse_gene), model.matrix(~ AgeDeath)), ageBreaks = c(20, 40, 60, 100))
-```
-
-
-
 # Reproducibility
 
 ```{r reproducibility}
