@@ -16,7 +16,7 @@ output:
 
 This document is part of the _R/Bioconductor-powered Team Data Science_ [LIBD bootcamps](https://lcolladotor.github.io/bioc_team_ds/rbioconductor-data-science-bootcamps.html#libd-bootcamps).
 
-You can download the [**latest version here**](https://github.com/LieberInstitute/SPEAQeasy-example/blob/master/bootcamp_intro.Rmd). ^[This was useful particularly during October 5-7 while I was updating this document frequently.]
+You can download the [**latest version of this Rmd document here**](https://github.com/LieberInstitute/SPEAQeasy-example/blob/master/bootcamp_intro.Rmd). ^[This was useful particularly during October 5-7 while I was updating this document frequently.]
 
 # Setup
 
@@ -30,7 +30,7 @@ Once you have installed R and RStudio, please install the following R packages:
 ```{r "install_packages", eval = FALSE}
 ## For installing R packages from CRAN and GitHub
 if (!requireNamespace("remotes", quietly = TRUE)) {
-      install.packages("remotes")
+    install.packages("remotes")
 }
 
 ## For installing Bioconductor packages
@@ -233,17 +233,21 @@ nrow(pd_df)
 pd_df$key <- pd_df$RNum
 
 ## Let's make a "highlighted" table
-pd_key <- highlight_key(pd_df, ~ key)
+pd_key <- highlight_key(pd_df, ~key)
 
 ## Make a plot using the highlight table
 gg_mean_mito_vs_mean_gene <-
-    ggplot(pd_key,
-        aes(x = mean_mitoRate, y = mean_totalAssignedGene, color = Region)) + geom_point()
+    ggplot(
+        pd_key,
+        aes(x = mean_mitoRate, y = mean_totalAssignedGene, color = Region)
+    ) +
+    geom_point()
 gg_mean_mito_vs_mean_gene
 
 ## Make a second plot
 gg_mean_mito_vs_mean_RIN <-
-    ggplot(pd_key, aes(x = mean_mitoRate, y = mean_RIN, color = Region)) + geom_point()
+    ggplot(pd_key, aes(x = mean_mitoRate, y = mean_RIN, color = Region)) +
+    geom_point()
 gg_mean_mito_vs_mean_RIN
 
 ## Convert them to interactive plots
@@ -293,19 +297,23 @@ nrow(pd_df)
 pd_df$key <- pd_df$SAMPLE_ID
 
 ## Let's make a "highlighted" table
-pd_key <- highlight_key(pd_df, ~ key)
+pd_key <- highlight_key(pd_df, ~key)
 
 ## Make a plot using the highlight table
 ## Here we remoted "mean_" from the variable and object names
 ## and we changed Region to BrainRegion
 gg_mito_vs_gene <-
-    ggplot(pd_key,
-        aes(x = mitoRate, y = totalAssignedGene, color = BrainRegion)) + geom_point()
+    ggplot(
+        pd_key,
+        aes(x = mitoRate, y = totalAssignedGene, color = BrainRegion)
+    ) +
+    geom_point()
 
 ## Make a second plot
 ## We don't have RIN, so we'll use rRNA_rate here
 gg_mito_vs_rRNA_rate <-
-    ggplot(pd_key, aes(x = mitoRate, y = rRNA_rate, color = BrainRegion)) + geom_point()
+    ggplot(pd_key, aes(x = mitoRate, y = rRNA_rate, color = BrainRegion)) +
+    geom_point()
 
 ## Convert them to interactive plots
 p_mito_vs_gene <- ggplotly(gg_mito_vs_gene)
@@ -337,6 +345,8 @@ p_fancy
 
 # Day 2
 
+You can download the [**latest version of this Rmd document here**](https://github.com/LieberInstitute/SPEAQeasy-example/blob/master/bootcamp_intro.Rmd).
+
 ## Exploring gene expression
 
 ## Identifying sample swaps
@@ -344,6 +354,8 @@ p_fancy
 ## Statistical modeling
 
 # Day 3
+
+You can download the [**latest version of this Rmd document here**](https://github.com/LieberInstitute/SPEAQeasy-example/blob/master/bootcamp_intro.Rmd).
 
 ## Visualizing DEGs
 

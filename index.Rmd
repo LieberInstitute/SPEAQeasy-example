@@ -46,39 +46,39 @@ This is a project by the [R/Bioconductor-powered Team Data Science](https://lcol
 
 ```{r 'setup', echo = FALSE, warning = FALSE, message = FALSE}
 ## Bib setup
-library('knitcitations')
-library('BiocStyle')
-library('devtools')
+library("knitcitations")
+library("BiocStyle")
+library("devtools")
 
 ## Load knitcitations with a clean bibliography
 cleanbib()
-cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
+cite_options(hyperlink = "to.doc", citation_format = "text", style = "html")
 
 ## Write bibliography information
 bibs <- c(
     R = citation(),
-    biocStyle = citation('BiocStyle'),
-    devtools = citation('devtools'),
-    clusterProfiler = citation('clusterProfiler'),
-    edgeR = citation('edgeR')[1],
-    getopt = citation('getopt'),
-    here = citation('here'),
-    jaffelab = citation('jaffelab'),
-    knitcitations = citation('knitcitations'),
-    limma = citation('limma'),
-    org.Hs.eg.db = citation('org.Hs.eg.db'),
-    pheatmap = citation('pheatmap'),
-    RColorBrewer = citation('RColorBrewer'),
-    recount = citation('recount')[1],
-    rmarkdown = citation('rmarkdown')[1],
-    SummarizedExperiment = citation('SummarizedExperiment'),
-    tidyr = citation('tidyr'),
-    VariantAnnotation = citation('VariantAnnotation'),
-    voom = RefManageR::BibEntry('article', key = 'voom', author = 'CW Law and Y Chen and W Shi and GK Smyth', year = '2014', title = 'Voom: precision weights unlock linear model analysis tools for RNA-seq read counts', journal = 'Genome Biology', volume = '15', pages = 'R29')
+    biocStyle = citation("BiocStyle"),
+    devtools = citation("devtools"),
+    clusterProfiler = citation("clusterProfiler"),
+    edgeR = citation("edgeR")[1],
+    getopt = citation("getopt"),
+    here = citation("here"),
+    jaffelab = citation("jaffelab"),
+    knitcitations = citation("knitcitations"),
+    limma = citation("limma"),
+    org.Hs.eg.db = citation("org.Hs.eg.db"),
+    pheatmap = citation("pheatmap"),
+    RColorBrewer = citation("RColorBrewer"),
+    recount = citation("recount")[1],
+    rmarkdown = citation("rmarkdown")[1],
+    SummarizedExperiment = citation("SummarizedExperiment"),
+    tidyr = citation("tidyr"),
+    VariantAnnotation = citation("VariantAnnotation"),
+    voom = RefManageR::BibEntry("article", key = "voom", author = "CW Law and Y Chen and W Shi and GK Smyth", year = "2014", title = "Voom: precision weights unlock linear model analysis tools for RNA-seq read counts", journal = "Genome Biology", volume = "15", pages = "R29")
 )
 
-write.bibtex(bibs, file = 'index.bib')
-bib <- read.bibtex('index.bib')
+write.bibtex(bibs, file = "index.bib")
+bib <- read.bibtex("index.bib")
 
 ## Assign short names
 names(bib) <- names(bibs)
