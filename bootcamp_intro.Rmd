@@ -16,6 +16,8 @@ output:
 
 This document is part of the _R/Bioconductor-powered Team Data Science_ [LIBD bootcamps](https://lcolladotor.github.io/bioc_team_ds/rbioconductor-data-science-bootcamps.html#libd-bootcamps).
 
+You can download the [**latest version here**](https://github.com/LieberInstitute/SPEAQeasy-example/blob/master/bootcamp_intro.Rmd). ^[This was useful particularly during October 5-7 while I was updating this document frequently.]
+
 # Setup
 
 Please install the latest:
@@ -189,7 +191,7 @@ library("plotly")
 
 ## Next, we convert the sample metadata to a data.frame
 ## which will make it easier to work with
-pdf_df <- as.data.frame(colData(rse_gene))
+pd_df <- as.data.frame(colData(rse_gene))
 
 ## We need a "key" variable that is unique
 
@@ -208,7 +210,70 @@ pdf_df <- as.data.frame(colData(rse_gene))
 ## Fancy one
 ```
 
-### Exercise full solution
+### Exercise solution
+
+#### Step 1
+
+As a first step, let's add the code from the gist that is listed below each of the comments from the previous [code](https://gist.github.com/lcolladotor/350ac8843e153d135f64880a1d029b14).
+
+```{r "interactive_exploration_step1", eval = FALSE}
+## First we load the required packages
+library("ggplot2")
+library("plotly")
+
+## Next, we convert the sample metadata to a data.frame
+## which will make it easier to work with
+pd_df <- as.data.frame(colData(rse_gene))
+
+## We need a "key" variable that is unique
+length(unique(pd_df$RNum))
+nrow(pd_df)
+
+## Let's make the key
+pd_df$key <- pd_df$RNum
+
+## Let's make a "highlighted" table
+pd_key <- highlight_key(pd_df, ~ key)
+
+## Make a plot using the highlight table
+gg_mean_mito_vs_mean_gene <-
+    ggplot(pd_key,
+        aes(x = mean_mitoRate, y = mean_totalAssignedGene, color = Region)) + geom_point()
+gg_mean_mito_vs_mean_gene
+
+## Make a second plot
+gg_mean_mito_vs_mean_RIN <-
+    ggplot(pd_key, aes(x = mean_mitoRate, y = mean_RIN, color = Region)) + geom_point()
+gg_mean_mito_vs_mean_RIN
+
+## Convert them to interactive plots
+p_mean_mito_vs_mean_gene <- ggplotly(gg_mean_mito_vs_mean_gene)
+p_mean_mito_vs_mean_RIN <- ggplotly(gg_mean_mito_vs_mean_RIN)
+
+## Now group them together
+p_merged <- subplot(
+    p_mean_mito_vs_mean_gene,
+    p_mean_mito_vs_mean_RIN,
+    nrows = 1,
+    shareX = TRUE,
+    shareY = FALSE,
+    which_layout = 2
+)
+
+## Fancy one
+p_fancy <- highlight(
+    p_merged,
+    on = "plotly_click",
+    selectize = TRUE,
+    dynamic = TRUE,
+    persistent = TRUE
+)
+```
+
+#### Step 2
+
+Now that we have the code, we need to adapt it. Some variable names are slightly different, some don't exist. This process will typically involve several error messages while we figure out what's there and what's different. The end result will look like the following code.
+
 
 ```{r "interactive_exploration_answer"}
 ## First we load the required packages
@@ -217,25 +282,57 @@ library("plotly")
 
 ## Next, we convert the sample metadata to a data.frame
 ## which will make it easier to work with
-pdf_df <- as.data.frame(colData(rse_gene))
+pd_df <- as.data.frame(colData(rse_gene))
 
 ## We need a "key" variable that is unique
+## We replaced RNum by SAMPLE_ID
+length(unique(pd_df$SAMPLE_ID))
+nrow(pd_df)
 
 ## Let's make the key
+pd_df$key <- pd_df$SAMPLE_ID
 
 ## Let's make a "highlighted" table
+pd_key <- highlight_key(pd_df, ~ key)
 
 ## Make a plot using the highlight table
+## Here we remoted "mean_" from the variable and object names
+## and we changed Region to BrainRegion
+gg_mito_vs_gene <-
+    ggplot(pd_key,
+        aes(x = mitoRate, y = totalAssignedGene, color = BrainRegion)) + geom_point()
 
 ## Make a second plot
+## We don't have RIN, so we'll use rRNA_rate here
+gg_mito_vs_rRNA_rate <-
+    ggplot(pd_key, aes(x = mitoRate, y = rRNA_rate, color = BrainRegion)) + geom_point()
 
 ## Convert them to interactive plots
+p_mito_vs_gene <- ggplotly(gg_mito_vs_gene)
+p_mito_vs_rRNA_rate <- ggplotly(gg_mito_vs_rRNA_rate)
 
 ## Now group them together
+p_merged <- subplot(
+    p_mito_vs_gene,
+    p_mito_vs_rRNA_rate,
+    nrows = 1,
+    shareX = TRUE,
+    shareY = FALSE,
+    which_layout = 2
+)
 
 ## Fancy one
-```
+p_fancy <- highlight(
+    p_merged,
+    on = "plotly_click",
+    selectize = TRUE,
+    dynamic = TRUE,
+    persistent = TRUE
+)
 
+## End result
+p_fancy
+```
 
 
 # Day 2
