@@ -470,6 +470,8 @@ Note that `sampleData` cannot take `NA` values, so you'll have to choose some co
 Here's one solution to the exercise.
 
 ```{r "explore_model_solution"}
+## Here we select manually a few columns to work with
+## and we use the same formula we used for making our model matrix
 app <-
     ExploreModelMatrix(sampleData = colData(rse_gene)[, c(
         "PrimaryDx",
@@ -481,6 +483,9 @@ app <-
         "rRNA_rate"
     )],
         designFormula = ~ PrimaryDx +  BrainRegion)
+
+## We can the explore the result interactively through a nice
+## shiny web application created by ExploreModelMatrix
 if (interactive())
     shiny::runApp(app)
 ```
