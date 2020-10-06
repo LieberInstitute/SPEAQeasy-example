@@ -422,35 +422,35 @@ library(&quot;SummarizedExperiment&quot;)
 library(&quot;devtools&quot;)
 library(&quot;BiocStyle&quot;)</code></pre>
 <p>In order to resolve the swaps to our best ability we need four data sets. Here we have load snpGeno_example which is from our topmed imputed genotype data, a phenotype data sheet (pd_example), a vcf file of the relevant speaqeasy output (Speaqeasy), and our current genotype sample sheet (brain_sentrix). This file is wrote in the directory listed below.</p>
-<pre class="r"><code>load(here(&quot;sample_selection&quot;,&quot;snpsGeno_example.RData&quot;), verbose = TRUE)</code></pre>
+<pre class="r"><code>load(here(&quot;sample_selection&quot;, &quot;snpsGeno_example.RData&quot;), verbose = TRUE)</code></pre>
 <pre><code>## Loading objects:
 ##   snpsGeno_example</code></pre>
-<pre class="r"><code>load(here(&quot;sample_selection&quot;,&quot;pd_example.Rdata&quot;), verbose = TRUE)</code></pre>
+<pre class="r"><code>load(here(&quot;sample_selection&quot;, &quot;pd_example.Rdata&quot;), verbose = TRUE)</code></pre>
 <pre><code>## Loading objects:
 ##   pd_example</code></pre>
-<pre class="r"><code>Speaqeasy&lt;-readVcf(here(&quot;pipeline_outputs&quot;,&quot;merged_variants&quot;,&quot;mergedVariants.vcf.gz&quot;),genome=&quot;hg38&quot;)
-brain_sentrix&lt;- read.csv(here(&quot;brain_sentrix_speaqeasy.csv&quot;))</code></pre>
+<pre class="r"><code>Speaqeasy &lt;- readVcf(here(&quot;pipeline_outputs&quot;, &quot;merged_variants&quot;, &quot;mergedVariants.vcf.gz&quot;), genome = &quot;hg38&quot;)
+brain_sentrix &lt;- read.csv(here(&quot;brain_sentrix_speaqeasy.csv&quot;))</code></pre>
 <p>We can see that the genotype is represented in the form of 0s,1s, and 2s. The rare 2s are a result of multiallelic snps and we will drop those. 0 represent the reference allele with ones representing the alternate. We can see the distribution below.</p>
-<pre class="r"><code>Geno_speaqeasy&lt;-geno(Speaqeasy)$GT
+<pre class="r"><code>Geno_speaqeasy &lt;- geno(Speaqeasy)$GT
 table(Geno_speaqeasy)</code></pre>
 <pre><code>## Geno_speaqeasy
 ##   ./.   0/1   0/2   1/1   2/2 
 ## 14096  7803     4  6018     9</code></pre>
 <p>Given this we convert we convert the Genotype data from Speaqeasy to numeric data. The “./.” were values that could not accurately be determined and are replaced with NA.</p>
-<pre class="r"><code>colnames_speaqeasy&lt;- as.data.frame(colnames(Geno_speaqeasy))
-colnames(colnames_speaqeasy)&lt;-c(&quot;a&quot;)
-samples&lt;-separate(colnames_speaqeasy,a,into = c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;),sep = &quot;_&quot;)</code></pre>
+<pre class="r"><code>colnames_speaqeasy &lt;- as.data.frame(colnames(Geno_speaqeasy))
+colnames(colnames_speaqeasy) &lt;- c(&quot;a&quot;)
+samples &lt;- separate(colnames_speaqeasy, a, into = c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), sep = &quot;_&quot;)</code></pre>
 <pre><code>## Warning: Expected 3 pieces. Additional pieces discarded in 42 rows [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 ## 16, 17, 18, 19, 20, ...].</code></pre>
-<pre class="r"><code>samples&lt;-paste0(samples$a,&quot;_&quot;,samples$b)
-samples&lt;-as.data.frame(samples)
-colnames(Geno_speaqeasy)&lt;-samples$samples
-Geno_speaqeasy[Geno_speaqeasy == &quot;./.&quot;] = NA
-Geno_speaqeasy[Geno_speaqeasy == &quot;0/0&quot;] = 0
-Geno_speaqeasy[Geno_speaqeasy == &quot;0/1&quot;] = 1
-Geno_speaqeasy[Geno_speaqeasy == &quot;1/1&quot;] = 2
-class(Geno_speaqeasy) = &quot;numeric&quot;</code></pre>
-<pre><code>## Warning in class(Geno_speaqeasy) = &quot;numeric&quot;: NAs introduced by coercion</code></pre>
+<pre class="r"><code>samples &lt;- paste0(samples$a, &quot;_&quot;, samples$b)
+samples &lt;- as.data.frame(samples)
+colnames(Geno_speaqeasy) &lt;- samples$samples
+Geno_speaqeasy[Geno_speaqeasy == &quot;./.&quot;] &lt;- NA
+Geno_speaqeasy[Geno_speaqeasy == &quot;0/0&quot;] &lt;- 0
+Geno_speaqeasy[Geno_speaqeasy == &quot;0/1&quot;] &lt;- 1
+Geno_speaqeasy[Geno_speaqeasy == &quot;1/1&quot;] &lt;- 2
+class(Geno_speaqeasy) &lt;- &quot;numeric&quot;</code></pre>
+<pre><code>## Warning in class(Geno_speaqeasy) &lt;- &quot;numeric&quot;: NAs introduced by coercion</code></pre>
 <pre class="r"><code>corner(Geno_speaqeasy)</code></pre>
 <pre><code>##                   R14030_H7K5NBBXX R14184_H7K5NBBXX R13904_H7K5NBBXX R14296_H7JLCBBXX R14247_HF3JYBBXX R15093_HFY2MBBXX
 ## chr1:4712657_G/A                 2                1                2                1                1                2
@@ -460,7 +460,7 @@ class(Geno_speaqeasy) = &quot;numeric&quot;</code></pre>
 ## chr1:15289643_G/A               NA               NA               NA               NA               NA               NA
 ## chr1:15341780_G/A               NA               NA               NA               NA               NA                1</code></pre>
 <p>We then make a correlation matrix to find the possible mismatches between samples.</p>
-<pre class="r"><code>speaqeasy_Cor = cor(Geno_speaqeasy,use=&quot;pairwise.comp&quot;)
+<pre class="r"><code>speaqeasy_Cor &lt;- cor(Geno_speaqeasy, use = &quot;pairwise.comp&quot;)
 corner(speaqeasy_Cor)</code></pre>
 <pre><code>##                  R14030_H7K5NBBXX R14184_H7K5NBBXX R13904_H7K5NBBXX R14296_H7JLCBBXX R14247_HF3JYBBXX R15093_HFY2MBBXX
 ## R14030_H7K5NBBXX       1.00000000       0.13507812       0.01657484       0.03106472       0.03384912       0.18938568
@@ -492,10 +492,10 @@ corner(speaqeasy_Cor)</code></pre>
 <p>In this case the data only appears to have samples that match themselves. However there is the potential for a second kind of error where a brain has two samples, however the do not match each other.
 <img src="swap_speaqeasy_files/figure-html/check_correlations_genotypes-1.png" width="768" /></p>
 <p>In order to dig into this further we will collapse the correlation matrices into a data table shown below</p>
-<pre class="r"><code>corLong = data.frame(cor = signif(as.numeric(correlation_genotype),3))
-corLong$rowSample = rep(colnames(snpsGeno_example), times = ncol(snpsGeno_example))
-corLong$colSample = rep(colnames(snpsGeno_example), each = ncol(snpsGeno_example))
-corLong = corLong[!is.na(corLong$cor),]
+<pre class="r"><code>corLong &lt;- data.frame(cor = signif(as.numeric(correlation_genotype), 3))
+corLong$rowSample &lt;- rep(colnames(snpsGeno_example), times = ncol(snpsGeno_example))
+corLong$colSample &lt;- rep(colnames(snpsGeno_example), each = ncol(snpsGeno_example))
+corLong &lt;- corLong[!is.na(corLong$cor), ]
 head(corLong)</code></pre>
 <pre><code>##      cor         rowSample         colSample
 ## 1 1.0000 4463344375_R01C01 4463344375_R01C01
@@ -504,10 +504,10 @@ head(corLong)</code></pre>
 ## 4 0.1660 4572348855_R01C02 4463344375_R01C01
 ## 5 0.0537 5535549043_R01C01 4463344375_R01C01
 ## 6 0.2120 5535506145_R01C01 4463344375_R01C01</code></pre>
-<pre class="r"><code>corLong2 = data.frame(cor = signif(as.numeric(speaqeasy_Cor),3))
-corLong2$rowSample = rep(colnames(Geno_speaqeasy), times = ncol(Geno_speaqeasy))
-corLong2$colSample = rep(colnames(Geno_speaqeasy), each = ncol(Geno_speaqeasy))
-corLong2 = corLong2[!is.na(corLong2$cor),]
+<pre class="r"><code>corLong2 &lt;- data.frame(cor = signif(as.numeric(speaqeasy_Cor), 3))
+corLong2$rowSample &lt;- rep(colnames(Geno_speaqeasy), times = ncol(Geno_speaqeasy))
+corLong2$colSample &lt;- rep(colnames(Geno_speaqeasy), each = ncol(Geno_speaqeasy))
+corLong2 &lt;- corLong2[!is.na(corLong2$cor), ]
 head(corLong2)</code></pre>
 <pre><code>##      cor        rowSample        colSample
 ## 1 1.0000 R14030_H7K5NBBXX R14030_H7K5NBBXX
@@ -554,32 +554,32 @@ head(corLong2)</code></pre>
 ## 921  0.866 9373408026_R01C01 R14290_H7L3FBBXX   Br2260   Br2473
 ## 1467 0.915 9373408026_R01C01 R14071_HF3JYBBXX   Br2260   Br2473</code></pre>
 <p>We can see from this from this analysis there are a few swaps present between RNA and DNA samples here. We can categorize them as simple and complex sample swaps. Because the two Br2275 do not match each other and also match nothing else we will be forced to consider this a complex swap and drop the sample. In the case of Br2473 it is a simple swap with Br2260 in both cases. This can be ammended by swapping with in the phenotype data sheet manually. Now we have our accurate data outputs and will need to fix our ranged summarized experiment object for our Speaqeasy data.</p>
-<pre class="r"><code>load(here(&#39;pipeline_outputs&#39;, &#39;count_objects&#39;, &#39;rse_gene_Jlab_experiment_n42.Rdata&#39;))
+<pre class="r"><code>load(here(&quot;pipeline_outputs&quot;, &quot;count_objects&quot;, &quot;rse_gene_Jlab_experiment_n42.Rdata&quot;))
 
 ## drop sample from rse with speaqeasy data
-ids&lt;-pd_example$SAMPLE_ID[pd_example$BrNum ==&quot;Br2275&quot;]
-rse_gene&lt;-rse_gene[,!rse_gene$SAMPLE_ID ==ids[1]]
-rse_gene&lt;- rse_gene[,!rse_gene$SAMPLE_ID ==ids[2]]
+ids &lt;- pd_example$SAMPLE_ID[pd_example$BrNum == &quot;Br2275&quot;]
+rse_gene &lt;- rse_gene[, !rse_gene$SAMPLE_ID == ids[1]]
+rse_gene &lt;- rse_gene[, !rse_gene$SAMPLE_ID == ids[2]]
 
 # resolve swaps and drops in pd_example
-pd_example&lt;-pd_example[!pd_example$SAMPLE_ID ==ids[1],]
-pd_example&lt;-pd_example[!pd_example$SAMPLE_ID ==ids[2],]
-ids2&lt;-pd_example$SAMPLE_ID[pd_example$BrNum ==&quot;Br2260&quot;]
-ids3&lt;-pd_example$SAMPLE_ID[pd_example$BrNum ==&quot;Br2473&quot;]
-pd_example$SAMPLE_ID[pd_example$Sample_ID == ids2]&lt;- &quot;Br2473&quot;
-pd_example$SAMPLE_ID[pd_example$Sample_ID == ids3]&lt;- &quot;Br2260&quot;
+pd_example &lt;- pd_example[!pd_example$SAMPLE_ID == ids[1], ]
+pd_example &lt;- pd_example[!pd_example$SAMPLE_ID == ids[2], ]
+ids2 &lt;- pd_example$SAMPLE_ID[pd_example$BrNum == &quot;Br2260&quot;]
+ids3 &lt;- pd_example$SAMPLE_ID[pd_example$BrNum == &quot;Br2473&quot;]
+pd_example$SAMPLE_ID[pd_example$Sample_ID == ids2] &lt;- &quot;Br2473&quot;
+pd_example$SAMPLE_ID[pd_example$Sample_ID == ids3] &lt;- &quot;Br2260&quot;
 
 # reorder phenotype data by the sample order present in the &#39;rse_gene&#39; object
-pd_example = pd_example[match(rse_gene$SAMPLE_ID, pd_example$SAMPLE_ID),]
+pd_example &lt;- pd_example[match(rse_gene$SAMPLE_ID, pd_example$SAMPLE_ID), ]
 
 # add important colData to &#39;rse_gene&#39;
-rse_gene$BrainRegion = pd_example$BrainRegion
-rse_gene$Race = pd_example$Race
-rse_gene$PrimaryDx = pd_example$PrimaryDx
-rse_gene$Sex = pd_example$Sex
-rse_gene$AgeDeath = pd_example$AgeDeath
+rse_gene$BrainRegion &lt;- pd_example$BrainRegion
+rse_gene$Race &lt;- pd_example$Race
+rse_gene$PrimaryDx &lt;- pd_example$PrimaryDx
+rse_gene$Sex &lt;- pd_example$Sex
+rse_gene$AgeDeath &lt;- pd_example$AgeDeath
 
-#add correct BrNum to colData for rse_gene
+# add correct BrNum to colData for rse_gene
 colData(rse_gene)$BrNum &lt;- pd_example$BrNum
 
 save(rse_gene, file = &quot;rse_speaqeasy.RData&quot;)</code></pre>
@@ -620,10 +620,10 @@ Computing. Vienna, Austria, 2020. &lt;URL: <a href="https://www.R-project.org/" 
 Chapman and Hall/CRC, 2020. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown-cookbook" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook</a>&gt;.</p>
 <pre class="r"><code># Time spent creating this report:
 diff(c(timestart, Sys.time()))</code></pre>
-<pre><code>## Time difference of 1.345356 secs</code></pre>
+<pre><code>## Time difference of 1.426864 secs</code></pre>
 <pre class="r"><code># Date this report was generated
 message(Sys.time())</code></pre>
-<pre><code>## 2020-10-06 14:23:19</code></pre>
+<pre><code>## 2020-10-06 14:29:29</code></pre>
 <pre class="r"><code># Reproducibility info
 options(width = 120)
 devtools::session_info()</code></pre>

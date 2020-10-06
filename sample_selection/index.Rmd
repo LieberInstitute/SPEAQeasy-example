@@ -65,8 +65,8 @@ $`RNA data`
 
 ## List swap samples
 ```{r}
-swap_ID <- c("R14077_HCTYLBBXX","R14296_H7JLCBBXX","R14071_HF3JYBBXX","R14290_H7L3FBBXX","R13997_H7JHNBBXX","R14222_H7JHNBBXX")
-swap_case <- c(rep("swap_simple",4),rep("swap_complex", 2))
+swap_ID <- c("R14077_HCTYLBBXX", "R14296_H7JLCBBXX", "R14071_HF3JYBBXX", "R14290_H7L3FBBXX", "R13997_H7JHNBBXX", "R14222_H7JHNBBXX")
+swap_case <- c(rep("swap_simple", 4), rep("swap_complex", 2))
 swap_df <- data.frame(swap_ID, swap_case)
 colnames(swap_df) <- c("SAMPLE_ID", "SwapCase")
 swap_df
@@ -77,7 +77,7 @@ fastq files found in /dcl02/lieber/ajaffe/Nina/Zandi/data
 ```{r}
 ## zandi/hyde bipolar
 load("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/data/zandiHypde_bipolar_rseGene_n511.rda", verbose = TRUE)
-pd <- colData(rse_gene)[,c("SAMPLE_ID","RNum","BrNum","BrainRegion","Sex","AgeDeath","Race","PrimaryDx","RIN")]
+pd <- colData(rse_gene)[, c("SAMPLE_ID", "RNum", "BrNum", "BrainRegion", "Sex", "AgeDeath", "Race", "PrimaryDx", "RIN")]
 head(pd)
 ```
 
@@ -93,70 +93,77 @@ pd_swap <- merge(swap_df, pd)
 want 40 samples in the final data set, after 2 samples from the complex swap are dropped
 balance across Dx, Region, Sex, similar mean in Age
 ```{r}
-#all other samples
+# all other samples
 pd_other <- subset(pd, !SAMPLE_ID %in% swap_ID)
 dim(pd_other)
-#check for all adult samples
+# check for all adult samples
 summary(pd_other$AgeDeath)
-#  Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-# 17.37   35.34   47.09   47.18   56.05   86.76 
+#  Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# 17.37   35.34   47.09   47.18   56.05   86.76
 subset(pd_other, PrimaryDx == "Bipolar" & Sex == "F" & BrainRegion == "Amygdala")
 
 # set seed for reproducibility
 set.seed(456)
 
-#randomy select 5 cases from each group
-pd_other40 <- pd_other %>% as_tibble() %>% 
+# randomy select 5 cases from each group
+pd_other40 <- pd_other %>%
+    as_tibble() %>%
     filter(PrimaryDx != "Other") %>%
     mutate(SwapCase = "no_swap") %>%
-    group_by(BrainRegion,Sex, PrimaryDx) %>%
+    group_by(BrainRegion, Sex, PrimaryDx) %>%
     sample_n(5) %>%
     ungroup()
 
-pd_other40 %>% group_by(PrimaryDx) %>% 
-    summarise(mean(AgeDeath),median(AgeDeath))
+pd_other40 %>%
+    group_by(PrimaryDx) %>%
+    summarise(mean(AgeDeath), median(AgeDeath))
 ```
 
 ### replace four no_swap samples with the simple_swap cases, merge all tables together
 ```{r}
-pd_swap %>% filter(SwapCase == "swap_simple") %>% count(Sex, PrimaryDx, BrainRegion)
+pd_swap %>%
+    filter(SwapCase == "swap_simple") %>%
+    count(Sex, PrimaryDx, BrainRegion)
 #   Sex   PrimaryDx BrainRegion     n
 #   <fct> <fct>     <fct>       <int>
 # 1 F     Bipolar   Amygdala        2
 # 2 F     Bipolar   sACC            2
 
 # need to Drop 2 F, Bipolar samples from each region
-pd_drop <- pd_other40 %>% 
+pd_drop <- pd_other40 %>%
     filter(PrimaryDx == "Bipolar", Sex == "F") %>%
     group_by(BrainRegion) %>%
     sample_n(2)
 
-#merge tables    
+# merge tables
 (pd_example <- pd_other40 %>%
     anti_join(pd_drop) %>%
     rbind(pd_swap))
 
-pd_example %>% filter(SwapCase != "swap_complex") %>%
+pd_example %>%
+    filter(SwapCase != "swap_complex") %>%
     group_by(PrimaryDx) %>%
-    summarise(mean(AgeDeath),median(AgeDeath))
+    summarise(mean(AgeDeath), median(AgeDeath))
 ```
 
 ## Match Up With file manifest
 ```{r}
 manifest <- read.delim("/dcl01/lieber/ajaffe/lab/zandiHyde_bipolar_rnaseq/preprocessed_data/.samples_unmerged.manifest", header = FALSE)
 head(manifest)
-#change some samples to dcl02, same relative path after
-manifest <- data.frame(lapply(manifest, function(x) sub('/dcl01/lieber/', '/dcl02/lieber/', x)))
+# change some samples to dcl02, same relative path after
+manifest <- data.frame(lapply(manifest, function(x) sub("/dcl01/lieber/", "/dcl02/lieber/", x)))
 head(manifest)
-all(file.exists(manifest[,1]))
+all(file.exists(manifest[, 1]))
 
-manifest2 <- manifest[,c("V1","V3","V5")] %>%
-    melt(id.vars = "V5") %>% 
+manifest2 <- manifest[, c("V1", "V3", "V5")] %>%
+    melt(id.vars = "V5") %>%
     rename(SAMPLE_ID = V5) %>%
     group_by(SAMPLE_ID) %>%
     summarise(FASTQpath = list(value))
 
-pd_example <- pd_example %>% left_join(manifest2, by = "SAMPLE_ID") %>% as.data.frame()
+pd_example <- pd_example %>%
+    left_join(manifest2, by = "SAMPLE_ID") %>%
+    as.data.frame()
 head(pd_example)
 save(pd_example, file = "pd_example.Rdata")
 ```
@@ -164,28 +171,28 @@ save(pd_example, file = "pd_example.Rdata")
 ## Write a subsetted manifest in the format accepted by SPEAQeasy
 ```{r}
 #  These will be columns in the subsetted manifest
-R1 = list()
-R2 = list()
-ids = list()
+R1 <- list()
+R2 <- list()
+ids <- list()
 
 #  Loop through each id in the pd_example table
-counter = 1
+counter <- 1
 for (i in 1:length(pd_example$FASTQpath)) {
-    num_files = length(pd_example$FASTQpath[[i]])
+    num_files <- length(pd_example$FASTQpath[[i]])
     stopifnot((num_files %% 2) == 0) # data is paired
-    
+
     #  Ultimately produce one row for each pair of files of a given id
     for (j in 1:(num_files / 2)) {
-        R1[[counter]] = pd_example$FASTQpath[[i]][j]
-        R2[[counter]] = pd_example$FASTQpath[[i]][j + num_files / 2]
-        ids[[counter]] = pd_example$SAMPLE_ID[[i]]
-        
-        counter = counter + 1
+        R1[[counter]] <- pd_example$FASTQpath[[i]][j]
+        R2[[counter]] <- pd_example$FASTQpath[[i]][j + num_files / 2]
+        ids[[counter]] <- pd_example$SAMPLE_ID[[i]]
+
+        counter <- counter + 1
     }
 }
 
 #  Format as a vector of strings, which we will write to the 'sample_selection'
 #  folder in the repository
-out_manifest = paste(unlist(R1), 0, unlist(R2), 0, unlist(ids), sep='\t')
-writeLines(out_manifest, 'samples.manifest')
+out_manifest <- paste(unlist(R1), 0, unlist(R2), 0, unlist(ids), sep = "\t")
+writeLines(out_manifest, "samples.manifest")
 ```

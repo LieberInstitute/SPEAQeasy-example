@@ -449,39 +449,41 @@ rse_gene$PrimaryDx &lt;- factor(rse_gene$PrimaryDx)</code></pre>
 <div id="statistics-pcs" class="section level2">
 <h2><span class="header-section-number">1.3</span> statistics PCs</h2>
 <p>Here we are using principal component analysis to control for the listed variables impact on expression. This will be later added into our linear model.</p>
-<pre class="r"><code>col_names = c(&#39;trimmed&#39;, &#39;numReads&#39;, &#39;numMapped&#39;, &#39;numUnmapped&#39;, 
-              &#39;overallMapRate&#39;, &#39;concordMapRate&#39;, &#39;totalMapped&#39;, &#39;mitoMapped&#39;,
-              &#39;mitoRate&#39;, &#39;totalAssignedGene&#39;)
-statsPca = prcomp(as.data.frame(colData(rse_gene)[,col_names]))
-rse_gene$PC = statsPca$x[,1]
+<pre class="r"><code>col_names &lt;- c(
+    &quot;trimmed&quot;, &quot;numReads&quot;, &quot;numMapped&quot;, &quot;numUnmapped&quot;,
+    &quot;overallMapRate&quot;, &quot;concordMapRate&quot;, &quot;totalMapped&quot;, &quot;mitoMapped&quot;,
+    &quot;mitoRate&quot;, &quot;totalAssignedGene&quot;
+)
+statsPca &lt;- prcomp(as.data.frame(colData(rse_gene)[, col_names]))
+rse_gene$PC &lt;- statsPca$x[, 1]
 getPcaVars(statsPca)[1]</code></pre>
 <pre><code>## [1] 87.3</code></pre>
 </div>
 <div id="stats-vs.-race-and-brain-region" class="section level2">
 <h2><span class="header-section-number">1.4</span> Stats vs. race and brain region</h2>
 <pre class="r"><code># Filter for expressed
-rse_gene = rse_gene[rowMeans(getRPKM(rse_gene,&quot;Length&quot;)) &gt; 0.2,]
+rse_gene &lt;- rse_gene[rowMeans(getRPKM(rse_gene, &quot;Length&quot;)) &gt; 0.2, ]
 
 # Check if certain statistics changed by race or region
 
 # Display box plots here
-boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion,xlab=&quot;&quot;)</code></pre>
+boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion, xlab = &quot;&quot;)</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/race_region-1.png" width="768" /></p>
-<pre class="r"><code>boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion,xlab=&quot;&quot;)</code></pre>
+<pre class="r"><code>boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion, xlab = &quot;&quot;)</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/race_region-2.png" width="768" /></p>
-<pre class="r"><code>boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion,xlab=&quot;&quot;)</code></pre>
+<pre class="r"><code>boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion, xlab = &quot;&quot;)</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/race_region-3.png" width="768" /></p>
-<pre class="r"><code>boxplot(rse_gene$mitoRate ~ rse_gene$Race,las=3,xlab=&quot;&quot;)</code></pre>
+<pre class="r"><code>boxplot(rse_gene$mitoRate ~ rse_gene$Race, las = 3, xlab = &quot;&quot;)</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/race_region-4.png" width="768" /></p>
-<pre class="r"><code>boxplot(rse_gene$gene_Assigned ~ rse_gene$Race,las=3,xlab=&quot;&quot;)</code></pre>
+<pre class="r"><code>boxplot(rse_gene$gene_Assigned ~ rse_gene$Race, las = 3, xlab = &quot;&quot;)</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/race_region-5.png" width="768" /></p>
 <pre class="r"><code># Save box plots to PDF
 pdf(file = here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;Region_Race_cellcheck.pdf&quot;))
-boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion,xlab=&quot;&quot;)
-boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion,xlab=&quot;&quot;)
-boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion,xlab=&quot;&quot;)
-boxplot(rse_gene$mitoRate ~ rse_gene$Race,las=3,xlab=&quot;&quot;)
-boxplot(rse_gene$gene_Assigned ~ rse_gene$Race,las=3,xlab=&quot;&quot;)
+boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion, xlab = &quot;&quot;)
+boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion, xlab = &quot;&quot;)
+boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion, xlab = &quot;&quot;)
+boxplot(rse_gene$mitoRate ~ rse_gene$Race, las = 3, xlab = &quot;&quot;)
+boxplot(rse_gene$gene_Assigned ~ rse_gene$Race, las = 3, xlab = &quot;&quot;)
 dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
@@ -489,37 +491,44 @@ dev.off()</code></pre>
 <div id="explore-and-visualize-gene-expression" class="section level2">
 <h2><span class="header-section-number">1.5</span> Explore and visualize gene expression</h2>
 <pre class="r"><code># Explore gene expression
-geneExprs = log2(getRPKM(rse_gene,&quot;Length&quot;)+1)
-pca = prcomp(t(geneExprs))
-pca_vars = getPcaVars(pca)
-pca_vars_lab = paste0(&quot;PC&quot;, seq(along=pca_vars), &quot;: &quot;,
-    pca_vars, &quot;% Var Expl&quot;)
+geneExprs &lt;- log2(getRPKM(rse_gene, &quot;Length&quot;) + 1)
+pca &lt;- prcomp(t(geneExprs))
+pca_vars &lt;- getPcaVars(pca)
+pca_vars_lab &lt;- paste0(
+    &quot;PC&quot;, seq(along = pca_vars), &quot;: &quot;,
+    pca_vars, &quot;% Var Expl&quot;
+)
 
 # Group together code for generating plots of interest
-generate_plots = function() {
-    par(mar=c(8,6,2,2),cex.axis=1.8,cex.lab=1.8)
-    palette(brewer.pal(4,&quot;Dark2&quot;))
-    
+generate_plots &lt;- function() {
+    par(mar = c(8, 6, 2, 2), cex.axis = 1.8, cex.lab = 1.8)
+    palette(brewer.pal(4, &quot;Dark2&quot;))
+
     # PC1 vs. PC2
-    plot(pca$x, pch=21, bg=factor(rse_gene$PrimaryDx),cex=1.2,
-        xlab = pca_vars_lab[1], ylab = pca_vars_lab[2])
-    legend(&quot;bottomleft&quot;, levels(rse_gene$PrimaryDx), col=1:2, pch=15,cex=2)
-    
-    
+    plot(pca$x,
+        pch = 21, bg = factor(rse_gene$PrimaryDx), cex = 1.2,
+        xlab = pca_vars_lab[1], ylab = pca_vars_lab[2]
+    )
+    legend(&quot;bottomleft&quot;, levels(rse_gene$PrimaryDx), col = 1:2, pch = 15, cex = 2)
+
     # By line
-    for(i in 1:10) {
-        boxplot(pca$x[,i] ~ rse_gene$Sex,
-            ylab=pca_vars_lab[i], las = 3,xlab=&quot;Sex&quot;,outline=FALSE)
-        points( pca$x[,i] ~ jitter(as.numeric(factor(rse_gene$Sex))),
-            pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
+    for (i in 1:10) {
+        boxplot(pca$x[, i] ~ rse_gene$Sex,
+            ylab = pca_vars_lab[i], las = 3, xlab = &quot;Sex&quot;, outline = FALSE
+        )
+        points(pca$x[, i] ~ jitter(as.numeric(factor(rse_gene$Sex))),
+            pch = 21, bg = rse_gene$PrimaryDx, cex = 1.2
+        )
     }
-    
+
     # By experiment
-    for(i in 1:10) {
-        boxplot(pca$x[,i] ~ rse_gene$Race,
-            ylab=pca_vars_lab[i], las = 3,xlab=&quot;Race&quot;,outline=FALSE)
-        points( pca$x[,i] ~ jitter(as.numeric(factor(rse_gene$Race))),
-            pch = 21, bg = rse_gene$PrimaryDx,cex=1.2)
+    for (i in 1:10) {
+        boxplot(pca$x[, i] ~ rse_gene$Race,
+            ylab = pca_vars_lab[i], las = 3, xlab = &quot;Race&quot;, outline = FALSE
+        )
+        points(pca$x[, i] ~ jitter(as.numeric(factor(rse_gene$Race))),
+            pch = 21, bg = rse_gene$PrimaryDx, cex = 1.2
+        )
     }
 }
 
@@ -527,7 +536,7 @@ generate_plots = function() {
 generate_plots()</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-1.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-2.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-3.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-4.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-5.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-6.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-7.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-8.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-9.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-10.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-11.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-12.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-13.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-14.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-15.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-16.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-17.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-18.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-19.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-20.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-21.png" width="768" /></p>
 <pre class="r"><code># Write plots to PDF
-pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;PCA_plotsExprs.pdf&quot;), w=9)
+pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;PCA_plotsExprs.pdf&quot;), w = 9)
 generate_plots()
 dev.off()</code></pre>
 <pre><code>## png 
@@ -535,36 +544,43 @@ dev.off()</code></pre>
 </div>
 <div id="modeling" class="section level2">
 <h2><span class="header-section-number">1.6</span> Modeling</h2>
-<pre class="r"><code>dge = DGEList(counts = assays(rse_gene)$counts,
-    genes = rowData(rse_gene))
-dge = calcNormFactors(dge)
+<pre class="r"><code>dge &lt;- DGEList(
+    counts = assays(rse_gene)$counts,
+    genes = rowData(rse_gene)
+)
+dge &lt;- calcNormFactors(dge)
 
 # Mean-variance
-mod = model.matrix(~PrimaryDx + PC + BrainRegion,
-    data=colData(rse_gene))
+mod &lt;- model.matrix(~ PrimaryDx + PC + BrainRegion,
+    data = colData(rse_gene)
+)
 
-vGene = invisible(voom(dge,mod,plot=TRUE))</code></pre>
+vGene &lt;- invisible(voom(dge, mod, plot = TRUE))</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/modeling-1.png" width="768" /></p>
 <pre class="r"><code># Also write mean-variance plot to PDF
 pdf(file = &quot;DE_analysis/pdfs/vGene.pdf&quot;)
-invisible(voom(dge,mod,plot=TRUE))
+invisible(voom(dge, mod, plot = TRUE))
 dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
 <pre class="r"><code># Get duplicate correlation
-gene_dupCorr = duplicateCorrelation(vGene$E, mod,
-    block=colData(rse_gene)$SAMPLE_ID)
+gene_dupCorr &lt;- duplicateCorrelation(vGene$E, mod,
+    block = colData(rse_gene)$SAMPLE_ID
+)
 save(gene_dupCorr, file = here(&quot;DE_analysis&quot;, &quot;rdas&quot;, &quot;gene_dupCorr_neurons.rda&quot;))
 
 # Fit linear model
-fitGeneDupl = lmFit(vGene,
-    correlation=gene_dupCorr$consensus.correlation,
-    block=colData(rse_gene)$SAMPLEID)
+fitGeneDupl &lt;- lmFit(vGene,
+    correlation = gene_dupCorr$consensus.correlation,
+    block = colData(rse_gene)$SAMPLEID
+)
 
 # Here we perform an empirical Bayesian calculation to obtain our significant genes
-ebGeneDupl = eBayes(fitGeneDupl)
-outGeneDupl = topTable(ebGeneDupl,coef=2,
-    p.value = 1,number=nrow(rse_gene),sort=&quot;none&quot;)
+ebGeneDupl &lt;- eBayes(fitGeneDupl)
+outGeneDupl &lt;- topTable(ebGeneDupl,
+    coef = 2,
+    p.value = 1, number = nrow(rse_gene), sort = &quot;none&quot;
+)
 
 pdf(file = here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;hist_pval.pdf&quot;))
 hist(outGeneDupl$P.Value)
@@ -581,17 +597,19 @@ dev.off()</code></pre>
 <pre><code>## 
 ## FALSE  TRUE 
 ## 26706     2</code></pre>
-<pre class="r"><code>sigGeneDupl =  topTable(ebGeneDupl,coef=2,
-    p.value = 0.1,number=nrow(rse_gene))
+<pre class="r"><code>sigGeneDupl &lt;- topTable(ebGeneDupl,
+    coef = 2,
+    p.value = 0.1, number = nrow(rse_gene)
+)
 
-sigGeneDupl[,c(&quot;Symbol&quot;,&quot;logFC&quot;, &quot;P.Value&quot;,&quot;AveExpr&quot;)]</code></pre>
+sigGeneDupl[, c(&quot;Symbol&quot;, &quot;logFC&quot;, &quot;P.Value&quot;, &quot;AveExpr&quot;)]</code></pre>
 <pre><code>##                   Symbol      logFC      P.Value   AveExpr
 ## ENSG00000269699.6   ZIM2 -1.1238665 1.448916e-06 0.8970203
 ## ENSG00000126368.6  NR1D1 -0.7637626 6.833687e-06 4.6128957</code></pre>
-<pre class="r"><code>sigGeneDupl[sigGeneDupl$logFC &gt; 0,c(&quot;Symbol&quot;,&quot;logFC&quot;, &quot;P.Value&quot;)]</code></pre>
+<pre class="r"><code>sigGeneDupl[sigGeneDupl$logFC &gt; 0, c(&quot;Symbol&quot;, &quot;logFC&quot;, &quot;P.Value&quot;)]</code></pre>
 <pre><code>## [1] Symbol  logFC   P.Value
 ## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
-<pre class="r"><code>sigGeneDupl[sigGeneDupl$logFC &lt;  0,c(&quot;Symbol&quot;,&quot;logFC&quot;, &quot;P.Value&quot;)]</code></pre>
+<pre class="r"><code>sigGeneDupl[sigGeneDupl$logFC &lt; 0, c(&quot;Symbol&quot;, &quot;logFC&quot;, &quot;P.Value&quot;)]</code></pre>
 <pre><code>##                   Symbol      logFC      P.Value
 ## ENSG00000269699.6   ZIM2 -1.1238665 1.448916e-06
 ## ENSG00000126368.6  NR1D1 -0.7637626 6.833687e-06</code></pre>
@@ -600,22 +618,25 @@ write.csv(sigGeneDupl, file = here(&quot;DE_analysis&quot;, &quot;tables&quot;, 
 </div>
 <div id="check-plots" class="section level2">
 <h2><span class="header-section-number">1.7</span> Check plots</h2>
-<pre class="r"><code>exprs = vGene$E[rownames(sigGeneDupl),]
+<pre class="r"><code>exprs &lt;- vGene$E[rownames(sigGeneDupl), ]
 
 # Group together code for displaying boxplots
-generate_plots = function() {
-    par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
-    palette(brewer.pal(4,&quot;Dark2&quot;))
-    
-    for(i in 1:nrow(sigGeneDupl)) {
-        yy = exprs[i,]
-        boxplot(yy ~ rse_gene$PrimaryDx, outline=FALSE,
-            ylim=range(yy), ylab=&quot;Normalized log2 Exprs&quot;, xlab=&quot;&quot;,
-        main = paste(sigGeneDupl$Symbol[i], &quot;-&quot;, sigGeneDupl$gencodeID[i]))
+generate_plots &lt;- function() {
+    par(mar = c(8, 6, 4, 2), cex.axis = 1.8, cex.lab = 1.8, cex.main = 1.8)
+    palette(brewer.pal(4, &quot;Dark2&quot;))
+
+    for (i in 1:nrow(sigGeneDupl)) {
+        yy &lt;- exprs[i, ]
+        boxplot(yy ~ rse_gene$PrimaryDx,
+            outline = FALSE,
+            ylim = range(yy), ylab = &quot;Normalized log2 Exprs&quot;, xlab = &quot;&quot;,
+            main = paste(sigGeneDupl$Symbol[i], &quot;-&quot;, sigGeneDupl$gencodeID[i])
+        )
         points(yy ~ jitter(as.numeric(rse_gene$PrimaryDx)),
-            pch = 21, bg= rse_gene$PrimaryDx,cex=1.3)
-        ll = ifelse(sigGeneDupl$logFC[i] &gt; 0, &quot;topleft&quot;, &quot;topright&quot;)
-        legend(ll, paste0(&quot;p=&quot;, signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
+            pch = 21, bg = rse_gene$PrimaryDx, cex = 1.3
+        )
+        ll &lt;- ifelse(sigGeneDupl$logFC[i] &gt; 0, &quot;topleft&quot;, &quot;topright&quot;)
+        legend(ll, paste0(&quot;p=&quot;, signif(sigGeneDupl$P.Value[i], 3)), cex = 1.3)
     }
 }
 
@@ -623,25 +644,28 @@ generate_plots = function() {
 generate_plots()</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-1.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-2.png" width="768" /></p>
 <pre class="r"><code># Write plots to PDF
-pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byDiagnosis.pdf&quot;), w=10)
+pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byDiagnosis.pdf&quot;), w = 10)
 generate_plots()
 dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
-<pre class="r"><code>e = geneExprs[rownames(sigGeneDupl),]
+<pre class="r"><code>e &lt;- geneExprs[rownames(sigGeneDupl), ]
 
-generate_plots = function() {
-    par(mar=c(8,6,4,2),cex.axis=1.8,cex.lab=1.8, cex.main=1.8)
-    palette(brewer.pal(4,&quot;Dark2&quot;))
-    for(i in 1:nrow(sigGeneDupl)) {
-        yy = e[i,]
-        boxplot(yy ~ rse_gene$PrimaryDx, las=3,outline=FALSE,
-              ylim=range(yy), ylab=&quot;log2(RPKM+1)&quot;, xlab=&quot;&quot;,
-        main = paste(sigGeneDupl$Symbol[i], &quot;-&quot;, sigGeneDupl$gencodeID[i]))
+generate_plots &lt;- function() {
+    par(mar = c(8, 6, 4, 2), cex.axis = 1.8, cex.lab = 1.8, cex.main = 1.8)
+    palette(brewer.pal(4, &quot;Dark2&quot;))
+    for (i in 1:nrow(sigGeneDupl)) {
+        yy &lt;- e[i, ]
+        boxplot(yy ~ rse_gene$PrimaryDx,
+            las = 3, outline = FALSE,
+            ylim = range(yy), ylab = &quot;log2(RPKM+1)&quot;, xlab = &quot;&quot;,
+            main = paste(sigGeneDupl$Symbol[i], &quot;-&quot;, sigGeneDupl$gencodeID[i])
+        )
         points(yy ~ jitter(as.numeric(rse_gene$PrimaryDx)),
-            pch = 21, bg= rse_gene$PrimaryDx,cex=1.3)
-        ll = ifelse(sigGeneDupl$logFC[i] &gt; 0, &quot;topleft&quot;, &quot;topright&quot;)
-        legend(ll, paste0(&quot;p=&quot;, signif(sigGeneDupl$P.Value[i],3)), cex=1.3)
+            pch = 21, bg = rse_gene$PrimaryDx, cex = 1.3
+        )
+        ll &lt;- ifelse(sigGeneDupl$logFC[i] &gt; 0, &quot;topleft&quot;, &quot;topright&quot;)
+        legend(ll, paste0(&quot;p=&quot;, signif(sigGeneDupl$P.Value[i], 3)), cex = 1.3)
     }
 }
 
@@ -649,7 +673,7 @@ generate_plots = function() {
 generate_plots()</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-3.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-4.png" width="768" /></p>
 <pre class="r"><code># Write the same plots to PDF
-pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byGenome_log2RPKM.pdf&quot;), w=10)
+pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byGenome_log2RPKM.pdf&quot;), w = 10)
 generate_plots()
 dev.off()</code></pre>
 <pre><code>## png 
@@ -659,43 +683,52 @@ dev.off()</code></pre>
 <h2><span class="header-section-number">1.8</span> Gene ontology</h2>
 <p><code>clusterProfiler</code> is a gene ontology package we will use to see if our genes are specifically differentially expressed in certain pathways.</p>
 <pre class="r"><code># Get significant genes by sign
-sigGene = outGeneDupl[outGeneDupl$P.Value &lt; 0.005,]
-sigGeneList = split(as.character(sigGene$EntrezID), sign(sigGene$logFC))
-sigGeneList = lapply(sigGeneList, function(x) x[!is.na(x)])
-geneUniverse = as.character(outGeneDupl$EntrezID)
-geneUniverse = geneUniverse[!is.na(geneUniverse)]
+sigGene &lt;- outGeneDupl[outGeneDupl$P.Value &lt; 0.005, ]
+sigGeneList &lt;- split(as.character(sigGene$EntrezID), sign(sigGene$logFC))
+sigGeneList &lt;- lapply(sigGeneList, function(x) x[!is.na(x)])
+geneUniverse &lt;- as.character(outGeneDupl$EntrezID)
+geneUniverse &lt;- geneUniverse[!is.na(geneUniverse)]
 
 # Do GO and KEGG
-goBP_Adj &lt;- compareCluster(sigGeneList, fun = &quot;enrichGO&quot;,
+goBP_Adj &lt;- compareCluster(sigGeneList,
+    fun = &quot;enrichGO&quot;,
     universe = geneUniverse, OrgDb = org.Hs.eg.db,
-    ont = &quot;BP&quot;, pAdjustMethod = &quot;BH&quot;, pvalueCutoff  = 1,
-    qvalueCutoff  = 1,  readable= TRUE)
+    ont = &quot;BP&quot;, pAdjustMethod = &quot;BH&quot;, pvalueCutoff = 1,
+    qvalueCutoff = 1, readable = TRUE
+)
 
-goMF_Adj &lt;- compareCluster(sigGeneList, fun = &quot;enrichGO&quot;,
+goMF_Adj &lt;- compareCluster(sigGeneList,
+    fun = &quot;enrichGO&quot;,
     universe = geneUniverse, OrgDb = org.Hs.eg.db,
-    ont = &quot;MF&quot;, pAdjustMethod = &quot;BH&quot;, pvalueCutoff  = 1,
-    qvalueCutoff  = 1,  readable= TRUE)
+    ont = &quot;MF&quot;, pAdjustMethod = &quot;BH&quot;, pvalueCutoff = 1,
+    qvalueCutoff = 1, readable = TRUE
+)
 
-goCC_Adj &lt;- compareCluster(sigGeneList, fun = &quot;enrichGO&quot;,
+goCC_Adj &lt;- compareCluster(sigGeneList,
+    fun = &quot;enrichGO&quot;,
     universe = geneUniverse, OrgDb = org.Hs.eg.db,
-    ont = &quot;CC&quot;, pAdjustMethod = &quot;BH&quot;, pvalueCutoff  = 1,
-    qvalueCutoff  = 1,  readable= TRUE)
+    ont = &quot;CC&quot;, pAdjustMethod = &quot;BH&quot;, pvalueCutoff = 1,
+    qvalueCutoff = 1, readable = TRUE
+)
 
-kegg_Adj &lt;- compareCluster(sigGeneList, fun = &quot;enrichKEGG&quot;,
-    universe = geneUniverse,  pAdjustMethod = &quot;BH&quot;,
-    pvalueCutoff  = 1, qvalueCutoff  = 1)
+kegg_Adj &lt;- compareCluster(sigGeneList,
+    fun = &quot;enrichKEGG&quot;,
+    universe = geneUniverse, pAdjustMethod = &quot;BH&quot;,
+    pvalueCutoff = 1, qvalueCutoff = 1
+)
 
 save(goBP_Adj, goCC_Adj, goMF_Adj, kegg_Adj,
-    file = here(&quot;DE_analysis&quot;, &quot;rdas&quot;, &quot;gene_set_objects_p005.rda&quot;))
+    file = here(&quot;DE_analysis&quot;, &quot;rdas&quot;, &quot;gene_set_objects_p005.rda&quot;)
+)
 
-goList = list(BP = goBP_Adj, MF = goMF_Adj, CC = goCC_Adj, KEGG = kegg_Adj)
-goDf = dplyr::bind_rows(lapply(goList, as.data.frame), .id = &quot;Ontology&quot;)
-goDf = goDf[order(goDf$pvalue),]
+goList &lt;- list(BP = goBP_Adj, MF = goMF_Adj, CC = goCC_Adj, KEGG = kegg_Adj)
+goDf &lt;- dplyr::bind_rows(lapply(goList, as.data.frame), .id = &quot;Ontology&quot;)
+goDf &lt;- goDf[order(goDf$pvalue), ]
 
-write.csv(goDf, file = here(&quot;DE_analysis&quot;, &quot;tables&quot;, &quot;geneSet_output.csv&quot;), row.names=FALSE)
+write.csv(goDf, file = here(&quot;DE_analysis&quot;, &quot;tables&quot;, &quot;geneSet_output.csv&quot;), row.names = FALSE)
 
-options(width=130)
-goDf[goDf$p.adjust &lt; 0.05, c(1:5,7)]</code></pre>
+options(width = 130)
+goDf[goDf$p.adjust &lt; 0.05, c(1:5, 7)]</code></pre>
 <pre><code>##      Ontology Cluster         ID                                                                  Description GeneRatio
 ## 1311       BP       1 GO:0032640                                             tumor necrosis factor production      9/84
 ## 1312       BP       1 GO:0071706                        tumor necrosis factor superfamily cytokine production      9/84
@@ -1040,20 +1073,24 @@ goDf[goDf$p.adjust &lt; 0.05, c(1:5,7)]</code></pre>
 <div id="visualize-differentially-expressed-genes" class="section level2">
 <h2><span class="header-section-number">1.9</span> Visualize differentially expressed genes</h2>
 <p>Here we visualize DEGs with a heatmap.</p>
-<pre class="r"><code>exprs_heatmap = vGene$E[rownames(sigGene),]
+<pre class="r"><code>exprs_heatmap &lt;- vGene$E[rownames(sigGene), ]
 
-df &lt;- as.data.frame(colData(rse_gene)[,c(&quot;PrimaryDx&quot;)])
+df &lt;- as.data.frame(colData(rse_gene)[, c(&quot;PrimaryDx&quot;)])
 rownames(df) &lt;- colnames(exprs_heatmap)
-colnames(df)&lt;-&quot;diagnosis&quot;
+colnames(df) &lt;- &quot;diagnosis&quot;
 
 # Display heatmap
-pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
-         cluster_cols=TRUE, annotation_col=df)</code></pre>
+pheatmap(exprs_heatmap,
+    cluster_rows = TRUE, show_rownames = FALSE,
+    cluster_cols = TRUE, annotation_col = df
+)</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/heatmap-1.png" width="768" /></p>
 <pre class="r"><code># Write heatmap to PDF
-pdf(file=here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;de_heatmap.pdf&quot;))
-pheatmap(exprs_heatmap, cluster_rows=TRUE, show_rownames=FALSE,
-         cluster_cols=TRUE, annotation_col=df)
+pdf(file = here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;de_heatmap.pdf&quot;))
+pheatmap(exprs_heatmap,
+    cluster_rows = TRUE, show_rownames = FALSE,
+    cluster_cols = TRUE, annotation_col = df
+)
 dev.off()</code></pre>
 <pre><code>## pdf 
 ##   3</code></pre>
@@ -1114,10 +1151,10 @@ and Hall/CRC, 2020. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown-cookb
 clusters”. In: <em>OMICS: A Journal of Integrative Biology</em> 16.5 (2012), pp. 284-287. DOI: 10.1089/omi.2011.0118.</p>
 <pre class="r"><code># Time spent creating this report:
 diff(c(timestart, Sys.time()))</code></pre>
-<pre><code>## Time difference of 1.266178 mins</code></pre>
+<pre><code>## Time difference of 1.338733 mins</code></pre>
 <pre class="r"><code># Date this report was generated
 message(Sys.time())</code></pre>
-<pre><code>## 2020-10-06 14:23:12</code></pre>
+<pre><code>## 2020-10-06 14:29:21</code></pre>
 <pre class="r"><code># Reproducibility info
 options(width = 120)
 devtools::session_info()</code></pre>
