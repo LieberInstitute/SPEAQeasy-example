@@ -80,6 +80,7 @@ BiocManager::install(c("BiocStyle"))
   - Identifying sample swaps
   - Statistical modeling
 * Day 3: Wednesday October 7th 2020, 1-3 pm
+  - Identifying differentially expressed genes
   - Visualizing differentially expressed genes
   - Gene ontology enrichment analyses
   - Beyond SPEAQeasy
@@ -488,6 +489,8 @@ if (interactive())
 # Day 3
 
 You can download the [**latest version of this Rmd document here**](https://github.com/LieberInstitute/SPEAQeasy-example/blob/master/bootcamp_intro.Rmd).
+
+## Identifying DEGs
 
 ## Visualizing DEGs
 
