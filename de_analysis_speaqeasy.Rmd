@@ -120,6 +120,7 @@ col_names <- c(
     "mitoRate",
     "totalAssignedGene"
 )
+set.seed(20201006)
 statsPca <- prcomp(as.data.frame(colData(rse_gene)[, col_names]))
 rse_gene$PC <- statsPca$x[, 1]
 getPcaVars(statsPca)[1]
@@ -170,6 +171,7 @@ rse_gene <- rse_gene[rowMeans(getRPKM(rse_gene, "Length")) > 0.2, ]
 
 # Explore gene expression
 geneExprs <- log2(getRPKM(rse_gene, "Length") + 1)
+set.seed(20201006)
 pca <- prcomp(t(geneExprs))
 pca_vars <- getPcaVars(pca)
 pca_vars_lab <- paste0(
@@ -365,12 +367,14 @@ generate_plots <- function() {
 }
 
 # Show boxplots
+set.seed(20201006)
 generate_plots()
 
 # Write plots to PDF
 pdf(here("DE_analysis", "pdfs", "DE_boxplots_byDiagnosis.pdf"),
-    w = 10
+    width = 10
 )
+set.seed(20201006)
 generate_plots()
 dev.off()
 
@@ -409,12 +413,14 @@ generate_plots <- function() {
 }
 
 # Display plots
+set.seed(20201006)
 generate_plots()
 
 # Write the same plots to PDF
 pdf(here("DE_analysis", "pdfs", "DE_boxplots_byGenome_log2RPKM.pdf"),
     w = 10
 )
+set.seed(20201006)
 generate_plots()
 dev.off()
 ```
@@ -516,9 +522,9 @@ Here we visualize DEGs with a heatmap.
 ```{r heatmap, echo=TRUE}
 exprs_heatmap <- vGene$E[rownames(sigGene), ]
 
-df <- as.data.frame(colData(rse_gene)[, c("PrimaryDx")])
-rownames(df) <- colnames(exprs_heatmap)
-colnames(df) <- "diagnosis"
+df <- as.data.frame(colData(rse_gene)[, c("PrimaryDx", "Sex", "BrainRegion")])
+rownames(df) <- colnames(exprs_heatmap) <- gsub("_.*", "", colnames(exprs_heatmap))
+colnames(df) <- c("Diagnosis", "Sex", "Region")
 
 # Display heatmap
 pheatmap(
