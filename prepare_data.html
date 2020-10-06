@@ -421,8 +421,10 @@ function toggle_visibility(id1) {
 <div id="download-static-files" class="section level2">
 <h2><span class="header-section-number">1.1</span> Download static files</h2>
 <p>Alternatively, you can download the contents of this repository using <em><a href="https://CRAN.R-project.org/package=usethis">usethis</a></em> <label for="sidenote-1" class="sidenote-number">1</label><label for="sidenote-1" class="margin-toggle" onclick="toggle_visibility('sidenote-1')">1</label><span class="sidenote" id="sidenote-1"><span class="sidenote-number">1</span> It will download the latest version, which you will need to re-run in case we make any changes.</span></p>
-<pre class="r"><code>library(&quot;usethis&quot;)</code></pre>
-<pre class="r"><code>use_course(&quot;https://github.com/LieberInstitute/SPEAQeasy-example/archive/master.zip&quot;)</code></pre>
+<pre class="r"><code>library(&quot;usethis&quot;)
+use_course(
+    &quot;https://github.com/LieberInstitute/SPEAQeasy-example/archive/master.zip&quot;
+)</code></pre>
 </div>
 </div>
 <div id="pull-example-fastq-data-for-use-in-speaqeasy" class="section level1">
