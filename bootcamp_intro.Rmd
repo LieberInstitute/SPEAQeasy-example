@@ -429,6 +429,9 @@ We can spend more time learning about regression starting with [linear regressio
 1. Create the following model matrix.
 
 ```{r "model"}
+## Clean up the PrimaryDx variable
+rse_gene$PrimaryDx <- factor(rse_gene$PrimaryDx)
+
 ## Modified from 
 ## http://research.libd.org/SPEAQeasy-example/de_analysis_speaqeasy.html#16_Modeling
 mod <- model.matrix(~ PrimaryDx +  BrainRegion,
