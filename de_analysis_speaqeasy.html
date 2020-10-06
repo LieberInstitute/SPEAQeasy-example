@@ -461,6 +461,7 @@ rse_gene$PrimaryDx &lt;- factor(rse_gene$PrimaryDx)</code></pre>
     &quot;mitoRate&quot;,
     &quot;totalAssignedGene&quot;
 )
+set.seed(20201006)
 statsPca &lt;- prcomp(as.data.frame(colData(rse_gene)[, col_names]))
 rse_gene$PC &lt;- statsPca$x[, 1]
 getPcaVars(statsPca)[1]</code></pre>
@@ -512,6 +513,7 @@ rse_gene &lt;- rse_gene[rowMeans(getRPKM(rse_gene, &quot;Length&quot;)) &gt; 0.2
 
 # Explore gene expression
 geneExprs &lt;- log2(getRPKM(rse_gene, &quot;Length&quot;) + 1)
+set.seed(20201006)
 pca &lt;- prcomp(t(geneExprs))
 pca_vars &lt;- getPcaVars(pca)
 pca_vars_lab &lt;- paste0(
@@ -719,12 +721,14 @@ generate_plots &lt;- function() {
 }
 
 # Show boxplots
+set.seed(20201006)
 generate_plots()</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-1.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-2.png" width="768" /></p>
 <pre class="r"><code># Write plots to PDF
 pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byDiagnosis.pdf&quot;),
-    w = 10
+    width = 10
 )
+set.seed(20201006)
 generate_plots()
 dev.off()</code></pre>
 <pre><code>## png 
@@ -763,12 +767,14 @@ generate_plots &lt;- function() {
 }
 
 # Display plots
+set.seed(20201006)
 generate_plots()</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-3.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-4.png" width="768" /></p>
 <pre class="r"><code># Write the same plots to PDF
 pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byGenome_log2RPKM.pdf&quot;),
     w = 10
 )
+set.seed(20201006)
 generate_plots()
 dev.off()</code></pre>
 <pre><code>## png 
@@ -1206,9 +1212,9 @@ goDf[goDf$p.adjust &lt; 0.05, c(1:5, 7)]</code></pre>
 <p>Here we visualize DEGs with a heatmap.</p>
 <pre class="r"><code>exprs_heatmap &lt;- vGene$E[rownames(sigGene), ]
 
-df &lt;- as.data.frame(colData(rse_gene)[, c(&quot;PrimaryDx&quot;)])
-rownames(df) &lt;- colnames(exprs_heatmap)
-colnames(df) &lt;- &quot;diagnosis&quot;
+df &lt;- as.data.frame(colData(rse_gene)[, c(&quot;PrimaryDx&quot;, &quot;Sex&quot;, &quot;BrainRegion&quot;)])
+rownames(df) &lt;- colnames(exprs_heatmap) &lt;- gsub(&quot;_.*&quot;, &quot;&quot;, colnames(exprs_heatmap))
+colnames(df) &lt;- c(&quot;Diagnosis&quot;, &quot;Sex&quot;, &quot;Region&quot;)
 
 # Display heatmap
 pheatmap(
@@ -1288,10 +1294,10 @@ and Hall/CRC, 2020. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown-cookb
 clusters”. In: <em>OMICS: A Journal of Integrative Biology</em> 16.5 (2012), pp. 284-287. DOI: 10.1089/omi.2011.0118.</p>
 <pre class="r"><code># Time spent creating this report:
 diff(c(timestart, Sys.time()))</code></pre>
-<pre><code>## Time difference of 1.491735 mins</code></pre>
+<pre><code>## Time difference of 1.308725 mins</code></pre>
 <pre class="r"><code># Date this report was generated
 message(Sys.time())</code></pre>
-<pre><code>## 2020-10-06 15:00:03</code></pre>
+<pre><code>## 2020-10-06 15:12:11</code></pre>
 <pre class="r"><code># Reproducibility info
 options(width = 120)
 devtools::session_info()</code></pre>
