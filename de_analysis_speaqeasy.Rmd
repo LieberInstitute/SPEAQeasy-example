@@ -125,46 +125,49 @@ rse_gene$PC <- statsPca$x[, 1]
 getPcaVars(statsPca)[1]
 ```
 
-## Stats vs. race and brain region
+## Stats vs. diagnosis and brain region
 
-```{r race_region, echo=TRUE}
-# Filter for expressed
-rse_gene <- rse_gene[rowMeans(getRPKM(rse_gene, "Length")) > 0.2, ]
+Here we explore the relationship between some quality control covariates produced by SPEAQeasy against phenotype data that we have on the samples such as brain region, primary diagnosis and race.
 
-# Check if certain statistics changed by race or region
+```{r dx_region, echo=TRUE}
+## We only have one race here
+table(rse_gene$Race)
+
+# Check if certain statistics changed by primary diagnosis or brain region
 
 # Display box plots here
-boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion, xlab = "")
-boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion, xlab = "")
-boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion, xlab = "")
-boxplot(rse_gene$mitoRate ~ rse_gene$Race,
-    las = 3,
-    xlab = ""
-)
-boxplot(rse_gene$gene_Assigned ~ rse_gene$Race,
-    las = 3,
-    xlab = ""
-)
+create_boxplots <- function() {
+    boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion, xlab = "")
+    boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion, xlab = "")
+    boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion, xlab = "")
+    boxplot(rse_gene$mitoRate ~ rse_gene$PrimaryDx,
+        las = 3,
+        xlab = "")
+    boxplot(rse_gene$gene_Assigned ~ rse_gene$PrimaryDx,
+        las = 3,
+        xlab = "")
+    boxplot(rse_gene$mitoRate ~ rse_gene$PrimaryDx + rse_gene$BrainRegion,
+        las = 3,
+        xlab = "")
+    boxplot(rse_gene$gene_Assigned ~ rse_gene$PrimaryDx + rse_gene$BrainRegion,
+        las = 3,
+        xlab = "")
+    return(NULL)
+}
+
 
 # Save box plots to PDF
-pdf(file = here("DE_analysis", "pdfs", "Region_Race_cellcheck.pdf"))
-boxplot(rse_gene$rRNA_rate ~ rse_gene$BrainRegion, xlab = "")
-boxplot(rse_gene$mitoRate ~ rse_gene$BrainRegion, xlab = "")
-boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion, xlab = "")
-boxplot(rse_gene$mitoRate ~ rse_gene$Race,
-    las = 3,
-    xlab = ""
-)
-boxplot(rse_gene$gene_Assigned ~ rse_gene$Race,
-    las = 3,
-    xlab = ""
-)
+pdf(file = here("DE_analysis", "pdfs", "Region_Dx_cellcheck.pdf"))
+create_boxplots()
 dev.off()
 ```
 
 ## Explore and visualize gene expression
 
 ```{r gene_expression, echo=TRUE}
+# Filter for expressed
+rse_gene <- rse_gene[rowMeans(getRPKM(rse_gene, "Length")) > 0.2, ]
+
 # Explore gene expression
 geneExprs <- log2(getRPKM(rse_gene, "Length") + 1)
 pca <- prcomp(t(geneExprs))
@@ -220,18 +223,18 @@ generate_plots <- function() {
         )
     }
 
-    # By experiment
+    # By brain region
     for (i in 1:10) {
         boxplot(
-            pca$x[, i] ~ rse_gene$Race,
+            pca$x[, i] ~ rse_gene$BrainRegion,
             ylab = pca_vars_lab[i],
             las = 3,
-            xlab = "Race",
+            xlab = "Brain Region",
             outline = FALSE
         )
         points(
             pca$x[, i] ~ jitter(as.numeric(factor(
-                rse_gene$Race
+                rse_gene$BrainRegion
             ))),
             pch = 21,
             bg = rse_gene$PrimaryDx,
@@ -241,10 +244,12 @@ generate_plots <- function() {
 }
 
 # Display plots
+set.seed(20201006)
 generate_plots()
 
 # Write plots to PDF
-pdf(here("DE_analysis", "pdfs", "PCA_plotsExprs.pdf"), w = 9)
+pdf(here("DE_analysis", "pdfs", "PCA_plotsExprs.pdf"), width = 9)
+set.seed(20201006)
 generate_plots()
 dev.off()
 ```
@@ -266,7 +271,7 @@ mod <- model.matrix(~ PrimaryDx + PC + BrainRegion,
 vGene <- invisible(voom(dge, mod, plot = TRUE))
 
 # Also write mean-variance plot to PDF
-pdf(file = "DE_analysis/pdfs/vGene.pdf")
+pdf(file = here("DE_analysis", "pdfs", "vGene.pdf"))
 invisible(voom(dge, mod, plot = TRUE))
 dev.off()
 
