@@ -448,7 +448,7 @@ BiocManager::install("ExploreModelMatrix")
 
 Then adapt the code from the [first example](http://bioconductor.org/packages/release/bioc/vignettes/ExploreModelMatrix/inst/doc/ExploreModelMatrix.html) in their vignette documentation.
 
-```{r "use_explore_model_matrix}
+```{r "use_explore_model_matrix"}
 library("ExploreModelMatrix")
 
 ## Adapt code from
