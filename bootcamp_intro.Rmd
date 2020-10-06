@@ -400,19 +400,89 @@ There are many Bioconductor packages that enable us to perform the statistical t
 
 Prior to running a differential expression analysis, we first have to make the data comparable. This is done through a process called _normalization_. Many methods exist across Bioconductor packages for doing this. Given that we like to use `limma-voom` for the modeling, we'll use the companion normalization methods from `r BiocStyle::Biocpkg("edgeR")`. The `RNAseq123` Bioconductor workflow explains why normalization is important, so let's [take a look](http://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#normalising-gene-expression-distributions).
 
+Let's use `edgeR::calcNormFactors()` with the SPEAQeasy-example data.
+
+```{r "calc_norm_factors"}
+## For the normalization functions
+library("edgeR")
+
+## From 
+## http://research.libd.org/SPEAQeasy-example/de_analysis_speaqeasy.html#16_Modeling
+dge <- DGEList(
+    counts = assays(rse_gene)$counts,
+    genes = rowData(rse_gene)
+)
+dge <- calcNormFactors(dge)
+```
+
+
 ### Design matrix
 
+Differential expression analysis methods rely on the user specifying a _design matrix_. The simplest way to think about it is in terms of a linear regression, although some models use other distributions. R provides a useful function for making design matrices called `model.matrix()` that can take a _formula_ input such as `~ group + lane` or `~ 0 + group + lane` as shown [in RNAseq123](http://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis).
 
+We can spend more time learning about regression starting with [linear regression](https://lcolladotor.github.io/bioc_team_ds/helping-others.html#linear-regression-example). However a user-friendly way that is quite powerful is implemented in the `r BiocStyle::Biocpkg("ExploreModelMatrix")` package. Let's look at the [first example](http://bioconductor.org/packages/release/bioc/vignettes/ExploreModelMatrix/inst/doc/ExploreModelMatrix.html) from their vignette.
+
+
+#### Exercise
+
+1. Create the following model matrix.
+
+```{r "model"}
+## Modified from 
+## http://research.libd.org/SPEAQeasy-example/de_analysis_speaqeasy.html#16_Modeling
+mod <- model.matrix(~ PrimaryDx +  BrainRegion,
+    data = colData(rse_gene)
+)
+```
+
+2. Use `r BiocStyle::Biocpkg("ExploreModelMatrix")` to visualize the design matrix.
+
+
+You might need to install `r BiocStyle::Biocpkg("ExploreModelMatrix")` first as shown below.
 
 ```{r "install_explore_model_matrix", eval = FALSE}
 ## Install a new package
 BiocManager::install("ExploreModelMatrix")
 ```
 
-```{r}
+Then adapt the code from the [first example](http://bioconductor.org/packages/release/bioc/vignettes/ExploreModelMatrix/inst/doc/ExploreModelMatrix.html) in their vignette documentation.
+
+```{r "use_explore_model_matrix}
 library("ExploreModelMatrix")
+
+## Adapt code from
+## http://bioconductor.org/packages/release/bioc/vignettes/ExploreModelMatrix/inst/doc/ExploreModelMatrix.html
 ```
 
+Note that `sampleData` cannot take `NA` values, so you'll have to choose some columns to work with. For example:
+
+* `PrimaryDx`
+* `BrainRegion`
+* `Sex`
+* `AgeDeath`
+* `mitoRate`
+* `totalAssignedGene`
+* `rRNA_rate`
+
+#### Solution
+
+Here's one solution to the exercise.
+
+```{r "explore_model_solution"}
+app <-
+    ExploreModelMatrix(sampleData = colData(rse_gene)[, c(
+        "PrimaryDx",
+        "BrainRegion",
+        "Sex",
+        "AgeDeath",
+        "mitoRate",
+        "totalAssignedGene",
+        "rRNA_rate"
+    )],
+        designFormula = ~ PrimaryDx +  BrainRegion)
+if (interactive())
+    shiny::runApp(app)
+```
 
 
 # Day 3
