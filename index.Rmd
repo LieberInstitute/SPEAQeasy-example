@@ -52,7 +52,11 @@ library("devtools")
 
 ## Load knitcitations with a clean bibliography
 cleanbib()
-cite_options(hyperlink = "to.doc", citation_format = "text", style = "html")
+cite_options(
+    hyperlink = "to.doc",
+    citation_format = "text",
+    style = "html"
+)
 
 ## Write bibliography information
 bibs <- c(
@@ -74,7 +78,16 @@ bibs <- c(
     SummarizedExperiment = citation("SummarizedExperiment"),
     tidyr = citation("tidyr"),
     VariantAnnotation = citation("VariantAnnotation"),
-    voom = RefManageR::BibEntry("article", key = "voom", author = "CW Law and Y Chen and W Shi and GK Smyth", year = "2014", title = "Voom: precision weights unlock linear model analysis tools for RNA-seq read counts", journal = "Genome Biology", volume = "15", pages = "R29")
+    voom = RefManageR::BibEntry(
+        "article",
+        key = "voom",
+        author = "CW Law and Y Chen and W Shi and GK Smyth",
+        year = "2014",
+        title = "Voom: precision weights unlock linear model analysis tools for RNA-seq read counts",
+        journal = "Genome Biology",
+        volume = "15",
+        pages = "R29"
+    )
 )
 
 write.bibtex(bibs, file = "index.bib")
