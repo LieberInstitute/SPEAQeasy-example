@@ -61,7 +61,7 @@ remotes::install_cran(c(
     "ggplot2",
     "plotly"
 ))
-BiocManager::install("iSEE")
+BiocManager::install(c("iSEE", "enrichplot"))
 
 ## Extra ones
 remotes::install_cran(c("knitcitations", "statmod"))
@@ -503,6 +503,20 @@ You can download the [**latest version of this Rmd document here**](https://gith
 ## Visualizing DEGs
 
 ## GO enrichment analyses
+
+You might need to install `r BiocStyle::Biocpkg("enrichplot")` first as shown below.
+
+```{r "install_explore_model_matrix", eval = FALSE}
+## Install a new package
+BiocManager::install("enrichplot")
+```
+
+Here's code for a GO demonstration by Josh.
+
+```{r "go_demo"}
+
+```
+
 
 ## Beyond SPEAQeasy
 
