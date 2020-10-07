@@ -504,7 +504,7 @@ You can download the [**latest version of this Rmd document here**](https://gith
 
 ## GO enrichment analyses
 
-Josh Stolz will show us some [slides](https://docs.google.com/presentation/d/1sQdOThDTq1iu8SV8H-HOJ8nGwgTxd5NSXnyfR1w6c28/edit#slide=id.ga00f93b667_0_30).
+Josh Stolz will show us some [slides](https://docs.google.com/presentation/d/1sQdOThDTq1iu8SV8H-HOJ8nGwgTxd5NSXnyfR1w6c28/edit?usp=sharing).
 
 ### Demo
 
@@ -558,7 +558,10 @@ heatplot(edox, foldChange=geneList)
 
 #### Can you change the cutoff to 3 and use 
 ```
+### Exercise
 
+* which genes from our dataset are involved in the chromosome centromeric region ontology.
+* make a heatplot using the results of enrichment analysis from the biological pathway study.
 
 ## Beyond SPEAQeasy
 
