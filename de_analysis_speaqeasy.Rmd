@@ -283,8 +283,13 @@ dev.off()
 
 # Get duplicate correlation
 gene_dupCorr <- duplicateCorrelation(vGene$E, mod,
-    block = colData(rse_gene)$SAMPLE_ID
+    block = colData(rse_gene)$BrNum
 )
+gene_dupCorr$consensus.correlation
+
+## We can save this for later since it can take a while
+## to compute and we might need it. This will be useful
+## for larger projects.
 save(gene_dupCorr,
     file = here("DE_analysis", "rdas", "gene_dupCorr_neurons.rda")
 )
@@ -293,7 +298,7 @@ save(gene_dupCorr,
 fitGeneDupl <- lmFit(
     vGene,
     correlation = gene_dupCorr$consensus.correlation,
-    block = colData(rse_gene)$SAMPLEID
+    block = colData(rse_gene)$BrNum
 )
 
 # Here we perform an empirical Bayesian calculation to obtain our significant genes
@@ -303,7 +308,7 @@ outGeneDupl <- topTable(
     coef = 2,
     p.value = 1,
     number = nrow(rse_gene),
-    sort = "none"
+    sort.by = "none"
 )
 
 pdf(file = here("DE_analysis", "pdfs", "hist_pval.pdf"))
@@ -317,7 +322,7 @@ table(outGeneDupl$adj.P.Val < 0.1)
 sigGeneDupl <- topTable(
     ebGeneDupl,
     coef = 2,
-    p.value = 0.1,
+    p.value = 0.2,
     number = nrow(rse_gene)
 )
 
@@ -329,7 +334,7 @@ write.csv(outGeneDupl,
     file = here("DE_analysis", "tables", "de_stats_allExprs.csv")
 )
 write.csv(sigGeneDupl,
-    file = here("DE_analysis", "tables", "de_stats_fdr10_sorted.csv")
+    file = here("DE_analysis", "tables", "de_stats_fdr20_sorted.csv")
 )
 ```
 

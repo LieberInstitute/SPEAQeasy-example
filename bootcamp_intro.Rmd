@@ -526,12 +526,12 @@ We can do so using the function `limma::duplicateCorrelation()`.
 ```{r "dup_corr"}
 # Get duplicate correlation
 gene_dupCorr <- duplicateCorrelation(vGene$E, mod,
-    block = colData(rse_gene)$SAMPLE_ID
+    block = colData(rse_gene)$BrNum
 )
 gene_dupCorr$consensus.correlation
 ```
 
-In this particular case, the correlation we calculated wasn't useful, but in larger studies where we have more samples across individuals, it will be. 
+In this particular case, `duplicateCorrelation()` had several warnings, but in larger studies where we have more samples across individuals it will be more precise. 
 
 In any case, we can next finally perform the statistical tests using a series of `limma` functions: `lmFit()`, `eBayes()` and `topTable()`. Some key arguments are:
 
@@ -544,7 +544,7 @@ In any case, we can next finally perform the statistical tests using a series of
 fitGeneDupl <- lmFit(
     vGene,
     correlation = gene_dupCorr$consensus.correlation,
-    block = colData(rse_gene)$SAMPLEID
+    block = colData(rse_gene)$BrNum
 )
 
 # Here we perform an empirical Bayesian calculation to obtain
@@ -575,7 +575,7 @@ Another way to visualize DEGs is to make a heatmap which is where `r BiocStyle::
 library("pheatmap")
 
 ## Find the genes with a p-value less than 0.005
-## (normally we would look at the FDR < 0.5 genes or 0.1)
+## (normally we would look at the FDR < 0.05 genes or 0.1)
 sigGene <- outGeneDupl[outGeneDupl$P.Value < 0.005, ]
 
 ## Extract the normalized expression
