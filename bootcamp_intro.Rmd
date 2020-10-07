@@ -504,6 +504,10 @@ You can download the [**latest version of this Rmd document here**](https://gith
 
 ## GO enrichment analyses
 
+Josh Stolz will show us some [slides](TODO).
+
+### Demo
+
 You might need to install `r BiocStyle::Biocpkg("enrichplot")` first as shown below.
 
 ```{r "install_explore_model_matrix", eval = FALSE}
