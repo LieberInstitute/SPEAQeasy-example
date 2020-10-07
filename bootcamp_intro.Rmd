@@ -505,7 +505,99 @@ You can download the [**latest version of this Rmd document here**](https://gith
 
 ## Identifying DEGs
 
+Let's take a look at the `RNAseq123` workflow to learn about how to [remove heteroscedascity from count data](http://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#removing-heteroscedascity-from-count-data).
+
+```{r "run_voom"}
+## Load limma
+library("limma")
+
+## Let's run limma-voom
+vGene <- invisible(voom(dge, mod, plot = TRUE))
+```
+
+Once we have removed the heteroscedascity from the data, we can proceed with the statistical tests. However, note that we have some repeated brains which means that we have non-independent data and need to take this into account.
+
+```{r "dup_brains"}
+table(table(rse_gene$BrNum))
+```
+
+We can do so using the function `limma::duplicateCorrelation()`.
+
+```{r "dup_corr"}
+# Get duplicate correlation
+gene_dupCorr <- duplicateCorrelation(vGene$E, mod,
+    block = colData(rse_gene)$SAMPLE_ID
+)
+gene_dupCorr$consensus.correlation
+```
+
+In this particular case, the correlation we calculated wasn't useful, but in larger studies where we have more samples across individuals, it will be. 
+
+In any case, we can next finally perform the statistical tests using a series of `limma` functions: `lmFit()`, `eBayes()` and `topTable()`. Some key arguments are:
+
+* `lmFit(correlation, block)` which you won't need if you don't have a blocking covariate (duplicated brains or some other technical covariate like batch). 
+* `topTable(coef)` which specifies which coefficient we want to test. If we specify more than one, we will compute an F-statistic instead of a t-statistic. The other arguments we specify below allow us to get the full table of results instead of just the very first.
+
+
+```{r "limma"}
+# Fit linear model
+fitGeneDupl <- lmFit(
+    vGene,
+    correlation = gene_dupCorr$consensus.correlation,
+    block = colData(rse_gene)$SAMPLEID
+)
+
+# Here we perform an empirical Bayesian calculation to obtain
+# our significant genes
+ebGeneDupl <- eBayes(fitGeneDupl)
+outGeneDupl <- topTable(
+    ebGeneDupl,
+    coef = 2,
+    p.value = 1,
+    number = nrow(rse_gene),
+    sort.by = "none"
+)
+dim(outGeneDupl)
+
+## Compare against the default topTable() output
+## (we'll skip a few columns of output)
+topTable(ebGeneDupl, coef = 2)[, -c(1, 3, 6:10)]
+```
+
 ## Visualizing DEGs
+
+Once we have our list of differentially expressed genes, we can make some boxplots as in [SPEAQeasy-example](http://research.libd.org/SPEAQeasy-example/de_analysis_speaqeasy.html#17_Check_plots) to check that the model results make sense. We frequently use [`jaffelab::cleaningY()`](http://research.libd.org/jaffelab/reference/cleaningY.html) to remove (regress out) the effect of covariates in our model.
+
+```{r "pheatmap"}
+## For making a heatmap
+library("pheatmap")
+
+## Find the genes with a p-value less than 0.005
+## (normally we would look at the FDR < 0.5 genes or 0.1)
+sigGene <- outGeneDupl[outGeneDupl$P.Value < 0.005, ]
+
+## Extract the normalized expression
+exprs_heatmap <- vGene$E[rownames(sigGene), ]
+
+## Build an annotation data.frame for our heatmap
+df <- as.data.frame(colData(rse_gene)[, c("PrimaryDx", "Sex", "BrainRegion")])
+rownames(df) <- colnames(exprs_heatmap) <- gsub("_.*", "", colnames(exprs_heatmap))
+colnames(df) <- c("Diagnosis", "Sex", "Region")
+
+# Display heatmap
+pheatmap(
+    exprs_heatmap,
+    cluster_rows = TRUE,
+    show_rownames = FALSE,
+    cluster_cols = TRUE,
+    annotation_col = df
+)
+```
+
+### Exercise
+
+* Make a plot with 4 boxplots (brain region by primary diagnosis) for the top differentially expressed gene.
+
 
 ## GO enrichment analyses
 
@@ -576,6 +668,8 @@ heatplot(edox, foldChange = geneList)
 
 ## Beyond SPEAQeasy
 
+* [recount3](http://research.libd.org/recount3/): over 750,000 human and mouse public RNA-seq processed with another aligner from the one used in SPEAQeasy: STAR instead of HISAT2.
+* Other tools like Salmon and kallisto.
 
 # Reproducibility
 
