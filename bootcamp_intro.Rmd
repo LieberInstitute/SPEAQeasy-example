@@ -600,6 +600,35 @@ pheatmap(
 
 * Make a plot with 4 boxplots (brain region by primary diagnosis) for the top differentially expressed gene.
 
+### Solution
+
+```{r "top_gene_solution"}
+## Let's find that top gene
+i <- which.min(outGeneDupl$P.Value)
+
+## We can use boxplot() from base R plots
+boxplot(
+    vGene$E[i,] ~ rse_gene$PrimaryDx + rse_gene$BrainRegion,
+    las = 2,
+    ylab = "Expression",
+    xlab = ""
+)
+
+## Or we can use ggplot2
+## First we need to build a temporary data frame with
+## the data for ggplot2
+df_temp <- data.frame(
+    Expression = vGene$E[i,],
+    Region = rse_gene$BrainRegion,
+    Diagnosis = rse_gene$PrimaryDx
+)
+## Next we can make the boxplot, we'll use "fill" to color
+## the boxes by the primary diagnosis variable
+ggplot(df_temp, aes(y = Expression, x = Region, fill = Diagnosis)) +
+    geom_boxplot() +
+    theme_dark(base_size = 20)
+```
+
 
 ## GO enrichment analyses
 
@@ -665,8 +694,37 @@ heatplot(edox, foldChange = geneList)
 
 ### Exercise
 
-* Which genes from our dataset are involved in the _chromosome centromeric region_ ontology?
-* Make a `heatplot()` using the results of enrichment analysis from the biological pathway study.
+* Which genes from our dataset are involved in the _chromosome, centromeric region_ ontology?
+* Make a `heatplot()` using the results of enrichment analysis from the biological process ontology.
+
+### Solution
+
+```{r "go_solution"}
+## Finding the genes for _chromosome, centromeric region_
+ego_df <- as.data.frame(ego)
+strsplit(
+    ego_df$geneID[
+        ego_df$Description == "chromosome, centromeric region"
+        ],
+    "/")[[1]]
+
+## Run the enrichment with the BP ontology
+ego_bp <- enrichGO(
+    gene = gene,
+    universe = names(geneList),
+    OrgDb = org.Hs.eg.db,
+    ont = "BP",
+    pAdjustMethod = "BH",
+    pvalueCutoff = 0.01,
+    qvalueCutoff = 0.05,
+    readable = TRUE
+)
+
+## Then make the heatplot
+ego_bp_x <- setReadable(ego_bp, "org.Hs.eg.db", "ENTREZID")
+heatplot(ego_bp_x, foldChange = geneList)
+```
+
 
 ## Beyond SPEAQeasy
 
