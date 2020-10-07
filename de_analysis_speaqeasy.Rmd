@@ -143,16 +143,20 @@ create_boxplots <- function() {
     boxplot(rse_gene$gene_Assigned ~ rse_gene$BrainRegion, xlab = "")
     boxplot(rse_gene$mitoRate ~ rse_gene$PrimaryDx,
         las = 3,
-        xlab = "")
+        xlab = ""
+    )
     boxplot(rse_gene$gene_Assigned ~ rse_gene$PrimaryDx,
         las = 3,
-        xlab = "")
+        xlab = ""
+    )
     boxplot(rse_gene$mitoRate ~ rse_gene$PrimaryDx + rse_gene$BrainRegion,
         las = 3,
-        xlab = "")
+        xlab = ""
+    )
     boxplot(rse_gene$gene_Assigned ~ rse_gene$PrimaryDx + rse_gene$BrainRegion,
         las = 3,
-        xlab = "")
+        xlab = ""
+    )
     return(NULL)
 }
 

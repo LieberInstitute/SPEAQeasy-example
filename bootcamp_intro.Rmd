@@ -51,8 +51,10 @@ remotes::install_github("LieberInstitute/jaffelab")
 BiocManager::install(c("limma", "edgeR", "SummarizedExperiment", "recount", "ExploreModelMatrix"))
 
 ## Genomics-related R packages
-BiocManager::install(c("clusterProfiler", "org.Hs.eg.db"
-    "VariantAnnotation"))
+BiocManager::install(c(
+    "clusterProfiler", "org.Hs.eg.db",
+    "VariantAnnotation"
+))
 
 ## Visualization-related R packages
 remotes::install_cran(c(
@@ -407,7 +409,7 @@ Let's use `edgeR::calcNormFactors()` with the SPEAQeasy-example data.
 ## For the normalization functions
 library("edgeR")
 
-## From 
+## From
 ## http://research.libd.org/SPEAQeasy-example/de_analysis_speaqeasy.html#16_Modeling
 dge <- DGEList(
     counts = assays(rse_gene)$counts,
@@ -432,9 +434,9 @@ We can spend more time learning about regression starting with [linear regressio
 ## Clean up the PrimaryDx variable
 rse_gene$PrimaryDx <- factor(rse_gene$PrimaryDx)
 
-## Modified from 
+## Modified from
 ## http://research.libd.org/SPEAQeasy-example/de_analysis_speaqeasy.html#16_Modeling
-mod <- model.matrix(~ PrimaryDx +  BrainRegion,
+mod <- model.matrix(~ PrimaryDx + BrainRegion,
     data = colData(rse_gene)
 )
 ```
@@ -476,21 +478,24 @@ Here's one solution to the exercise.
 ## Here we select manually a few columns to work with
 ## and we use the same formula we used for making our model matrix
 app <-
-    ExploreModelMatrix(sampleData = colData(rse_gene)[, c(
-        "PrimaryDx",
-        "BrainRegion",
-        "Sex",
-        "AgeDeath",
-        "mitoRate",
-        "totalAssignedGene",
-        "rRNA_rate"
-    )],
-        designFormula = ~ PrimaryDx +  BrainRegion)
+    ExploreModelMatrix(
+        sampleData = colData(rse_gene)[, c(
+            "PrimaryDx",
+            "BrainRegion",
+            "Sex",
+            "AgeDeath",
+            "mitoRate",
+            "totalAssignedGene",
+            "rRNA_rate"
+        )],
+        designFormula = ~ PrimaryDx + BrainRegion
+    )
 
 ## We can the explore the result interactively through a nice
 ## shiny web application created by ExploreModelMatrix
-if (interactive())
-    shiny::runApp(app)
+if (interactive()) {
+      shiny::runApp(app)
+  }
 ```
 
 
@@ -518,50 +523,56 @@ BiocManager::install("enrichplot")
 Here's code for a GO demonstration by Josh.
 
 ```{r "go_demo"}
-library(enrichplot)
-library(clusterProfiler)
-library(org.Hs.eg.db)
+## Load required R packages
+library("enrichplot")
+library("clusterProfiler")
+library("org.Hs.eg.db")
 
 ## Sample Data
-data(geneList, package="DOSE")
+data(geneList, package = "DOSE")
 
 ## make cutoff log2 fold change
 gene <- names(geneList)[abs(geneList) > 2]
 
 ## We need get different kinds of gene labels
-gene.df <- bitr(gene, fromType = "ENTREZID",
-        toType = c("ENSEMBL", "SYMBOL"),
-        OrgDb = org.Hs.eg.db)
+gene.df <- bitr(
+    gene,
+    fromType = "ENTREZID",
+    toType = c("ENSEMBL", "SYMBOL"),
+    OrgDb = org.Hs.eg.db
+)
 
+## do gene ontology enrichment for the CC ontology
+ego <- enrichGO(
+    gene = gene,
+    universe = names(geneList),
+    OrgDb = org.Hs.eg.db,
+    ont = "CC",
+    pAdjustMethod = "BH",
+    pvalueCutoff = 0.01,
+    qvalueCutoff = 0.05,
+    readable = TRUE
+)
 
-## do gene ontology enrichment
-ego <- enrichGO(gene          = gene,
-                universe      = names(geneList),
-                OrgDb         = org.Hs.eg.db,
-                ont           = "CC",
-                pAdjustMethod = "BH",
-                pvalueCutoff  = 0.01,
-                qvalueCutoff  = 0.05,
-                readable      = TRUE)
+## Visualize the GO enrichment results in different ways
+barplot(ego, showCategory = 20)
+dotplot(ego, showCategory = 30)
+edox <- setReadable(ego, "org.Hs.eg.db", "ENTREZID")
 
- barplot(ego, showCategory=20)
- dotplot(ego, showCategory=30)
- edox <- setReadable(ego, 'org.Hs.eg.db', 'ENTREZID')
- 
- 
-
-
-edox <- setReadable(ego, 'org.Hs.eg.db', 'ENTREZID')
-cnetplot(edox, foldChange=geneList, circular = TRUE, colorEdge = TRUE)
-heatplot(edox, foldChange=geneList)
-
-
-#### Can you change the cutoff to 3 and use 
+## cnetplot() and heatplot() show the actual genes
+## that are present in our data (geneList) for each
+## of the GO terms that were significantly enriched
+cnetplot(edox,
+    foldChange = geneList,
+    circular = TRUE,
+    colorEdge = TRUE)
+heatplot(edox, foldChange = geneList)
 ```
+
 ### Exercise
 
-* which genes from our dataset are involved in the chromosome centromeric region ontology.
-* make a heatplot using the results of enrichment analysis from the biological pathway study.
+* Which genes from our dataset are involved in the _chromosome centromeric region_ ontology?
+* Make a `heatplot()` using the results of enrichment analysis from the biological pathway study.
 
 ## Beyond SPEAQeasy
 
