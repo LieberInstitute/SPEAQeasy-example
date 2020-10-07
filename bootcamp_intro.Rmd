@@ -504,13 +504,13 @@ You can download the [**latest version of this Rmd document here**](https://gith
 
 ## GO enrichment analyses
 
-Josh Stolz will show us some [slides](TODO).
+Josh Stolz will show us some [slides](https://docs.google.com/presentation/d/1sQdOThDTq1iu8SV8H-HOJ8nGwgTxd5NSXnyfR1w6c28/edit#slide=id.ga00f93b667_0_30).
 
 ### Demo
 
 You might need to install `r BiocStyle::Biocpkg("enrichplot")` first as shown below.
 
-```{r "install_explore_model_matrix", eval = FALSE}
+```{r "install_explore_enrichplot", eval = FALSE}
 ## Install a new package
 BiocManager::install("enrichplot")
 ```
@@ -518,7 +518,45 @@ BiocManager::install("enrichplot")
 Here's code for a GO demonstration by Josh.
 
 ```{r "go_demo"}
+library(enrichplot)
+library(clusterProfiler)
+library(org.Hs.eg.db)
 
+## Sample Data
+data(geneList, package="DOSE")
+
+## make cutoff log2 fold change
+gene <- names(geneList)[abs(geneList) > 2]
+
+## We need get different kinds of gene labels
+gene.df <- bitr(gene, fromType = "ENTREZID",
+        toType = c("ENSEMBL", "SYMBOL"),
+        OrgDb = org.Hs.eg.db)
+
+
+## do gene ontology enrichment
+ego <- enrichGO(gene          = gene,
+                universe      = names(geneList),
+                OrgDb         = org.Hs.eg.db,
+                ont           = "CC",
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 0.01,
+                qvalueCutoff  = 0.05,
+                readable      = TRUE)
+
+ barplot(ego, showCategory=20)
+ dotplot(ego, showCategory=30)
+ edox <- setReadable(ego, 'org.Hs.eg.db', 'ENTREZID')
+ 
+ 
+
+
+edox <- setReadable(ego, 'org.Hs.eg.db', 'ENTREZID')
+cnetplot(edox, foldChange=geneList, circular = TRUE, colorEdge = TRUE)
+heatplot(edox, foldChange=geneList)
+
+
+#### Can you change the cutoff to 3 and use 
 ```
 
 
