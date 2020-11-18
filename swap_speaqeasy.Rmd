@@ -122,7 +122,8 @@ pheatmap(
 )
 ```
 
-```{r pdf_cor_speaqeasy, include=FALSE}
+```{r pdf_cor_speaqeasy, eval=FALSE, echo = FALSE}
+## For some reason, I need to run this manually to save the PDF
 dir.create(here("pdf_swaps"), showWarnings = FALSE)
 pdf(here("pdf_swaps", "heatmap_cor_speaqeasy.pdf"))
 pheatmap(
@@ -167,7 +168,8 @@ pheatmap(
 )
 ```
 
-```{r pdf_cor_topmed, include=FALSE}
+```{r pdf_cor_topmed, eval=FALSE, echo = FALSE}
+## For some reason, I need to run this manually to save the PDF
 pdf(here("pdf_swaps", "heatmap_cor_topmed.pdf"))
 pheatmap(
     correlation_genotype,
