@@ -59,7 +59,7 @@ library("BiocStyle")
 ```
 
 
-In order to resolve the swaps to our best ability we need four data sets. Here we have load snpGeno_example which is from our topmed imputed genotype data, a phenotype data sheet (pd_example), a vcf file of the relevant SPEAQeasy output (SPEAQeasy), and our current genotype sample sheet (brain_sentrix). This file is wrote in the directory listed below.
+In order to resolve the swaps to our best ability we need four data sets. Here we have load snpGeno_example which is from our TOPMed imputed genotype data, a phenotype data sheet (pd_example), a VCF file of the relevant SPEAQeasy output (SPEAQeasy), and our current genotype sample sheet (brain_sentrix). This file is wrote in the directory listed below.
 
 ```{r load_data, echo=TRUE}
 load(here("sample_selection", "snpsGeno_example.RData"), verbose = TRUE)
@@ -110,7 +110,7 @@ speaqeasy_Cor <- cor(Geno_speaqeasy, use = "pairwise.comp")
 corner(speaqeasy_Cor)
 ```
 
-Here in the heatmap below we can see that several points do not correlate with themselves in a semetrical matrix. This could be mismatches, but it also could be a result of a brain being sequenced twice. We will dig more into this later on.
+Here in the heatmap below we can see that several points do not correlate with themselves in a symmetrical matrix. This could be mismatches, but it also could be a result of a brain being sequenced twice. We will dig more into this later on.
 
 ```{r check_correlations_speaqeasy, echo=FALSE}
 pheatmap(
@@ -122,9 +122,23 @@ pheatmap(
 )
 ```
 
+```{r pdf_cor_speaqeasy, include=FALSE}
+dir.create(here("pdf_swaps"), showWarnings = FALSE)
+pdf(here("pdf_swaps", "heatmap_cor_speaqeasy.pdf"))
+pheatmap(
+    speaqeasy_Cor,
+    cluster_rows = FALSE,
+    show_rownames = FALSE,
+    cluster_cols = FALSE,
+    show_colnames = FALSE
+)
+dev.off()
+```
 
 
-We repeat the process for the genotype data from topmed. First creating our numeric data for the genotypes.
+
+
+We repeat the process for the genotype data from TOPMed. First creating our numeric data for the genotypes.
 
 ```{r data_prep_genotypes, echo=FALSE}
 names <- rownames(snpsGeno_example)
@@ -151,6 +165,18 @@ pheatmap(
     cluster_cols = FALSE,
     show_colnames = FALSE
 )
+```
+
+```{r pdf_cor_topmed, include=FALSE}
+pdf(here("pdf_swaps", "heatmap_cor_topmed.pdf"))
+pheatmap(
+    correlation_genotype,
+    cluster_rows = FALSE,
+    show_rownames = FALSE,
+    cluster_cols = FALSE,
+    show_colnames = FALSE
+)
+dev.off()
 ```
 
 In order to dig into this further we will collapse the correlation matrices into a data table shown below.
@@ -199,7 +225,7 @@ corLong2$rowBrain <- pd_example$BrNum[speaqeasy_match_row]
 corLong2$colBrain <- pd_example$BrNum[speaqeasy_match_col]
 ```
 
-We can check these tables for columns where different brains are strongly correlated and where the same brain fails to match itself. Below is the output of those analysis for the topmed genotypes.
+We can check these tables for columns where different brains are strongly correlated and where the same brain fails to match itself. Below is the output of those analysis for the TOPMed genotypes.
 
 ```{r check_swaps_genotype_data_sets, echo=FALSE}
 corLong[corLong$rowBrain == corLong$colBrain & corLong$cor < .8, ]
@@ -217,7 +243,7 @@ corLong2[!corLong2$rowBrain == corLong2$colBrain &
     corLong2$cor > .8, ]
 ```
 
-We will next compare the correlation between the SPEAQeasy samples and the topmed samples. In order to do this we need to subset the genotypes for only SNPs that are common between the two. We can see that we have 656 snps common between the 42 samples.
+We will next compare the correlation between the SPEAQeasy samples and the TOPMed samples. In order to do this we need to subset the genotypes for only SNPs that are common between the two. We can see that we have 656 snps common between the 42 samples.
 
 ```{r subset_genotype_data_sets, echo=FALSE}
 Geno_speaqeasy_subset <-
