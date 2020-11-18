@@ -535,14 +535,33 @@ df <- as.data.frame(colData(rse_gene)[, c("PrimaryDx", "Sex", "BrainRegion")])
 rownames(df) <- colnames(exprs_heatmap) <- gsub("_.*", "", colnames(exprs_heatmap))
 colnames(df) <- c("Diagnosis", "Sex", "Region")
 
+#  Manually determine coloring for plot annotation
+palette_names = c('Dark2', 'Paired', 'YlOrRd')
+ann_colors = list()
+for (i in 1:ncol(df)) {
+    col_name = colnames(df)[i]
+    n_uniq_colors = length(unique(df[,col_name]))
+    
+    #   Use a unique palette with the correct number of levels, named with
+    #   those levels
+    ann_colors[[col_name]] = RColorBrewer::brewer.pal(n_uniq_colors, palette_names[i])[1:n_uniq_colors]
+    names(ann_colors[[col_name]]) = unique(df[,col_name])
+}
+
 # Display heatmap
 pheatmap(
     exprs_heatmap,
     cluster_rows = TRUE,
     show_rownames = FALSE,
     cluster_cols = TRUE,
-    annotation_col = df
+    annotation_col = df,
+    annotation_colors = ann_colors
 )
+
+```
+
+```{r pdf_heatmap, eval=FALSE, echo = FALSE}
+## For some reason, I need to run this manually to save the PDF
 
 # Write heatmap to PDF
 pdf(file = here("DE_analysis", "pdfs", "de_heatmap.pdf"))
@@ -551,7 +570,8 @@ pheatmap(
     cluster_rows = TRUE,
     show_rownames = FALSE,
     cluster_cols = TRUE,
-    annotation_col = df
+    annotation_col = df,
+    annotation_colors = ann_colors
 )
 dev.off()
 ```
