@@ -2715,27 +2715,33 @@ df &lt;- as.data.frame(colData(rse_gene)[, c(&quot;PrimaryDx&quot;, &quot;Sex&qu
 rownames(df) &lt;- colnames(exprs_heatmap) &lt;- gsub(&quot;_.*&quot;, &quot;&quot;, colnames(exprs_heatmap))
 colnames(df) &lt;- c(&quot;Diagnosis&quot;, &quot;Sex&quot;, &quot;Region&quot;)
 
-# Display heatmap
+#  Manually determine coloring for plot annotation
+palette_names = c(&#39;Dark2&#39;, &#39;Paired&#39;, &#39;YlOrRd&#39;)
+ann_colors = list()
+for (i in 1:ncol(df)) {
+    col_name = colnames(df)[i]
+    n_uniq_colors = length(unique(df[,col_name]))
+    
+    #   Use a unique palette with the correct number of levels, named with
+    #   those levels
+    ann_colors[[col_name]] = RColorBrewer::brewer.pal(n_uniq_colors, palette_names[i])[1:n_uniq_colors]
+    names(ann_colors[[col_name]]) = unique(df[,col_name])
+}</code></pre>
+<pre><code>## Warning in RColorBrewer::brewer.pal(n_uniq_colors, palette_names[i]): minimal value for n is 3, returning requested palette with 3 different levels
+
+## Warning in RColorBrewer::brewer.pal(n_uniq_colors, palette_names[i]): minimal value for n is 3, returning requested palette with 3 different levels
+
+## Warning in RColorBrewer::brewer.pal(n_uniq_colors, palette_names[i]): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
+<pre class="r"><code># Display heatmap
 pheatmap(
     exprs_heatmap,
     cluster_rows = TRUE,
     show_rownames = FALSE,
     cluster_cols = TRUE,
-    annotation_col = df
+    annotation_col = df,
+    annotation_colors = ann_colors
 )</code></pre>
 <p><img src="de_analysis_speaqeasy_files/figure-html/heatmap-1.png" width="768" /></p>
-<pre class="r"><code># Write heatmap to PDF
-pdf(file = here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;de_heatmap.pdf&quot;))
-pheatmap(
-    exprs_heatmap,
-    cluster_rows = TRUE,
-    show_rownames = FALSE,
-    cluster_cols = TRUE,
-    annotation_col = df
-)
-dev.off()</code></pre>
-<pre><code>## pdf 
-##   3</code></pre>
 </div>
 </div>
 <div id="reproducibility" class="section level1">
@@ -2793,10 +2799,10 @@ and Hall/CRC, 2020. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown-cookb
 clusters”. In: <em>OMICS: A Journal of Integrative Biology</em> 16.5 (2012), pp. 284-287. DOI: 10.1089/omi.2011.0118.</p>
 <pre class="r"><code># Time spent creating this report:
 diff(c(timestart, Sys.time()))</code></pre>
-<pre><code>## Time difference of 3.10783 mins</code></pre>
+<pre><code>## Time difference of 3.076643 mins</code></pre>
 <pre class="r"><code># Date this report was generated
 message(Sys.time())</code></pre>
-<pre><code>## 2020-11-18 20:09:08</code></pre>
+<pre><code>## 2020-11-18 20:45:14</code></pre>
 <pre class="r"><code># Reproducibility info
 options(width = 120)
 devtools::session_info()</code></pre>
