@@ -26,6 +26,8 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -36,7 +38,7 @@
   div.column{display: inline-block; vertical-align: top; width: 50%;}
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
-      </style>
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -81,7 +83,7 @@ h6 {
 }
 </style>
 
-<link rel="stylesheet" href="/usr/local/lib/R/host-site-library/BiocStyle/resources/html/bioconductor.css" type="text/css" />
+<link rel="stylesheet" href="/__w/_temp/Library/BiocStyle/resources/html/bioconductor.css" type="text/css" />
 
 
 
@@ -2299,6 +2301,48 @@ gene_dupCorr &lt;- duplicateCorrelation(vGene$E, mod,
 ## not achievable
 
 ## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
+## not achievable
+
+## Warning in glmgam.fit(dx, dy, coef.start = start, tol = tol, maxit = maxit, : Too much damping - convergence tolerance
 ## not achievable</code></pre>
 <pre><code>## Warning in atanh(pmax(-1, rho)): NaNs produced</code></pre>
 <pre class="r"><code>gene_dupCorr$consensus.correlation</code></pre>
@@ -2549,300 +2593,118 @@ write.csv(
 
 options(width = 130)
 goDf[goDf$p.adjust &lt; 0.05, c(1:5, 7)]</code></pre>
-<pre><code>##      Ontology Cluster         ID                                                                  Description GeneRatio
-## 707        BP       1 GO:0032640                                             tumor necrosis factor production      8/73
-## 708        BP       1 GO:0071706                        tumor necrosis factor superfamily cytokine production      8/73
-## 709        BP       1 GO:0050865                                                regulation of cell activation     12/73
-## 710        BP       1 GO:0032611                                                interleukin-1 beta production      6/73
-## 711        BP       1 GO:0032680                               regulation of tumor necrosis factor production      7/73
-## 712        BP       1 GO:1903555          regulation of tumor necrosis factor superfamily cytokine production      7/73
-## 713        BP       1 GO:0032612                                                     interleukin-1 production      6/73
-## 714        BP       1 GO:0002521                                                    leukocyte differentiation     11/73
-## 715        BP       1 GO:0002694                                           regulation of leukocyte activation     11/73
-## 716        BP       1 GO:0009617                                                        response to bacterium     11/73
-## 717        BP       1 GO:0032651                                  regulation of interleukin-1 beta production      5/73
-## 2526       MF       1 GO:0046935                           1-phosphatidylinositol-3-kinase regulator activity      3/77
-## 718        BP       1 GO:0032652                                       regulation of interleukin-1 production      5/73
-## 719        BP       1 GO:1903975                                           regulation of glial cell migration      3/73
-## 720        BP       1 GO:0042116                                                        macrophage activation      5/73
-## 721        BP       1 GO:0050867                                       positive regulation of cell activation      8/73
-## 722        BP       1 GO:0042742                                                defense response to bacterium      6/73
-## 2418       MF      -1 GO:0070888                                                                E-box binding      3/26
-## 2527       MF       1 GO:0035014                             phosphatidylinositol 3-kinase regulator activity      3/77
-## 723        BP       1 GO:0060216                                                       definitive hemopoiesis      3/73
-## 724        BP       1 GO:0071346                                        cellular response to interferon-gamma      6/73
-## 725        BP       1 GO:0043032                                 positive regulation of macrophage activation      3/73
-## 726        BP       1 GO:0050901                                               leukocyte tethering or rolling      3/73
-## 727        BP       1 GO:0006911                                                     phagocytosis, engulfment      4/73
-## 728        BP       1 GO:0032691                         negative regulation of interleukin-1 beta production      3/73
-## 729        BP       1 GO:0034341                                                 response to interferon-gamma      6/73
-## 730        BP       1 GO:0032692                              negative regulation of interleukin-1 production      3/73
-## 731        BP       1 GO:0002685                                            regulation of leukocyte migration      6/73
-## 732        BP       1 GO:0071219                            cellular response to molecule of bacterial origin      6/73
-## 733        BP       1 GO:0099024                                                 plasma membrane invagination      4/73
-## 734        BP       1 GO:0006909                                                                 phagocytosis      7/73
-## 735        BP       1 GO:0002687                                   positive regulation of leukocyte migration      5/73
-## 2811       CC       1 GO:0005942                                        phosphatidylinositol 3-kinase complex      3/78
-## 736        BP       1 GO:0002696                                  positive regulation of leukocyte activation      7/73
-## 737        BP       1 GO:0031347                                               regulation of defense response     10/73
-## 738        BP       1 GO:0050900                                                          leukocyte migration      8/73
-## 739        BP       1 GO:0010324                                                        membrane invagination      4/73
-## 740        BP       1 GO:0032635                                                     interleukin-6 production      5/73
-## 741        BP       1 GO:0030851                                                  granulocyte differentiation      3/73
-## 2419       MF      -1 GO:0001222                                            transcription corepressor binding      2/26
-## 742        BP       1 GO:0002683                                 negative regulation of immune system process      8/73
-## 743        BP       1 GO:0071216                                         cellular response to biotic stimulus      6/73
-## 744        BP       1 GO:0061756                              leukocyte adhesion to vascular endothelial cell      3/73
-## 745        BP       1 GO:0032760                      positive regulation of tumor necrosis factor production      4/73
-## 746        BP       1 GO:0001819                                   positive regulation of cytokine production      8/73
-## 747        BP       1 GO:0007599                                                                   hemostasis      7/73
-## 748        BP       1 GO:1903557 positive regulation of tumor necrosis factor superfamily cytokine production      4/73
-## 749        BP       1 GO:0032609                                                  interferon-gamma production      4/73
-## 750        BP       1 GO:1905521                                           regulation of macrophage migration      3/73
-## 751        BP       1 GO:0042035                                  regulation of cytokine biosynthetic process      4/73
-## 752        BP       1 GO:0002275                          myeloid cell activation involved in immune response      9/73
-## 753        BP       1 GO:1902105                                      regulation of leukocyte differentiation      6/73
-## 754        BP       1 GO:0008217                                                 regulation of blood pressure      5/73
-## 755        BP       1 GO:0045766                                          positive regulation of angiogenesis      5/73
-## 756        BP       1 GO:0001774                                                   microglial cell activation      3/73
-## 757        BP       1 GO:0002269                       leukocyte activation involved in inflammatory response      3/73
-## 758        BP       1 GO:0048863                                                    stem cell differentiation      6/73
-## 759        BP       1 GO:0042089                                                cytokine biosynthetic process      4/73
-## 760        BP       1 GO:0042107                                                   cytokine metabolic process      4/73
-## 761        BP       1 GO:0002831                                    regulation of response to biotic stimulus      7/73
-## 762        BP       1 GO:0033003                                           regulation of mast cell activation      3/73
-## 763        BP       1 GO:0002703                                    regulation of leukocyte mediated immunity      5/73
-## 764        BP       1 GO:1903708                                           positive regulation of hemopoiesis      5/73
-## 765        BP       1 GO:0050702                                                 interleukin-1 beta secretion      3/73
-## 766        BP       1 GO:0071222                                      cellular response to lipopolysaccharide      5/73
-## 767        BP       1 GO:0002363                                         alpha-beta T cell lineage commitment      2/73
-## 768        BP       1 GO:0150078                            positive regulation of neuroinflammatory response      2/73
-## 769        BP       1 GO:0043030                                          regulation of macrophage activation      3/73
-## 2528       MF       1 GO:0045028                    G protein-coupled purinergic nucleotide receptor activity      2/77
-## 2529       MF       1 GO:0070888                                                                E-box binding      3/77
-## 770        BP       1 GO:0043300                                        regulation of leukocyte degranulation      3/73
-## 2530       MF       1 GO:0004930                                          G protein-coupled receptor activity      7/77
-## 771        BP       1 GO:0043270                                         positive regulation of ion transport      6/73
-## 772        BP       1 GO:1904018                               positive regulation of vasculature development      5/73
-## 2939     KEGG      -1   hsa04710                                                             Circadian rhythm      2/13
-## 773        BP       1 GO:0050701                                                      interleukin-1 secretion      3/73
-## 774        BP       1 GO:1905517                                                         macrophage migration      3/73
-## 775        BP       1 GO:0043369           CD4-positive or CD8-positive, alpha-beta T cell lineage commitment      2/73
-## 776        BP       1 GO:0098883                                                              synapse pruning      2/73
-## 777        BP       1 GO:0002761                              regulation of myeloid leukocyte differentiation      4/73
-## 778        BP       1 GO:1903532                                     positive regulation of secretion by cell      7/73
-## 2940     KEGG      -1   hsa00982                                            Drug metabolism - cytochrome P450      2/13
-## 779        BP       1 GO:0061900                                                        glial cell activation      3/73
-## 780        BP       1 GO:0032729                           positive regulation of interferon-gamma production      3/73
-## 781        BP       1 GO:0045765                                                   regulation of angiogenesis      6/73
-## 782        BP       1 GO:0008347                                                         glial cell migration      3/73
-## 783        BP       1 GO:0043551                         regulation of phosphatidylinositol 3-kinase activity      3/73
-## 784        BP       1 GO:0070098                                         chemokine-mediated signaling pathway      3/73
-## 785        BP       1 GO:0033004                                  negative regulation of mast cell activation      2/73
-## 786        BP       1 GO:0060100                              positive regulation of phagocytosis, engulfment      2/73
-## 787        BP       1 GO:1905155                                 positive regulation of membrane invagination      2/73
-## 788        BP       1 GO:0032496                                               response to lipopolysaccharide      6/73
-## 789        BP       1 GO:0002573                                            myeloid leukocyte differentiation      5/73
-## 790        BP       1 GO:0010959                                            regulation of metal ion transport      7/73
-## 791        BP       1 GO:0050729                                 positive regulation of inflammatory response      4/73
-## 792        BP       1 GO:0043410                                          positive regulation of MAPK cascade      8/73
-## 793        BP       1 GO:0007159                                                 leukocyte cell-cell adhesion      6/73
-## 794        BP       1 GO:0030098                                                   lymphocyte differentiation      6/73
-## 795        BP       1 GO:0042108                         positive regulation of cytokine biosynthetic process      3/73
-## 796        BP       1 GO:0030335                                        positive regulation of cell migration      8/73
-## 797        BP       1 GO:0001562                                                        response to protozoan      2/73
-## 798        BP       1 GO:0042832                                                defense response to protozoan      2/73
-## 799        BP       1 GO:0060099                                       regulation of phagocytosis, engulfment      2/73
-## 800        BP       1 GO:1903978                                     regulation of microglial cell activation      2/73
-## 2531       MF       1 GO:0000978        RNA polymerase II cis-regulatory region sequence-specific DNA binding      8/77
-## 801        BP       1 GO:0051047                                             positive regulation of secretion      7/73
-## 2941     KEGG      -1   hsa05204                                                      Chemical carcinogenesis      2/13
-## 802        BP       1 GO:0002886                            regulation of myeloid leukocyte mediated immunity      3/73
-## 803        BP       1 GO:0002237                                     response to molecule of bacterial origin      6/73
-## 804        BP       1 GO:0032675                                       regulation of interleukin-6 production      4/73
-## 805        BP       1 GO:0045123                                                       cellular extravasation      3/73
-## 806        BP       1 GO:0007596                                                            blood coagulation      6/73
-## 807        BP       1 GO:0002360                                                    T cell lineage commitment      2/73
-## 808        BP       1 GO:1905153                                          regulation of membrane invagination      2/73
-## 809        BP       1 GO:2000147                                         positive regulation of cell motility      8/73
-## 810        BP       1 GO:0050817                                                                  coagulation      6/73
-## 811        BP       1 GO:0031663                                lipopolysaccharide-mediated signaling pathway      3/73
-## 812        BP       1 GO:0050766                                          positive regulation of phagocytosis      3/73
-## 2532       MF       1 GO:0000987                          cis-regulatory region sequence-specific DNA binding      8/77
-## 813        BP       1 GO:0030099                                                 myeloid cell differentiation      7/73
-## 2533       MF       1 GO:0005525                                                                  GTP binding      7/77
-## 814        BP       1 GO:0043900                                         regulation of multi-organism process      3/73
-## 815        BP       1 GO:0045576                                                         mast cell activation      3/73
-## 816        BP       1 GO:0150076                                                   neuroinflammatory response      3/73
-## 817        BP       1 GO:0150146                                                    cell junction disassembly      2/73
-## 2534       MF       1 GO:0032550                                                purine ribonucleoside binding      7/77
-## 818        BP       1 GO:0071695                                              anatomical structure maturation      5/73
-## 819        BP       1 GO:0043550                                          regulation of lipid kinase activity      3/73
-## 820        BP       1 GO:1990868                                                        response to chemokine      3/73
-## 821        BP       1 GO:1990869                                               cellular response to chemokine      3/73
-## 2535       MF       1 GO:0001883                                                    purine nucleoside binding      7/77
-## 2536       MF       1 GO:0032549                                                       ribonucleoside binding      7/77
-## 822        BP       1 GO:0040017                                            positive regulation of locomotion      8/73
-## 823        BP       1 GO:0051272                           positive regulation of cellular component movement      8/73
-## 824        BP       1 GO:1901342                                        regulation of vasculature development      6/73
-## 2537       MF       1 GO:0001614                                      purinergic nucleotide receptor activity      2/77
-## 2538       MF       1 GO:0016502                                                 nucleotide receptor activity      2/77
-## 825        BP       1 GO:0031349                                      positive regulation of defense response      6/73
-## 826        BP       1 GO:0032637                                                     interleukin-8 production      3/73
-## 827        BP       1 GO:0035162                                                        embryonic hemopoiesis      2/73
-## 828        BP       1 GO:0035855                                                    megakaryocyte development      2/73
-## 829        BP       1 GO:0043901                                negative regulation of multi-organism process      2/73
-## 2539       MF       1 GO:0001882                                                           nucleoside binding      7/77
-## 2540       MF       1 GO:0019001                                                    guanyl nucleotide binding      7/77
-## 2541       MF       1 GO:0032561                                                guanyl ribonucleotide binding      7/77
-## 2542       MF       1 GO:0019956                                                            chemokine binding      2/77
-##            pvalue
-## 707  2.155765e-07
-## 708  2.795736e-07
-## 709  1.774684e-06
-## 710  2.243133e-06
-## 711  2.675097e-06
-## 712  3.182987e-06
-## 713  3.619467e-06
-## 714  5.410723e-06
-## 715  5.410723e-06
-## 716  9.484122e-06
-## 717  2.081595e-05
-## 2526 2.829331e-05
-## 718  3.042014e-05
-## 719  4.214619e-05
-## 720  4.315425e-05
-## 721  4.513174e-05
-## 722  4.641332e-05
-## 2418 5.497816e-05
-## 2527 6.165318e-05
-## 723  6.652952e-05
-## 724  9.326943e-05
-## 725  9.865613e-05
-## 726  9.865613e-05
-## 727  1.004118e-04
-## 728  1.394930e-04
-## 729  1.541188e-04
-## 730  1.634710e-04
-## 731  1.780977e-04
-## 732  1.845302e-04
-## 733  1.909882e-04
-## 734  2.013517e-04
-## 735  2.162856e-04
-## 2811 2.328880e-04
-## 736  2.432941e-04
-## 737  2.642278e-04
-## 738  2.958656e-04
-## 739  3.294180e-04
-## 740  3.355871e-04
-## 741  3.642172e-04
-## 2419 3.671113e-04
-## 742  3.801534e-04
-## 743  3.907327e-04
-## 744  4.081528e-04
-## 745  4.457542e-04
-## 746  4.737410e-04
-## 747  4.870348e-04
-## 748  4.995889e-04
-## 749  5.888016e-04
-## 750  6.787857e-04
-## 751  6.887868e-04
-## 752  7.843398e-04
-## 753  7.845445e-04
-## 754  8.487369e-04
-## 755  8.772070e-04
-## 756  8.853142e-04
-## 757  8.853142e-04
-## 758  9.366271e-04
-## 759  9.679251e-04
-## 760  9.679251e-04
-## 761  1.094179e-03
-## 762  1.127884e-03
-## 763  1.166562e-03
-## 764  1.202598e-03
-## 765  1.217140e-03
-## 766  1.239453e-03
-## 767  1.270292e-03
-## 768  1.270292e-03
-## 769  1.310730e-03
-## 2528 1.396508e-03
-## 2529 1.397473e-03
-## 770  1.408732e-03
-## 2530 1.451727e-03
-## 771  1.465184e-03
-## 772  1.478421e-03
-## 2939 1.492996e-03
-## 773  1.511221e-03
-## 774  1.511221e-03
-## 775  1.547133e-03
-## 776  1.547133e-03
-## 777  1.554362e-03
-## 778  1.594428e-03
-## 2940 1.601689e-03
-## 779  1.618274e-03
-## 780  1.729963e-03
-## 781  1.783549e-03
-## 782  1.846359e-03
-## 783  1.846359e-03
-## 784  1.846359e-03
-## 785  1.850051e-03
-## 786  1.850051e-03
-## 787  1.850051e-03
-## 788  1.900565e-03
-## 789  1.949945e-03
-## 790  2.005092e-03
-## 791  2.035302e-03
-## 792  2.039631e-03
-## 793  2.065551e-03
-## 794  2.065551e-03
-## 795  2.093555e-03
-## 796  2.162531e-03
-## 797  2.178760e-03
-## 798  2.178760e-03
-## 799  2.178760e-03
-## 800  2.178760e-03
-## 2531 2.214688e-03
-## 801  2.220337e-03
-## 2941 2.330672e-03
-## 802  2.360404e-03
-## 803  2.380132e-03
-## 804  2.436077e-03
-## 805  2.501362e-03
-## 806  2.525500e-03
-## 807  2.532982e-03
-## 808  2.532982e-03
-## 809  2.566661e-03
-## 810  2.626065e-03
-## 811  2.647426e-03
-## 812  2.647426e-03
-## 2532 2.648385e-03
-## 813  2.704265e-03
-## 2533 2.731185e-03
-## 814  2.798658e-03
-## 815  2.798658e-03
-## 816  2.798658e-03
-## 817  2.912436e-03
-## 2534 2.919902e-03
-## 818  2.921202e-03
-## 819  2.955119e-03
-## 820  2.955119e-03
-## 821  2.955119e-03
-## 2535 3.067904e-03
-## 2536 3.067904e-03
-## 822  3.069158e-03
-## 823  3.110785e-03
-## 824  3.116380e-03
-## 2537 3.198992e-03
-## 2538 3.198992e-03
-## 825  3.234067e-03
-## 826  3.283956e-03
-## 827  3.316846e-03
-## 828  3.316846e-03
-## 829  3.316846e-03
-## 2539 3.435644e-03
-## 2540 3.490816e-03
-## 2541 3.490816e-03
-## 2542 3.642551e-03</code></pre>
+<pre><code>##      Ontology Cluster         ID                                                         Description GeneRatio       pvalue
+## 696        BP       1 GO:0032611                                       interleukin-1 beta production      6/73 2.152775e-06
+## 697        BP       1 GO:0050865                                       regulation of cell activation     12/73 2.709506e-06
+## 698        BP       1 GO:0032612                                            interleukin-1 production      6/73 3.747905e-06
+## 699        BP       1 GO:0002694                                  regulation of leukocyte activation     11/73 7.875320e-06
+## 700        BP       1 GO:0002521                                           leukocyte differentiation     11/73 8.260455e-06
+## 701        BP       1 GO:1903977                         positive regulation of glial cell migration      3/73 1.751400e-05
+## 702        BP       1 GO:0032651                         regulation of interleukin-1 beta production      5/73 2.175911e-05
+## 703        BP       1 GO:0002687                          positive regulation of leukocyte migration      6/73 2.728969e-05
+## 704        BP       1 GO:0032652                              regulation of interleukin-1 production      5/73 3.392997e-05
+## 2505       MF       1 GO:0046935                  1-phosphatidylinositol-3-kinase regulator activity      3/78 3.586132e-05
+## 2403       MF      -1 GO:0070888                                                       E-box binding      3/27 5.240514e-05
+## 705        BP       1 GO:0042116                                               macrophage activation      5/73 5.417072e-05
+## 706        BP       1 GO:1903975                                  regulation of glial cell migration      3/73 6.513291e-05
+## 707        BP       1 GO:0009617                                               response to bacterium     10/73 6.787695e-05
+## 708        BP       1 GO:0050867                              positive regulation of cell activation      8/73 7.145608e-05
+## 709        BP       1 GO:0060216                                              definitive hemopoiesis      3/73 7.985372e-05
+## 2506       MF       1 GO:0035014                    phosphatidylinositol 3-kinase regulator activity      3/78 8.982040e-05
+## 710        BP       1 GO:0071346                               cellular response to interferon-gamma      6/73 9.340196e-05
+## 711        BP       1 GO:0032640                                    tumor necrosis factor production      5/73 1.034823e-04
+## 712        BP       1 GO:0071706               tumor necrosis factor superfamily cytokine production      5/73 1.152814e-04
+## 713        BP       1 GO:0043032                        positive regulation of macrophage activation      3/73 1.154607e-04
+## 714        BP       1 GO:0006911                                            phagocytosis, engulfment      4/73 1.159941e-04
+## 715        BP       1 GO:0034341                                        response to interferon-gamma      6/73 1.594765e-04
+## 716        BP       1 GO:0032691                negative regulation of interleukin-1 beta production      3/73 1.600617e-04
+## 717        BP       1 GO:0050901                                      leukocyte tethering or rolling      3/73 1.600617e-04
+## 718        BP       1 GO:0032692                     negative regulation of interleukin-1 production      3/73 1.860176e-04
+## 719        BP       1 GO:0071219                   cellular response to molecule of bacterial origin      6/73 1.904654e-04
+## 720        BP       1 GO:0099024                                        plasma membrane invagination      4/73 2.147043e-04
+## 721        BP       1 GO:0006909                                                        phagocytosis      7/73 2.268305e-04
+## 722        BP       1 GO:0002685                                   regulation of leukocyte migration      6/73 2.416443e-04
+## 2788       CC       1 GO:0005942                               phosphatidylinositol 3-kinase complex      3/78 2.628695e-04
+## 723        BP       1 GO:1905523                         positive regulation of macrophage migration      3/73 3.167471e-04
+## 2404       MF      -1 GO:0001222                                   transcription corepressor binding      2/27 3.247270e-04
+## 724        BP       1 GO:0002696                         positive regulation of leukocyte activation      7/73 3.592269e-04
+## 725        BP       1 GO:0010324                                               membrane invagination      4/73 3.630130e-04
+## 726        BP       1 GO:0050900                                                 leukocyte migration      8/73 3.775535e-04
+## 727        BP       1 GO:0071216                                cellular response to biotic stimulus      6/73 3.994430e-04
+## 728        BP       1 GO:0030851                                         granulocyte differentiation      3/73 3.997182e-04
+## 729        BP       1 GO:0002683                        negative regulation of immune system process      8/73 4.699007e-04
+## 730        BP       1 GO:0007599                                                          hemostasis      7/73 5.354016e-04
+## 731        BP       1 GO:0042742                                       defense response to bacterium      5/73 6.027506e-04
+## 732        BP       1 GO:0032609                                         interferon-gamma production      4/73 6.045120e-04
+## 733        BP       1 GO:0030335                               positive regulation of cell migration      9/73 6.264150e-04
+## 734        BP       1 GO:0061756                     leukocyte adhesion to vascular endothelial cell      3/73 7.285188e-04
+## 735        BP       1 GO:0002275                 myeloid cell activation involved in immune response      9/73 7.690347e-04
+## 736        BP       1 GO:2000147                                positive regulation of cell motility      9/73 7.690347e-04
+## 737        BP       1 GO:0008217                                        regulation of blood pressure      5/73 9.068831e-04
+## 738        BP       1 GO:0040017                                   positive regulation of locomotion      9/73 9.232911e-04
+## 739        BP       1 GO:0045766                                 positive regulation of angiogenesis      5/73 9.365722e-04
+## 740        BP       1 GO:0001774                                          microglial cell activation      3/73 9.424071e-04
+## 741        BP       1 GO:0002269              leukocyte activation involved in inflammatory response      3/73 9.424071e-04
+## 742        BP       1 GO:0051272                  positive regulation of cellular component movement      9/73 9.655575e-04
+## 743        BP       1 GO:0032680                      regulation of tumor necrosis factor production      4/73 9.869644e-04
+## 744        BP       1 GO:0033003                                  regulation of mast cell activation      3/73 1.021614e-03
+## 745        BP       1 GO:1905521                                  regulation of macrophage migration      3/73 1.021614e-03
+## 746        BP       1 GO:0048863                                           stem cell differentiation      6/73 1.070488e-03
+## 747        BP       1 GO:1902105                             regulation of leukocyte differentiation      6/73 1.070488e-03
+## 748        BP       1 GO:1903555 regulation of tumor necrosis factor superfamily cytokine production      4/73 1.080011e-03
+## 749        BP       1 GO:0043300                               regulation of leukocyte degranulation      3/73 1.192384e-03
+## 750        BP       1 GO:0002703                           regulation of leukocyte mediated immunity      5/73 1.237410e-03
+## 751        BP       1 GO:0071222                             cellular response to lipopolysaccharide      5/73 1.237410e-03
+## 752        BP       1 GO:0035589  G protein-coupled purinergic nucleotide receptor signaling pathway      2/73 1.252424e-03
+## 753        BP       1 GO:0043373                  CD4-positive, alpha-beta T cell lineage commitment      2/73 1.252424e-03
+## 754        BP       1 GO:0150078                   positive regulation of neuroinflammatory response      2/73 1.252424e-03
+## 755        BP       1 GO:0003018                              vascular process in circulatory system      5/73 1.274776e-03
+## 756        BP       1 GO:0043030                                 regulation of macrophage activation      3/73 1.480606e-03
+## 2917     KEGG      -1   hsa04710                                                    Circadian rhythm      2/13 1.492521e-03
+## 757        BP       1 GO:0033004                         negative regulation of mast cell activation      2/73 1.525410e-03
+## 758        BP       1 GO:0098883                                                     synapse pruning      2/73 1.525410e-03
+## 2918     KEGG      -1   hsa00982                                   Drug metabolism - cytochrome P450      2/13 1.601179e-03
+## 759        BP       1 GO:1904018                      positive regulation of vasculature development      5/73 1.604501e-03
+## 760        BP       1 GO:0043270                                positive regulation of ion transport      6/73 1.612708e-03
+## 761        BP       1 GO:0032729                  positive regulation of interferon-gamma production      3/73 1.695010e-03
+## 762        BP       1 GO:0061900                                               glial cell activation      3/73 1.695010e-03
+## 763        BP       1 GO:1903708                                  positive regulation of hemopoiesis      5/73 1.791082e-03
+## 764        BP       1 GO:0070098                                chemokine-mediated signaling pathway      3/73 1.809105e-03
+## 765        BP       1 GO:0002363                                alpha-beta T cell lineage commitment      2/73 1.824120e-03
+## 766        BP       1 GO:0060100                     positive regulation of phagocytosis, engulfment      2/73 1.824120e-03
+## 767        BP       1 GO:1905155                        positive regulation of membrane invagination      2/73 1.824120e-03
+## 768        BP       1 GO:0002761                     regulation of myeloid leukocyte differentiation      4/73 1.840134e-03
+## 769        BP       1 GO:0032496                                      response to lipopolysaccharide      6/73 1.911828e-03
+## 770        BP       1 GO:1905517                                                macrophage migration      3/73 1.927887e-03
+## 771        BP       1 GO:0010959                                   regulation of metal ion transport      7/73 1.959092e-03
+## 772        BP       1 GO:0002886                   regulation of myeloid leukocyte mediated immunity      3/73 2.051425e-03
+## 773        BP       1 GO:0043551                regulation of phosphatidylinositol 3-kinase activity      3/73 2.051425e-03
+## 774        BP       1 GO:0001819                          positive regulation of cytokine production      7/73 2.061951e-03
+## 775        BP       1 GO:0043369  CD4-positive or CD8-positive, alpha-beta T cell lineage commitment      2/73 2.148276e-03
+## 776        BP       1 GO:0060099                              regulation of phagocytosis, engulfment      2/73 2.148276e-03
+## 777        BP       1 GO:0002573                                   myeloid leukocyte differentiation      5/73 2.211391e-03
+## 778        BP       1 GO:0045765                                          regulation of angiogenesis      6/73 2.251326e-03
+## 779        BP       1 GO:0043410                                 positive regulation of MAPK cascade      8/73 2.320852e-03
+## 2919     KEGG      -1   hsa05204                                             Chemical carcinogenesis      2/13 2.329934e-03
+## 780        BP       1 GO:0050729                        positive regulation of inflammatory response      4/73 2.373979e-03
+## 781        BP       1 GO:0002237                            response to molecule of bacterial origin      6/73 2.437266e-03
+## 782        BP       1 GO:0001562                                               response to protozoan      2/73 2.497604e-03
+## 783        BP       1 GO:0042832                                       defense response to protozoan      2/73 2.497604e-03
+## 784        BP       1 GO:1903978                            regulation of microglial cell activation      2/73 2.497604e-03
+## 785        BP       1 GO:1905153                                 regulation of membrane invagination      2/73 2.497604e-03
+## 786        BP       1 GO:0030098                                          lymphocyte differentiation      6/73 2.584154e-03
+## 787        BP       1 GO:0008347                                                glial cell migration      3/73 2.594437e-03
+## 788        BP       1 GO:0031663                       lipopolysaccharide-mediated signaling pathway      3/73 2.594437e-03
+## 789        BP       1 GO:0045576                                                mast cell activation      3/73 2.594437e-03
+## 790        BP       1 GO:0050766                                 positive regulation of phagocytosis      3/73 2.594437e-03
+## 791        BP       1 GO:0032635                                            interleukin-6 production      4/73 2.722582e-03
+## 792        BP       1 GO:0007596                                                   blood coagulation      6/73 2.737616e-03
+## 793        BP       1 GO:0007159                                        leukocyte cell-cell adhesion      6/73 2.843668e-03
+## 794        BP       1 GO:0050817                                                         coagulation      6/73 2.843668e-03
+## 795        BP       1 GO:0043900                                regulation of multi-organism process      3/73 2.896130e-03
+## 796        BP       1 GO:1990868                                               response to chemokine      3/73 2.896130e-03
+## 797        BP       1 GO:1990869                                      cellular response to chemokine      3/73 2.896130e-03
+## 798        BP       1 GO:0071695                                     anatomical structure maturation      5/73 2.901368e-03</code></pre>
 </div>
 <div id="visualize-differentially-expressed-genes" class="section level2">
 <h2><span class="header-section-number">1.9</span> Visualize differentially expressed genes</h2>
@@ -2883,7 +2745,7 @@ dev.off()</code></pre>
 <li>R (<a href='#bib-R'>Kolde, 2019</a>)</li>
 <li><em><a href="https://bioconductor.org/packages/3.12/BiocStyle">BiocStyle</a></em> (<a href='https://www.R-project.org/'>R Core Team, 2020</a>)</li>
 <li><em><a href="https://bioconductor.org/packages/3.12/clusterProfiler">clusterProfiler</a></em> (<a href='https://github.com/rstudio/rmarkdown'>Allaire, Xie, McPherson, Luraschi, et al., 2020</a>)</li>
-<li><em><a href="https://CRAN.R-project.org/package=devtools">devtools</a></em> (<a href='https://github.com/cboettig/knitcitations'>Boettiger, 2019</a>)</li>
+<li><em><a href="https://CRAN.R-project.org/package=devtools">devtools</a></em> (<a href='https://github.com/cboettig/knitcitations'>Boettiger, 2020</a>)</li>
 <li><em><a href="https://bioconductor.org/packages/3.12/edgeR">edgeR</a></em></li>
 <li><em><a href="https://CRAN.R-project.org/package=here">here</a></em> (<a href='http://www.nature.com/nbt/journal/v35/n4/full/nbt.3838.html'>Collado-Torres, Nellore, Kammers, Ellis, et al., 2017</a>)</li>
 <li><em><a href="https://github.com/LieberInstitute/jaffelab">jaffelab</a></em> (<a href='https://github.com/LieberInstitute/jaffelab'>Collado-Torres, Jaffe, and Burke, 2019</a>)</li>
@@ -2899,13 +2761,13 @@ dev.off()</code></pre>
 </ul>
 <p><a href="de_analysis.bib">Bibliography file</a></p>
 <p>[1] J. Allaire, Y. Xie, J. McPherson, J. Luraschi, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package version
-2.4. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
-<p>[2] C. Boettiger. <em>knitcitations: Citations for ‘Knitr’ Markdown Files</em>. R package version 1.0.10. 2019. &lt;URL:
+2.5. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
+<p>[2] C. Boettiger. <em>knitcitations: Citations for ‘Knitr’ Markdown Files</em>. R package version 1.0.11. 2020. &lt;URL:
 <a href="https://github.com/cboettig/knitcitations" class="uri">https://github.com/cboettig/knitcitations</a>&gt;.</p>
 <p>[3] L. Collado-Torres, A. E. Jaffe, and E. E. Burke. <em>jaffelab: Commonly used functions by the Jaffe lab</em>. R package
 version 0.99.30. 2019. &lt;URL: <a href="https://github.com/LieberInstitute/jaffelab" class="uri">https://github.com/LieberInstitute/jaffelab</a>&gt;.</p>
 <p>[4] L. Collado-Torres, A. Nellore, K. Kammers, S. E. Ellis, et al. <em>Explore and download data from the recount
-project</em>. <a href="https://github.com/leekgroup/recount" class="uri">https://github.com/leekgroup/recount</a> - R package version 1.15.1. 2020. DOI: 10.18129/B9.bioc.recount.
+project</em>. <a href="https://github.com/leekgroup/recount" class="uri">https://github.com/leekgroup/recount</a> - R package version 1.16.0. 2020. DOI: 10.18129/B9.bioc.recount.
 &lt;URL: <a href="http://www.bioconductor.org/packages/recount" class="uri">http://www.bioconductor.org/packages/recount</a>&gt;.</p>
 <p>[5] L. Collado-Torres, A. Nellore, K. Kammers, S. E. Ellis, et al. “Reproducible RNA-seq analysis using recount2”.
 In: <em>Nature Biotechnology</em> (2017). DOI: 10.1038/nbt.3838. &lt;URL:
@@ -2931,147 +2793,145 @@ and Hall/CRC, 2020. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown-cookb
 clusters”. In: <em>OMICS: A Journal of Integrative Biology</em> 16.5 (2012), pp. 284-287. DOI: 10.1089/omi.2011.0118.</p>
 <pre class="r"><code># Time spent creating this report:
 diff(c(timestart, Sys.time()))</code></pre>
-<pre><code>## Time difference of 2.548973 mins</code></pre>
+<pre><code>## Time difference of 3.10783 mins</code></pre>
 <pre class="r"><code># Date this report was generated
 message(Sys.time())</code></pre>
-<pre><code>## 2020-10-07 20:47:21</code></pre>
+<pre><code>## 2020-11-18 20:09:08</code></pre>
 <pre class="r"><code># Reproducibility info
 options(width = 120)
 devtools::session_info()</code></pre>
 <pre><code>## ─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
 ##  setting  value                       
-##  version  R version 4.0.2 (2020-06-22)
-##  os       Ubuntu 20.04.1 LTS          
+##  version  R version 4.0.3 (2020-10-10)
+##  os       Ubuntu 20.04 LTS            
 ##  system   x86_64, linux-gnu           
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  ctype    en_US.UTF-8                 
 ##  tz       Etc/UTC                     
-##  date     2020-10-07                  
+##  date     2020-11-18                  
 ## 
 ## ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##  package              * version  date       lib source                                   
-##  AnnotationDbi        * 1.51.3   2020-07-25 [1] Bioconductor                             
+##  AnnotationDbi        * 1.52.0   2020-10-27 [1] Bioconductor                             
 ##  askpass                1.1      2019-01-13 [2] RSPM (R 4.0.0)                           
 ##  assertthat             0.2.1    2019-03-21 [2] RSPM (R 4.0.0)                           
-##  backports              1.1.10   2020-09-15 [2] RSPM (R 4.0.2)                           
+##  backports              1.2.0    2020-11-02 [2] RSPM (R 4.0.3)                           
 ##  base64enc              0.1-3    2015-07-28 [2] RSPM (R 4.0.0)                           
-##  bibtex                 0.4.2.3  2020-09-19 [1] RSPM (R 4.0.2)                           
-##  Biobase              * 2.49.1   2020-09-03 [1] Bioconductor                             
-##  BiocFileCache          1.13.1   2020-08-04 [1] Bioconductor                             
-##  BiocGenerics         * 0.35.4   2020-06-04 [1] Bioconductor                             
-##  BiocManager          * 1.30.10  2019-11-16 [2] CRAN (R 4.0.2)                           
-##  BiocParallel           1.23.2   2020-07-06 [1] Bioconductor                             
-##  BiocStyle            * 2.17.1   2020-09-24 [1] Bioconductor                             
-##  biomaRt                2.45.3   2020-09-21 [1] Bioconductor                             
-##  Biostrings             2.57.2   2020-06-09 [1] Bioconductor                             
+##  bibtex                 0.4.3    2020-11-18 [1] Github (ropensci/bibtex@7ccf8ea)         
+##  Biobase              * 2.50.0   2020-10-27 [1] Bioconductor                             
+##  BiocFileCache          1.14.0   2020-10-27 [1] Bioconductor                             
+##  BiocGenerics         * 0.36.0   2020-10-27 [1] Bioconductor                             
+##  BiocManager          * 1.30.10  2019-11-16 [2] CRAN (R 4.0.3)                           
+##  BiocParallel           1.24.1   2020-11-06 [1] Bioconductor                             
+##  BiocStyle            * 2.18.0   2020-10-27 [1] Bioconductor                             
+##  biomaRt                2.46.0   2020-10-27 [1] Bioconductor                             
+##  Biostrings             2.58.0   2020-10-27 [1] Bioconductor                             
 ##  bit                    4.0.4    2020-08-04 [1] RSPM (R 4.0.2)                           
 ##  bit64                  4.0.5    2020-08-30 [1] RSPM (R 4.0.2)                           
 ##  bitops                 1.0-6    2013-08-17 [1] RSPM (R 4.0.0)                           
 ##  blob                   1.2.1    2020-01-20 [1] RSPM (R 4.0.0)                           
-##  bookdown               0.20     2020-06-23 [1] RSPM (R 4.0.2)                           
-##  BSgenome               1.57.6   2020-09-02 [1] Bioconductor                             
-##  bumphunter             1.31.0   2020-04-28 [1] Bioconductor                             
-##  callr                  3.4.4    2020-09-07 [2] RSPM (R 4.0.2)                           
+##  bookdown               0.21     2020-10-13 [1] RSPM (R 4.0.2)                           
+##  BSgenome               1.58.0   2020-10-27 [1] Bioconductor                             
+##  bumphunter             1.32.0   2020-10-27 [1] Bioconductor                             
+##  Cairo                  1.5-12.2 2020-07-07 [1] RSPM (R 4.0.3)                           
+##  callr                  3.5.1    2020-10-13 [2] RSPM (R 4.0.2)                           
 ##  checkmate              2.0.0    2020-02-06 [1] RSPM (R 4.0.0)                           
-##  cli                    2.0.2    2020-02-28 [2] RSPM (R 4.0.0)                           
-##  cluster                2.1.0    2019-06-19 [3] CRAN (R 4.0.2)                           
-##  clusterProfiler      * 3.17.3   2020-09-10 [1] Bioconductor                             
-##  codetools              0.2-16   2018-12-24 [3] CRAN (R 4.0.2)                           
-##  colorspace             1.4-1    2019-03-18 [1] RSPM (R 4.0.0)                           
+##  cli                    2.1.0    2020-10-12 [2] RSPM (R 4.0.2)                           
+##  cluster                2.1.0    2019-06-19 [3] CRAN (R 4.0.3)                           
+##  clusterProfiler      * 3.18.0   2020-10-27 [1] Bioconductor                             
+##  codetools              0.2-18   2020-11-04 [3] RSPM (R 4.0.3)                           
+##  colorspace             2.0-0    2020-11-11 [1] RSPM (R 4.0.3)                           
 ##  cowplot                1.1.0    2020-09-08 [1] RSPM (R 4.0.2)                           
 ##  crayon                 1.3.4    2017-09-16 [2] RSPM (R 4.0.0)                           
 ##  crosstalk              1.1.0.1  2020-03-13 [2] RSPM (R 4.0.0)                           
 ##  curl                   4.3      2019-12-02 [2] RSPM (R 4.0.0)                           
-##  data.table             1.13.0   2020-07-24 [1] RSPM (R 4.0.2)                           
+##  data.table             1.13.2   2020-10-19 [1] RSPM (R 4.0.3)                           
 ##  DBI                    1.1.0    2019-12-15 [1] RSPM (R 4.0.0)                           
-##  dbplyr                 1.4.4    2020-05-27 [1] RSPM (R 4.0.0)                           
-##  DelayedArray           0.15.15  2020-10-03 [1] Bioconductor                             
-##  derfinder              1.23.1   2020-05-10 [1] Bioconductor                             
-##  derfinderHelper        1.23.1   2020-05-10 [1] Bioconductor                             
+##  dbplyr                 2.0.0    2020-11-03 [1] RSPM (R 4.0.3)                           
+##  DelayedArray           0.16.0   2020-10-27 [1] Bioconductor                             
+##  derfinder              1.24.0   2020-10-27 [1] Bioconductor                             
+##  derfinderHelper        1.24.0   2020-10-27 [1] Bioconductor                             
 ##  desc                   1.2.0    2018-05-01 [2] RSPM (R 4.0.0)                           
 ##  devtools             * 2.3.2    2020-09-18 [2] RSPM (R 4.0.2)                           
-##  digest                 0.6.25   2020-02-23 [2] RSPM (R 4.0.0)                           
-##  DO.db                  2.9      2020-10-05 [1] Bioconductor                             
+##  digest                 0.6.27   2020-10-24 [2] RSPM (R 4.0.3)                           
+##  DO.db                  2.9      2020-11-18 [1] Bioconductor                             
 ##  doRNG                  1.8.2    2020-01-27 [1] RSPM (R 4.0.0)                           
-##  DOSE                   3.15.1   2020-09-10 [1] Bioconductor                             
+##  DOSE                   3.16.0   2020-10-27 [1] Bioconductor                             
 ##  downloader             0.4      2015-07-09 [1] RSPM (R 4.0.0)                           
 ##  dplyr                  1.0.2    2020-08-18 [1] RSPM (R 4.0.2)                           
-##  DT                     0.15     2020-08-05 [2] RSPM (R 4.0.2)                           
-##  edgeR                * 3.31.4   2020-06-10 [1] Bioconductor                             
+##  DT                     0.16     2020-10-13 [2] RSPM (R 4.0.2)                           
+##  edgeR                * 3.32.0   2020-10-27 [1] Bioconductor                             
 ##  ellipsis               0.3.1    2020-05-15 [2] RSPM (R 4.0.0)                           
-##  enrichplot           * 1.9.3    2020-09-11 [1] Bioconductor                             
+##  enrichplot           * 1.10.1   2020-11-14 [1] Bioconductor                             
 ##  evaluate               0.14     2019-05-28 [2] RSPM (R 4.0.0)                           
-##  ExploreModelMatrix   * 1.1.6    2020-10-03 [1] Bioconductor                             
+##  ExploreModelMatrix   * 1.2.0    2020-10-27 [1] Bioconductor                             
 ##  fansi                  0.4.1    2020-01-08 [2] RSPM (R 4.0.0)                           
 ##  farver                 2.0.3    2020-01-16 [1] RSPM (R 4.0.0)                           
 ##  fastmap                1.0.1    2019-10-08 [1] RSPM (R 4.0.0)                           
 ##  fastmatch              1.1-0    2017-01-28 [1] RSPM (R 4.0.0)                           
-##  fgsea                  1.15.2   2020-09-15 [1] Bioconductor                             
-##  foreach                1.5.0    2020-03-30 [1] RSPM (R 4.0.0)                           
-##  foreign                0.8-80   2020-05-24 [3] CRAN (R 4.0.2)                           
-##  Formula                1.2-3    2018-05-03 [1] RSPM (R 4.0.0)                           
+##  fgsea                  1.16.0   2020-10-27 [1] Bioconductor                             
+##  foreach                1.5.1    2020-10-15 [1] RSPM (R 4.0.2)                           
+##  foreign                0.8-80   2020-05-24 [3] CRAN (R 4.0.3)                           
+##  Formula                1.2-4    2020-10-16 [1] RSPM (R 4.0.2)                           
 ##  fs                     1.5.0    2020-07-31 [2] RSPM (R 4.0.2)                           
-##  generics               0.0.2    2018-11-29 [1] RSPM (R 4.0.0)                           
-##  GenomeInfoDb         * 1.25.11  2020-09-03 [1] Bioconductor                             
-##  GenomeInfoDbData       1.2.3    2020-10-05 [1] Bioconductor                             
-##  GenomicAlignments      1.25.3   2020-06-09 [1] Bioconductor                             
-##  GenomicFeatures        1.41.3   2020-09-03 [1] Bioconductor                             
-##  GenomicFiles           1.25.0   2020-04-27 [1] Bioconductor                             
-##  GenomicRanges        * 1.41.6   2020-08-12 [1] Bioconductor                             
-##  GEOquery               2.57.0   2020-04-27 [1] Bioconductor                             
+##  generics               0.1.0    2020-10-31 [1] RSPM (R 4.0.3)                           
+##  GenomeInfoDb         * 1.26.0   2020-10-27 [1] Bioconductor                             
+##  GenomeInfoDbData       1.2.4    2020-11-18 [1] Bioconductor                             
+##  GenomicAlignments      1.26.0   2020-10-27 [1] Bioconductor                             
+##  GenomicFeatures        1.42.1   2020-11-12 [1] Bioconductor                             
+##  GenomicFiles           1.26.0   2020-10-27 [1] Bioconductor                             
+##  GenomicRanges        * 1.42.0   2020-10-27 [1] Bioconductor                             
+##  GEOquery               2.58.0   2020-10-27 [1] Bioconductor                             
 ##  ggforce                0.3.2    2020-06-23 [1] RSPM (R 4.0.2)                           
 ##  ggnewscale             0.4.3    2020-08-27 [1] RSPM (R 4.0.2)                           
 ##  ggplot2              * 3.3.2    2020-06-19 [1] RSPM (R 4.0.1)                           
-##  ggplotify              0.0.5    2020-03-12 [1] RSPM (R 4.0.0)                           
-##  ggraph                 2.0.3    2020-05-20 [1] RSPM (R 4.0.2)                           
+##  ggraph                 2.0.4    2020-11-16 [1] RSPM (R 4.0.3)                           
 ##  ggrepel                0.8.2    2020-03-08 [1] RSPM (R 4.0.2)                           
-##  ggridges               0.5.2    2020-01-12 [1] RSPM (R 4.0.0)                           
 ##  glue                   1.4.2    2020-08-27 [2] RSPM (R 4.0.2)                           
-##  GO.db                  3.11.4   2020-10-05 [1] Bioconductor                             
+##  GO.db                  3.12.1   2020-11-18 [1] Bioconductor                             
 ##  googledrive            1.0.1    2020-05-05 [1] RSPM (R 4.0.0)                           
-##  GOSemSim               2.15.2   2020-09-04 [1] Bioconductor                             
-##  graphlayouts           0.7.0    2020-04-25 [1] RSPM (R 4.0.2)                           
+##  GOSemSim               2.16.1   2020-10-29 [1] Bioconductor                             
+##  graphlayouts           0.7.1    2020-10-26 [1] RSPM (R 4.0.3)                           
 ##  gridExtra              2.3      2017-09-09 [1] RSPM (R 4.0.0)                           
-##  gridGraphics           0.5-0    2020-02-25 [1] RSPM (R 4.0.0)                           
 ##  gtable                 0.3.0    2019-03-25 [1] RSPM (R 4.0.0)                           
-##  here                 * 0.1      2017-05-28 [1] RSPM (R 4.0.0)                           
+##  here                 * 1.0.0    2020-11-15 [1] RSPM (R 4.0.3)                           
 ##  Hmisc                  4.4-1    2020-08-10 [1] RSPM (R 4.0.2)                           
 ##  hms                    0.5.3    2020-01-08 [1] RSPM (R 4.0.0)                           
 ##  htmlTable              2.1.0    2020-09-16 [1] RSPM (R 4.0.2)                           
 ##  htmltools              0.5.0    2020-06-16 [2] RSPM (R 4.0.1)                           
-##  htmlwidgets            1.5.1    2019-10-08 [2] RSPM (R 4.0.0)                           
+##  htmlwidgets            1.5.2    2020-10-03 [2] RSPM (R 4.0.2)                           
 ##  httpuv                 1.5.4    2020-06-06 [1] RSPM (R 4.0.2)                           
 ##  httr                   1.4.2    2020-07-20 [2] RSPM (R 4.0.2)                           
-##  igraph                 1.2.5    2020-03-19 [1] RSPM (R 4.0.0)                           
-##  IRanges              * 2.23.10  2020-06-13 [1] Bioconductor                             
-##  iterators              1.0.12   2019-07-26 [1] RSPM (R 4.0.0)                           
-##  jaffelab             * 0.99.30  2020-10-05 [1] Github (LieberInstitute/jaffelab@42637ff)
+##  igraph                 1.2.6    2020-10-06 [1] RSPM (R 4.0.2)                           
+##  IRanges              * 2.24.0   2020-10-27 [1] Bioconductor                             
+##  iterators              1.0.13   2020-10-15 [1] RSPM (R 4.0.2)                           
+##  jaffelab             * 0.99.30  2020-11-18 [1] Github (LieberInstitute/jaffelab@42637ff)
 ##  jpeg                   0.1-8.1  2019-10-24 [1] RSPM (R 4.0.0)                           
 ##  jsonlite               1.7.1    2020-09-07 [2] RSPM (R 4.0.2)                           
-##  knitcitations        * 1.0.10   2019-09-15 [1] RSPM (R 4.0.0)                           
+##  knitcitations        * 1.0.11   2020-11-18 [1] Github (cboettig/knitcitations@23750d5)  
 ##  knitr                  1.30     2020-09-22 [2] RSPM (R 4.0.2)                           
-##  labeling               0.3      2014-08-23 [1] RSPM (R 4.0.0)                           
+##  labeling               0.4.2    2020-10-20 [1] RSPM (R 4.0.3)                           
 ##  later                  1.1.0.1  2020-06-05 [2] RSPM (R 4.0.2)                           
-##  lattice                0.20-41  2020-04-02 [3] CRAN (R 4.0.2)                           
+##  lattice                0.20-41  2020-04-02 [3] CRAN (R 4.0.3)                           
 ##  latticeExtra           0.6-29   2019-12-19 [1] RSPM (R 4.0.0)                           
 ##  lazyeval               0.2.2    2019-03-15 [2] RSPM (R 4.0.0)                           
 ##  lifecycle              0.2.0    2020-03-06 [2] RSPM (R 4.0.0)                           
-##  limma                * 3.45.14  2020-09-12 [1] Bioconductor                             
+##  limma                * 3.46.0   2020-10-27 [1] Bioconductor                             
 ##  locfit                 1.5-9.4  2020-03-25 [1] RSPM (R 4.0.0)                           
-##  lubridate              1.7.9    2020-06-08 [1] RSPM (R 4.0.2)                           
-##  magrittr               1.5      2014-11-22 [2] RSPM (R 4.0.0)                           
-##  MASS                   7.3-51.6 2020-04-26 [3] CRAN (R 4.0.2)                           
-##  Matrix                 1.2-18   2019-11-27 [3] CRAN (R 4.0.2)                           
-##  MatrixGenerics       * 1.1.3    2020-09-30 [1] Bioconductor                             
+##  lubridate              1.7.9.2  2020-11-13 [1] RSPM (R 4.0.3)                           
+##  magrittr               2.0.1    2020-11-17 [2] RSPM (R 4.0.3)                           
+##  MASS                   7.3-53   2020-09-09 [3] CRAN (R 4.0.3)                           
+##  Matrix                 1.2-18   2019-11-27 [3] CRAN (R 4.0.3)                           
+##  MatrixGenerics       * 1.2.0    2020-10-27 [1] Bioconductor                             
 ##  matrixStats          * 0.57.0   2020-09-25 [1] RSPM (R 4.0.2)                           
 ##  memoise                1.1.0    2017-04-21 [2] RSPM (R 4.0.0)                           
 ##  mime                   0.9      2020-02-04 [2] RSPM (R 4.0.0)                           
 ##  munsell                0.5.0    2018-06-12 [1] RSPM (R 4.0.0)                           
-##  nnet                   7.3-14   2020-04-26 [3] CRAN (R 4.0.2)                           
+##  nnet                   7.3-14   2020-04-26 [3] CRAN (R 4.0.3)                           
 ##  openssl                1.4.3    2020-09-18 [2] RSPM (R 4.0.2)                           
-##  org.Hs.eg.db         * 3.11.4   2020-10-07 [1] Bioconductor                             
+##  org.Hs.eg.db         * 3.12.0   2020-11-18 [1] Bioconductor                             
 ##  pheatmap             * 1.0.12   2019-01-04 [1] RSPM (R 4.0.0)                           
 ##  pillar                 1.4.6    2020-07-10 [2] RSPM (R 4.0.2)                           
 ##  pkgbuild               1.1.0    2020-07-13 [2] RSPM (R 4.0.2)                           
@@ -3085,67 +2945,67 @@ devtools::session_info()</code></pre>
 ##  processx               3.4.4    2020-09-03 [2] RSPM (R 4.0.2)                           
 ##  progress               1.2.2    2019-05-16 [1] RSPM (R 4.0.0)                           
 ##  promises               1.1.1    2020-06-09 [2] RSPM (R 4.0.2)                           
-##  ps                     1.3.4    2020-08-11 [2] RSPM (R 4.0.2)                           
+##  ps                     1.4.0    2020-10-07 [2] RSPM (R 4.0.2)                           
 ##  purrr                  0.3.4    2020-04-17 [2] RSPM (R 4.0.0)                           
-##  qvalue                 2.21.0   2020-04-27 [1] Bioconductor                             
-##  R6                     2.4.1    2019-11-12 [2] RSPM (R 4.0.0)                           
+##  qvalue                 2.22.0   2020-10-27 [1] Bioconductor                             
+##  R6                     2.5.0    2020-10-28 [2] RSPM (R 4.0.3)                           
 ##  rafalib              * 1.0.0    2015-08-09 [1] RSPM (R 4.0.0)                           
 ##  rappdirs               0.3.1    2016-03-28 [1] RSPM (R 4.0.0)                           
 ##  RColorBrewer         * 1.1-2    2014-12-07 [1] RSPM (R 4.0.0)                           
 ##  Rcpp                   1.0.5    2020-07-06 [2] RSPM (R 4.0.2)                           
 ##  RCurl                  1.98-1.2 2020-04-18 [1] RSPM (R 4.0.0)                           
-##  readr                  1.3.1    2018-12-21 [1] RSPM (R 4.0.2)                           
-##  recount              * 1.15.1   2020-05-12 [1] Bioconductor                             
-##  RefManageR             1.2.12   2019-04-03 [1] RSPM (R 4.0.0)                           
-##  remotes                2.2.0    2020-07-21 [1] RSPM (R 4.0.2)                           
-##  rentrez                1.2.2    2019-05-02 [1] RSPM (R 4.0.0)                           
+##  readr                  1.4.0    2020-10-05 [1] RSPM (R 4.0.3)                           
+##  recount              * 1.16.0   2020-10-27 [1] Bioconductor                             
+##  RefManageR             1.3.0    2020-11-18 [1] Github (ropensci/RefManageR@ab8fe60)     
+##  remotes                2.2.0    2020-07-21 [2] RSPM (R 4.0.2)                           
+##  rentrez                1.2.3    2020-11-10 [1] RSPM (R 4.0.3)                           
 ##  reshape2               1.4.4    2020-04-09 [1] RSPM (R 4.0.2)                           
 ##  rintrojs               0.2.2    2019-05-29 [1] RSPM (R 4.0.0)                           
-##  rlang                  0.4.7    2020-07-09 [2] RSPM (R 4.0.2)                           
-##  rmarkdown              2.4      2020-09-30 [1] RSPM (R 4.0.2)                           
+##  rlang                  0.4.8    2020-10-08 [2] RSPM (R 4.0.2)                           
+##  rmarkdown              2.5      2020-10-21 [1] RSPM (R 4.0.3)                           
 ##  rngtools               1.5      2020-01-23 [1] RSPM (R 4.0.0)                           
-##  rpart                  4.1-15   2019-04-12 [3] CRAN (R 4.0.2)                           
-##  rprojroot              1.3-2    2018-01-03 [2] RSPM (R 4.0.0)                           
-##  Rsamtools              2.5.3    2020-06-26 [1] Bioconductor                             
+##  rpart                  4.1-15   2019-04-12 [3] CRAN (R 4.0.3)                           
+##  rprojroot              2.0.2    2020-11-15 [2] RSPM (R 4.0.3)                           
+##  Rsamtools              2.6.0    2020-10-27 [1] Bioconductor                             
 ##  RSQLite                2.2.1    2020-09-30 [1] RSPM (R 4.0.2)                           
-##  rstudioapi             0.11     2020-02-07 [2] RSPM (R 4.0.0)                           
-##  rtracklayer            1.49.5   2020-08-07 [1] Bioconductor                             
+##  rstudioapi             0.13     2020-11-12 [2] RSPM (R 4.0.3)                           
+##  rtracklayer            1.50.0   2020-10-27 [1] Bioconductor                             
 ##  rvcheck                0.1.8    2020-03-01 [1] RSPM (R 4.0.0)                           
-##  S4Vectors            * 0.27.13  2020-09-18 [1] Bioconductor                             
+##  S4Vectors            * 0.28.0   2020-10-27 [1] Bioconductor                             
 ##  scales                 1.1.1    2020-05-11 [1] RSPM (R 4.0.0)                           
 ##  scatterpie             0.1.5    2020-09-09 [1] RSPM (R 4.0.2)                           
-##  segmented              1.2-0    2020-06-23 [1] RSPM (R 4.0.2)                           
+##  segmented              1.3-0    2020-10-27 [1] RSPM (R 4.0.3)                           
 ##  sessioninfo            1.1.1    2018-11-05 [1] RSPM (R 4.0.0)                           
 ##  shadowtext             0.0.7    2019-11-06 [1] RSPM (R 4.0.0)                           
 ##  shiny                  1.5.0    2020-06-23 [1] RSPM (R 4.0.2)                           
 ##  shinydashboard         0.7.1    2018-10-17 [1] RSPM (R 4.0.0)                           
 ##  shinyjs                2.0.0    2020-09-09 [1] RSPM (R 4.0.2)                           
-##  statmod                1.4.34   2020-02-17 [1] RSPM (R 4.0.0)                           
+##  statmod                1.4.35   2020-10-19 [1] RSPM (R 4.0.3)                           
 ##  stringi                1.5.3    2020-09-09 [2] RSPM (R 4.0.2)                           
 ##  stringr                1.4.0    2019-02-10 [2] RSPM (R 4.0.0)                           
-##  SummarizedExperiment * 1.19.9   2020-10-01 [1] Bioconductor                             
-##  survival               3.1-12   2020-04-10 [3] CRAN (R 4.0.2)                           
-##  testthat               2.3.2    2020-03-02 [2] RSPM (R 4.0.0)                           
-##  tibble                 3.0.3    2020-07-10 [2] RSPM (R 4.0.2)                           
+##  SummarizedExperiment * 1.20.0   2020-10-27 [1] Bioconductor                             
+##  survival               3.2-7    2020-09-28 [3] CRAN (R 4.0.3)                           
+##  testthat               3.0.0    2020-10-31 [2] RSPM (R 4.0.3)                           
+##  tibble                 3.0.4    2020-10-12 [2] RSPM (R 4.0.2)                           
 ##  tidygraph              1.2.0    2020-05-12 [1] RSPM (R 4.0.2)                           
-##  tidyr                  1.1.2    2020-08-27 [1] RSPM (R 4.0.2)                           
+##  tidyr                  1.1.2    2020-08-27 [1] RSPM (R 4.0.3)                           
 ##  tidyselect             1.1.0    2020-05-11 [1] RSPM (R 4.0.0)                           
 ##  tweenr                 1.0.1    2018-12-14 [1] RSPM (R 4.0.2)                           
 ##  usethis              * 1.6.3    2020-09-17 [1] RSPM (R 4.0.2)                           
-##  VariantAnnotation      1.35.3   2020-06-26 [1] Bioconductor                             
-##  vctrs                  0.3.4    2020-08-29 [2] RSPM (R 4.0.2)                           
+##  VariantAnnotation      1.36.0   2020-10-27 [1] Bioconductor                             
+##  vctrs                  0.3.5    2020-11-17 [2] RSPM (R 4.0.3)                           
 ##  viridis                0.5.1    2018-03-29 [1] RSPM (R 4.0.0)                           
 ##  viridisLite            0.3.0    2018-02-01 [1] RSPM (R 4.0.0)                           
 ##  withr                  2.3.0    2020-09-22 [2] RSPM (R 4.0.2)                           
-##  xfun                   0.18     2020-09-29 [2] RSPM (R 4.0.2)                           
+##  xfun                   0.19     2020-10-30 [2] RSPM (R 4.0.3)                           
 ##  XML                    3.99-0.5 2020-07-23 [1] RSPM (R 4.0.2)                           
 ##  xml2                   1.3.2    2020-04-23 [2] RSPM (R 4.0.0)                           
 ##  xtable                 1.8-4    2019-04-21 [1] RSPM (R 4.0.0)                           
-##  XVector                0.29.3   2020-06-25 [1] Bioconductor                             
+##  XVector                0.30.0   2020-10-27 [1] Bioconductor                             
 ##  yaml                   2.2.1    2020-02-01 [2] RSPM (R 4.0.0)                           
-##  zlibbioc               1.35.0   2020-04-27 [1] Bioconductor                             
+##  zlibbioc               1.36.0   2020-10-27 [1] Bioconductor                             
 ## 
-## [1] /usr/local/lib/R/host-site-library
+## [1] /__w/_temp/Library
 ## [2] /usr/local/lib/R/site-library
 ## [3] /usr/local/lib/R/library</code></pre>
 </div>
@@ -3161,7 +3021,7 @@ devtools::session_info()</code></pre>
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
