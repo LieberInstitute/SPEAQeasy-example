@@ -24,7 +24,7 @@ on:
   push:
   pull_request:
 
-name: R-CMD-check-bioc
+name: R-CMD-bioc
 
 ## These environment variables control whether to run GHA code later on that is
 ## specific to testthat, covr, and pkgdown.
@@ -101,7 +101,7 @@ jobs:
           path: /home/runner/work/_temp/Library
           key: ${{ env.cache-version }}-${{ runner.os }}-biocversion-RELEASE_3_12-r-4.0-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ env.cache-version }}-${{ runner.os }}-biocversion-RELEASE_3_12-r-4.0-
-          
+
       - name: Install BiocManager
         run: |
           message(paste('****', Sys.time(), 'installing BiocManager ****'))
@@ -115,11 +115,42 @@ jobs:
 
       - name: Install dependencies
         run: |
+          ## Temporary for now due to https://github.com/ropensci/RefManageR/issues/79
+          remotes::install_github("ropensci/bibtex")
+          remotes::install_github("ropensci/RefManageR")
+          remotes::install_github("cboettig/knitcitations")
+
           ## For building the website & getting the R session info
           ## Edit as necessary with other packages in the future
-          BiocManager::install(c("rmarkdown", "sessioninfo", "BiocStyle", "clusterProfiler", "edgeR", "getopt", "here", "LieberInstitute/jaffelab", "knitcitations", "limma", "org.Hs.eg.db", "pheatmap", "RColorBrewer", "recount", "SummarizedExperiment", "tidyr", "VariantAnnotation", "statmod", "usethis", "iSEE", "ggplot2", "plotly", "ExploreModelMatrix", "enrichplot"))
+          BiocManager::install(c(
+              "rmarkdown",
+              "sessioninfo",
+              "BiocStyle",
+              "clusterProfiler",
+              "edgeR",
+              "getopt",
+              "here",
+              "LieberInstitute/jaffelab",
+              "knitcitations",
+              "limma",
+              "org.Hs.eg.db",
+              "pheatmap",
+              "RColorBrewer",
+              "recount",
+              "SummarizedExperiment",
+              "tidyr",
+              "VariantAnnotation",
+              "statmod",
+              "usethis",
+              "iSEE",
+              "ggplot2",
+              "plotly",
+              "ExploreModelMatrix",
+              "enrichplot",
+              "ggnewscale"
+          ))
           tinytex::install_tinytex()
-          
+
         shell: Rscript {0}
 
       - name: Session info
