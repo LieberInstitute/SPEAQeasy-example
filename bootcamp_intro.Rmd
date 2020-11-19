@@ -523,7 +523,7 @@ table(table(rse_gene$BrNum))
 
 We can do so using the function `limma::duplicateCorrelation()`.
 
-```{r "dup_corr", warnings = FALSE}
+```{r "dup_corr", warning=FALSE}
 # Get duplicate correlation
 gene_dupCorr <- duplicateCorrelation(vGene$E, mod,
     block = colData(rse_gene)$BrNum

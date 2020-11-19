@@ -262,7 +262,7 @@ dev.off()
 
 ## Modeling
 
-```{r modeling, echo=TRUE, warnings = FALSE}
+```{r modeling, echo=TRUE, warning=FALSE}
 dge <- DGEList(
     counts = assays(rse_gene)$counts,
     genes = rowData(rse_gene)
