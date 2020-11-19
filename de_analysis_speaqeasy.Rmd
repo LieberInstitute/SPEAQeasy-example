@@ -560,7 +560,7 @@ pheatmap(
 
 ```
 
-```{r pdf_heatmap, eval=FALSE, echo = FALSE}
+```{r pdf_heatmap, eval=FALSE, echo=FALSE}
 ## For some reason, I need to run this manually to save the PDF
 
 # Write heatmap to PDF
