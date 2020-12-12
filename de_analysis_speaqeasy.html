@@ -595,7 +595,7 @@ generate_plots &lt;- function() {
 # Display plots
 set.seed(20201006)
 generate_plots()</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-1.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-2.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-3.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-4.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-5.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-6.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-7.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-8.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-9.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-10.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-11.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-12.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-13.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-14.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-15.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-16.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-17.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-18.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-19.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-20.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-21.png" width="768" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-1.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-2.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-3.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-4.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-5.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-6.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-7.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-8.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-9.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-10.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-11.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-12.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-13.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-14.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-15.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-16.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-17.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-18.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-19.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-20.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/gene_expression-21.png" width="100%" /></p>
 <pre class="r"><code># Write plots to PDF
 pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;PCA_plotsExprs.pdf&quot;), width = 9)
 set.seed(20201006)
@@ -618,7 +618,7 @@ mod &lt;- model.matrix(~ PrimaryDx + PC + BrainRegion,
 )
 
 vGene &lt;- invisible(voom(dge, mod, plot = TRUE))</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/modeling-1.png" width="768" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/modeling-1.png" width="100%" /></p>
 <pre class="r"><code># Also write mean-variance plot to PDF
 pdf(file = here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;vGene.pdf&quot;))
 invisible(voom(dge, mod, plot = TRUE))
@@ -661,7 +661,7 @@ dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
 <pre class="r"><code>hist(outGeneDupl$P.Value)</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/modeling-2.png" width="768" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/modeling-2.png" width="100%" /></p>
 <pre class="r"><code>table(outGeneDupl$adj.P.Val &lt; 0.05)</code></pre>
 <pre><code>## 
 ## FALSE 
@@ -734,7 +734,7 @@ generate_plots &lt;- function() {
 # Show boxplots
 set.seed(20201006)
 generate_plots()</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-1.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-2.png" width="768" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-1.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-2.png" width="100%" /></p>
 <pre class="r"><code># Write plots to PDF
 pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byDiagnosis.pdf&quot;),
     width = 10
@@ -780,7 +780,7 @@ generate_plots &lt;- function() {
 # Display plots
 set.seed(20201006)
 generate_plots()</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-3.png" width="768" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-4.png" width="768" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/check_plots-3.png" width="100%" /><img src="de_analysis_speaqeasy_files/figure-html/check_plots-4.png" width="100%" /></p>
 <pre class="r"><code># Write the same plots to PDF
 pdf(here(&quot;DE_analysis&quot;, &quot;pdfs&quot;, &quot;DE_boxplots_byGenome_log2RPKM.pdf&quot;),
     w = 10
@@ -944,10 +944,10 @@ goDf[goDf$p.adjust &lt; 0.05, c(1:5, 7)]</code></pre>
 ## 754        BP       1 GO:0150078                   positive regulation of neuroinflammatory response      2/73 1.252424e-03
 ## 755        BP       1 GO:0003018                              vascular process in circulatory system      5/73 1.274776e-03
 ## 756        BP       1 GO:0043030                                 regulation of macrophage activation      3/73 1.480606e-03
-## 2917     KEGG      -1   hsa04710                                                    Circadian rhythm      2/13 1.492046e-03
+## 2917     KEGG      -1   hsa04710                                                    Circadian rhythm      2/13 1.491572e-03
 ## 757        BP       1 GO:0033004                         negative regulation of mast cell activation      2/73 1.525410e-03
 ## 758        BP       1 GO:0098883                                                     synapse pruning      2/73 1.525410e-03
-## 2918     KEGG      -1   hsa00982                                   Drug metabolism - cytochrome P450      2/13 1.600670e-03
+## 2918     KEGG      -1   hsa00982                                   Drug metabolism - cytochrome P450      2/13 1.600162e-03
 ## 759        BP       1 GO:1904018                      positive regulation of vasculature development      5/73 1.604501e-03
 ## 760        BP       1 GO:0043270                                positive regulation of ion transport      6/73 1.612708e-03
 ## 761        BP       1 GO:0032729                  positive regulation of interferon-gamma production      3/73 1.695010e-03
@@ -969,7 +969,7 @@ goDf[goDf$p.adjust &lt; 0.05, c(1:5, 7)]</code></pre>
 ## 777        BP       1 GO:0002573                                   myeloid leukocyte differentiation      5/73 2.211391e-03
 ## 778        BP       1 GO:0045765                                          regulation of angiogenesis      6/73 2.251326e-03
 ## 779        BP       1 GO:0043410                                 positive regulation of MAPK cascade      8/73 2.320852e-03
-## 2919     KEGG      -1   hsa05204                                             Chemical carcinogenesis      2/13 2.329196e-03
+## 2919     KEGG      -1   hsa05204                                             Chemical carcinogenesis      2/13 2.328459e-03
 ## 780        BP       1 GO:0050729                        positive regulation of inflammatory response      4/73 2.373979e-03
 ## 781        BP       1 GO:0002237                            response to molecule of bacterial origin      6/73 2.437266e-03
 ## 782        BP       1 GO:0001562                                               response to protozoan      2/73 2.497604e-03
@@ -1025,7 +1025,7 @@ pheatmap(
     annotation_col = df,
     annotation_colors = ann_colors
 )</code></pre>
-<p><img src="de_analysis_speaqeasy_files/figure-html/heatmap-1.png" width="768" /></p>
+<p><img src="de_analysis_speaqeasy_files/figure-html/heatmap-1.png" width="100%" /></p>
 </div>
 </div>
 <div id="reproducibility" class="section level1">
@@ -1083,10 +1083,10 @@ and Hall/CRC, 2020. &lt;URL: <a href="https://bookdown.org/yihui/rmarkdown-cookb
 clusters”. In: <em>OMICS: A Journal of Integrative Biology</em> 16.5 (2012), pp. 284-287. DOI: 10.1089/omi.2011.0118.</p>
 <pre class="r"><code># Time spent creating this report:
 diff(c(timestart, Sys.time()))</code></pre>
-<pre><code>## Time difference of 3.404506 mins</code></pre>
+<pre><code>## Time difference of 2.445369 mins</code></pre>
 <pre class="r"><code># Date this report was generated
 message(Sys.time())</code></pre>
-<pre><code>## 2020-11-19 22:16:00</code></pre>
+<pre><code>## 2020-12-12 07:00:58</code></pre>
 <pre class="r"><code># Reproducibility info
 options(width = 120)
 devtools::session_info()</code></pre>
@@ -1100,22 +1100,22 @@ devtools::session_info()</code></pre>
 ##  collate  en_US.UTF-8                 
 ##  ctype    en_US.UTF-8                 
 ##  tz       Etc/UTC                     
-##  date     2020-11-19                  
+##  date     2020-12-12                  
 ## 
 ## ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##  package              * version  date       lib source                                   
 ##  AnnotationDbi        * 1.52.0   2020-10-27 [1] Bioconductor                             
 ##  askpass                1.1      2019-01-13 [2] RSPM (R 4.0.0)                           
 ##  assertthat             0.2.1    2019-03-21 [2] RSPM (R 4.0.0)                           
-##  backports              1.2.0    2020-11-02 [2] RSPM (R 4.0.3)                           
+##  backports              1.2.1    2020-12-09 [2] RSPM (R 4.0.3)                           
 ##  base64enc              0.1-3    2015-07-28 [2] RSPM (R 4.0.0)                           
-##  bibtex                 0.4.3    2020-11-18 [1] Github (ropensci/bibtex@7ccf8ea)         
+##  bibtex                 0.4.3    2020-12-12 [1] Github (ropensci/bibtex@7ccf8ea)         
 ##  Biobase              * 2.50.0   2020-10-27 [1] Bioconductor                             
 ##  BiocFileCache          1.14.0   2020-10-27 [1] Bioconductor                             
 ##  BiocGenerics         * 0.36.0   2020-10-27 [1] Bioconductor                             
 ##  BiocManager          * 1.30.10  2019-11-16 [2] CRAN (R 4.0.3)                           
 ##  BiocParallel           1.24.1   2020-11-06 [1] Bioconductor                             
-##  BiocStyle            * 2.18.0   2020-10-27 [1] Bioconductor                             
+##  BiocStyle            * 2.18.1   2020-11-24 [1] Bioconductor                             
 ##  biomaRt                2.46.0   2020-10-27 [1] Bioconductor                             
 ##  Biostrings             2.58.0   2020-10-27 [1] Bioconductor                             
 ##  bit                    4.0.4    2020-08-04 [1] RSPM (R 4.0.2)                           
@@ -1128,7 +1128,7 @@ devtools::session_info()</code></pre>
 ##  Cairo                  1.5-12.2 2020-07-07 [1] RSPM (R 4.0.3)                           
 ##  callr                  3.5.1    2020-10-13 [2] RSPM (R 4.0.2)                           
 ##  checkmate              2.0.0    2020-02-06 [1] RSPM (R 4.0.0)                           
-##  cli                    2.1.0    2020-10-12 [2] RSPM (R 4.0.2)                           
+##  cli                    2.2.0    2020-11-20 [2] RSPM (R 4.0.3)                           
 ##  cluster                2.1.0    2019-06-19 [3] CRAN (R 4.0.3)                           
 ##  clusterProfiler      * 3.18.0   2020-10-27 [1] Bioconductor                             
 ##  codetools              0.2-18   2020-11-04 [3] RSPM (R 4.0.3)                           
@@ -1137,7 +1137,7 @@ devtools::session_info()</code></pre>
 ##  crayon                 1.3.4    2017-09-16 [2] RSPM (R 4.0.0)                           
 ##  crosstalk              1.1.0.1  2020-03-13 [2] RSPM (R 4.0.0)                           
 ##  curl                   4.3      2019-12-02 [2] RSPM (R 4.0.0)                           
-##  data.table             1.13.2   2020-10-19 [1] RSPM (R 4.0.3)                           
+##  data.table             1.13.4   2020-12-08 [1] RSPM (R 4.0.3)                           
 ##  DBI                    1.1.0    2019-12-15 [1] RSPM (R 4.0.0)                           
 ##  dbplyr                 2.0.0    2020-11-03 [1] RSPM (R 4.0.3)                           
 ##  DelayedArray           0.16.0   2020-10-27 [1] Bioconductor                             
@@ -1146,7 +1146,7 @@ devtools::session_info()</code></pre>
 ##  desc                   1.2.0    2018-05-01 [2] RSPM (R 4.0.0)                           
 ##  devtools             * 2.3.2    2020-09-18 [2] RSPM (R 4.0.2)                           
 ##  digest                 0.6.27   2020-10-24 [2] RSPM (R 4.0.3)                           
-##  DO.db                  2.9      2020-11-18 [1] Bioconductor                             
+##  DO.db                  2.9      2020-12-12 [1] Bioconductor                             
 ##  doRNG                  1.8.2    2020-01-27 [1] RSPM (R 4.0.0)                           
 ##  DOSE                   3.16.0   2020-10-27 [1] Bioconductor                             
 ##  downloader             0.4      2015-07-09 [1] RSPM (R 4.0.0)                           
@@ -1167,40 +1167,40 @@ devtools::session_info()</code></pre>
 ##  Formula                1.2-4    2020-10-16 [1] RSPM (R 4.0.2)                           
 ##  fs                     1.5.0    2020-07-31 [2] RSPM (R 4.0.2)                           
 ##  generics               0.1.0    2020-10-31 [1] RSPM (R 4.0.3)                           
-##  GenomeInfoDb         * 1.26.0   2020-10-27 [1] Bioconductor                             
-##  GenomeInfoDbData       1.2.4    2020-11-18 [1] Bioconductor                             
+##  GenomeInfoDb         * 1.26.2   2020-12-08 [1] Bioconductor                             
+##  GenomeInfoDbData       1.2.4    2020-12-12 [1] Bioconductor                             
 ##  GenomicAlignments      1.26.0   2020-10-27 [1] Bioconductor                             
 ##  GenomicFeatures        1.42.1   2020-11-12 [1] Bioconductor                             
 ##  GenomicFiles           1.26.0   2020-10-27 [1] Bioconductor                             
 ##  GenomicRanges        * 1.42.0   2020-10-27 [1] Bioconductor                             
 ##  GEOquery               2.58.0   2020-10-27 [1] Bioconductor                             
 ##  ggforce                0.3.2    2020-06-23 [1] RSPM (R 4.0.2)                           
-##  ggnewscale             0.4.3    2020-08-27 [1] RSPM (R 4.0.2)                           
+##  ggnewscale             0.4.4    2020-12-02 [1] RSPM (R 4.0.3)                           
 ##  ggplot2              * 3.3.2    2020-06-19 [1] RSPM (R 4.0.1)                           
 ##  ggraph                 2.0.4    2020-11-16 [1] RSPM (R 4.0.3)                           
 ##  ggrepel                0.8.2    2020-03-08 [1] RSPM (R 4.0.2)                           
 ##  glue                   1.4.2    2020-08-27 [2] RSPM (R 4.0.2)                           
-##  GO.db                  3.12.1   2020-11-18 [1] Bioconductor                             
+##  GO.db                  3.12.1   2020-12-12 [1] Bioconductor                             
 ##  googledrive            1.0.1    2020-05-05 [1] RSPM (R 4.0.0)                           
 ##  GOSemSim               2.16.1   2020-10-29 [1] Bioconductor                             
 ##  graphlayouts           0.7.1    2020-10-26 [1] RSPM (R 4.0.3)                           
 ##  gridExtra              2.3      2017-09-09 [1] RSPM (R 4.0.0)                           
 ##  gtable                 0.3.0    2019-03-25 [1] RSPM (R 4.0.0)                           
 ##  here                 * 1.0.0    2020-11-15 [1] RSPM (R 4.0.3)                           
-##  Hmisc                  4.4-1    2020-08-10 [1] RSPM (R 4.0.2)                           
+##  Hmisc                  4.4-2    2020-11-29 [1] RSPM (R 4.0.3)                           
 ##  hms                    0.5.3    2020-01-08 [1] RSPM (R 4.0.0)                           
 ##  htmlTable              2.1.0    2020-09-16 [1] RSPM (R 4.0.2)                           
 ##  htmltools              0.5.0    2020-06-16 [2] RSPM (R 4.0.1)                           
-##  htmlwidgets            1.5.2    2020-10-03 [2] RSPM (R 4.0.2)                           
+##  htmlwidgets            1.5.3    2020-12-10 [2] RSPM (R 4.0.3)                           
 ##  httpuv                 1.5.4    2020-06-06 [1] RSPM (R 4.0.2)                           
 ##  httr                   1.4.2    2020-07-20 [2] RSPM (R 4.0.2)                           
 ##  igraph                 1.2.6    2020-10-06 [1] RSPM (R 4.0.2)                           
 ##  IRanges              * 2.24.0   2020-10-27 [1] Bioconductor                             
 ##  iterators              1.0.13   2020-10-15 [1] RSPM (R 4.0.2)                           
-##  jaffelab             * 0.99.30  2020-11-18 [1] Github (LieberInstitute/jaffelab@42637ff)
+##  jaffelab             * 0.99.30  2020-12-12 [1] Github (LieberInstitute/jaffelab@42637ff)
 ##  jpeg                   0.1-8.1  2019-10-24 [1] RSPM (R 4.0.0)                           
-##  jsonlite               1.7.1    2020-09-07 [2] RSPM (R 4.0.2)                           
-##  knitcitations        * 1.0.11   2020-11-18 [1] Github (cboettig/knitcitations@23750d5)  
+##  jsonlite               1.7.2    2020-12-09 [2] RSPM (R 4.0.3)                           
+##  knitcitations        * 1.0.11   2020-12-12 [1] Github (cboettig/knitcitations@23750d5)  
 ##  knitr                  1.30     2020-09-22 [2] RSPM (R 4.0.2)                           
 ##  labeling               0.4.2    2020-10-20 [1] RSPM (R 4.0.3)                           
 ##  later                  1.1.0.1  2020-06-05 [2] RSPM (R 4.0.2)                           
@@ -1221,9 +1221,9 @@ devtools::session_info()</code></pre>
 ##  munsell                0.5.0    2018-06-12 [1] RSPM (R 4.0.0)                           
 ##  nnet                   7.3-14   2020-04-26 [3] CRAN (R 4.0.3)                           
 ##  openssl                1.4.3    2020-09-18 [2] RSPM (R 4.0.2)                           
-##  org.Hs.eg.db         * 3.12.0   2020-11-19 [1] Bioconductor                             
+##  org.Hs.eg.db         * 3.12.0   2020-12-12 [1] Bioconductor                             
 ##  pheatmap             * 1.0.12   2019-01-04 [1] RSPM (R 4.0.0)                           
-##  pillar                 1.4.6    2020-07-10 [2] RSPM (R 4.0.2)                           
+##  pillar                 1.4.7    2020-11-20 [2] RSPM (R 4.0.3)                           
 ##  pkgbuild               1.1.0    2020-07-13 [2] RSPM (R 4.0.2)                           
 ##  pkgconfig              2.0.3    2019-09-22 [2] RSPM (R 4.0.0)                           
 ##  pkgload                1.1.0    2020-05-29 [2] RSPM (R 4.0.0)                           
@@ -1232,26 +1232,26 @@ devtools::session_info()</code></pre>
 ##  png                    0.1-7    2013-12-03 [1] RSPM (R 4.0.0)                           
 ##  polyclip               1.10-0   2019-03-14 [1] RSPM (R 4.0.0)                           
 ##  prettyunits            1.1.1    2020-01-24 [2] RSPM (R 4.0.0)                           
-##  processx               3.4.4    2020-09-03 [2] RSPM (R 4.0.2)                           
+##  processx               3.4.5    2020-11-30 [2] RSPM (R 4.0.3)                           
 ##  progress               1.2.2    2019-05-16 [1] RSPM (R 4.0.0)                           
 ##  promises               1.1.1    2020-06-09 [2] RSPM (R 4.0.2)                           
-##  ps                     1.4.0    2020-10-07 [2] RSPM (R 4.0.2)                           
+##  ps                     1.5.0    2020-12-05 [2] RSPM (R 4.0.3)                           
 ##  purrr                  0.3.4    2020-04-17 [2] RSPM (R 4.0.0)                           
 ##  qvalue                 2.22.0   2020-10-27 [1] Bioconductor                             
 ##  R6                     2.5.0    2020-10-28 [2] RSPM (R 4.0.3)                           
 ##  rafalib              * 1.0.0    2015-08-09 [1] RSPM (R 4.0.0)                           
-##  rappdirs               0.3.1    2016-03-28 [1] RSPM (R 4.0.0)                           
+##  rappdirs               0.3.1    2016-03-28 [2] RSPM (R 4.0.0)                           
 ##  RColorBrewer         * 1.1-2    2014-12-07 [1] RSPM (R 4.0.0)                           
 ##  Rcpp                   1.0.5    2020-07-06 [2] RSPM (R 4.0.2)                           
 ##  RCurl                  1.98-1.2 2020-04-18 [1] RSPM (R 4.0.0)                           
 ##  readr                  1.4.0    2020-10-05 [1] RSPM (R 4.0.3)                           
 ##  recount              * 1.16.0   2020-10-27 [1] Bioconductor                             
-##  RefManageR             1.3.0    2020-11-18 [1] Github (ropensci/RefManageR@ab8fe60)     
+##  RefManageR             1.3.0    2020-12-12 [1] Github (ropensci/RefManageR@ab8fe60)     
 ##  remotes                2.2.0    2020-07-21 [2] RSPM (R 4.0.2)                           
 ##  rentrez                1.2.3    2020-11-10 [1] RSPM (R 4.0.3)                           
 ##  reshape2               1.4.4    2020-04-09 [1] RSPM (R 4.0.2)                           
 ##  rintrojs               0.2.2    2019-05-29 [1] RSPM (R 4.0.0)                           
-##  rlang                  0.4.8    2020-10-08 [2] RSPM (R 4.0.2)                           
+##  rlang                  0.4.9    2020-11-26 [2] RSPM (R 4.0.3)                           
 ##  rmarkdown              2.5      2020-10-21 [1] RSPM (R 4.0.3)                           
 ##  rngtools               1.5      2020-01-23 [1] RSPM (R 4.0.0)                           
 ##  rpart                  4.1-15   2019-04-12 [3] CRAN (R 4.0.3)                           
@@ -1261,10 +1261,10 @@ devtools::session_info()</code></pre>
 ##  rstudioapi             0.13     2020-11-12 [2] RSPM (R 4.0.3)                           
 ##  rtracklayer            1.50.0   2020-10-27 [1] Bioconductor                             
 ##  rvcheck                0.1.8    2020-03-01 [1] RSPM (R 4.0.0)                           
-##  S4Vectors            * 0.28.0   2020-10-27 [1] Bioconductor                             
+##  S4Vectors            * 0.28.1   2020-12-09 [1] Bioconductor                             
 ##  scales                 1.1.1    2020-05-11 [1] RSPM (R 4.0.0)                           
 ##  scatterpie             0.1.5    2020-09-09 [1] RSPM (R 4.0.2)                           
-##  segmented              1.3-0    2020-10-27 [1] RSPM (R 4.0.3)                           
+##  segmented              1.3-1    2020-12-10 [1] RSPM (R 4.0.3)                           
 ##  sessioninfo            1.1.1    2018-11-05 [1] RSPM (R 4.0.0)                           
 ##  shadowtext             0.0.7    2019-11-06 [1] RSPM (R 4.0.0)                           
 ##  shiny                  1.5.0    2020-06-23 [1] RSPM (R 4.0.2)                           
@@ -1281,7 +1281,7 @@ devtools::session_info()</code></pre>
 ##  tidyr                  1.1.2    2020-08-27 [1] RSPM (R 4.0.3)                           
 ##  tidyselect             1.1.0    2020-05-11 [1] RSPM (R 4.0.0)                           
 ##  tweenr                 1.0.1    2018-12-14 [1] RSPM (R 4.0.2)                           
-##  usethis              * 1.6.3    2020-09-17 [1] RSPM (R 4.0.2)                           
+##  usethis              * 2.0.0    2020-12-10 [1] RSPM (R 4.0.3)                           
 ##  VariantAnnotation      1.36.0   2020-10-27 [1] Bioconductor                             
 ##  vctrs                  0.3.5    2020-11-17 [2] RSPM (R 4.0.3)                           
 ##  viridis                0.5.1    2018-03-29 [1] RSPM (R 4.0.0)                           
