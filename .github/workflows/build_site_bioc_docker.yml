@@ -163,6 +163,7 @@ jobs:
       - name: Build website
         run: |
           rmarkdown::render_site()
+          system("touch docs/.nojekyll")
         shell: Rscript {0}
 
       - name: Install deploy dependencies
