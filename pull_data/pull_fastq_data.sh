@@ -1,11 +1,11 @@
 #  Run this script from the main 'SPEAQeasy-example' folder, specifying an
 #  output folder to place downloaded files:
 #
-#  bash pull_fastq_data.sh "/some_directory"
+#  bash pull_data/pull_fastq_data.sh "/some_directory"
 
 if [ "$1" == "" ]; then
     echo "Please provide a download location for the FASTQ data when running this script."
-    echo -e '\ne.g. bash pull_fastq_data.sh "/some_directory"'
+    echo -e '\ne.g. bash pull_data/pull_fastq_data.sh "/some_directory"'
     exit 1
 fi
 
@@ -20,4 +20,4 @@ for specimen in $spec_ids; do
 done
 
 #  Create the 'samples.manifest' file for those who want to run SPEAQeasy
-Rscript -d "$dest_dir"
+Rscript pull_data/make_manifest.R -d "$dest_dir"
