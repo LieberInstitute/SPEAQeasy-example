@@ -497,7 +497,7 @@ goList <-
     list(
         BP = goBP_Adj,
         MF = goMF_Adj,
-        CC = goCC_Adj,
+        CC = goCC_Adj
     )
 goDf <-
     dplyr::bind_rows(lapply(goList, as.data.frame), .id = "Ontology")
