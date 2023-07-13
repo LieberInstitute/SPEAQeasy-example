@@ -449,7 +449,7 @@ sigGeneList <- lapply(sigGeneList, function(x) {
 geneUniverse <- as.character(outGeneDupl$EntrezID)
 geneUniverse <- geneUniverse[!is.na(geneUniverse)]
 
-# Do GO and KEGG
+# Do GO
 goBP_Adj <- compareCluster(
     sigGeneList,
     fun = "enrichGO",
@@ -486,20 +486,10 @@ goCC_Adj <- compareCluster(
     readable = TRUE
 )
 
-kegg_Adj <- compareCluster(
-    sigGeneList,
-    fun = "enrichKEGG",
-    universe = geneUniverse,
-    pAdjustMethod = "BH",
-    pvalueCutoff = 1,
-    qvalueCutoff = 1
-)
-
 save(
     goBP_Adj,
     goCC_Adj,
     goMF_Adj,
-    kegg_Adj,
     file = here("DE_analysis", "rdas", "gene_set_objects_p005.rda")
 )
 
@@ -508,7 +498,6 @@ goList <-
         BP = goBP_Adj,
         MF = goMF_Adj,
         CC = goCC_Adj,
-        KEGG = kegg_Adj
     )
 goDf <-
     dplyr::bind_rows(lapply(goList, as.data.frame), .id = "Ontology")
